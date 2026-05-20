@@ -1,0 +1,357 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ household.name }} · Admin · HomeTab{% endblock %}
+
+{% macro dual_user_select(users, fieldName, selectedUsers, availableLabel = 'Disponibles', selectedLabel = 'Seleccionados', extraAttr = '') %}
+    {% set selectedIds = [] %}
+    {% for selectedUser in selectedUsers %}
+        {% set selectedIds = selectedIds|merge([selectedUser.id]) %}
+    {% endfor %}
+    <div class="ht-dual-select" data-dual-list {{ extraAttr|raw }}>
+        <div class="ht-dual-select__panel">
+            <label>{{ availableLabel }}</label>
+            <select class="ht-input" multiple size="8" data-dual-available>
+                {% for user in users %}
+                    {% if user.id not in selectedIds %}
+                        <option value="{{ user.id }}">{{ user.fullName }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="ht-dual-select__actions" aria-label="{{ 'admin.records.move_participants'|trans }}">
+            <button type="button" class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dual-add title="{{ 'admin.records.add'|trans }}"><span class="pi pi-angle-right"></span></button>
+            <button type="button" class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dual-remove title="{{ 'admin.records.remove'|trans }}"><span class="pi pi-angle-left"></span></button>
+        </div>
+        <div class="ht-dual-select__panel">
+            <label>{{ selectedLabel }}</label>
+            <select class="ht-input" name="{{ fieldName }}[]" multiple size="8" data-dual-selected>
+                {% for user in users %}
+                    {% if user.id in selectedIds %}
+                        <option value="{{ user.id }}" selected>{{ user.fullName }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro expense_form(household, users, expense) %}
+    {% import _self as adminui %}
+    {% set is_edit = expense is not null %}
+    {% set selectedSplitUsers = [] %}
+    {% set selectedPaidUsers = [] %}
+    {% if is_edit %}
+        {% for share in expense.expenseShares %}
+            {% if share.user %}
+                {% set selectedSplitUsers = selectedSplitUsers|merge([share.user]) %}
+                {% if share.paid %}
+                    {% set selectedPaidUsers = selectedPaidUsers|merge([share.user]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {% set selectedSplitUsers = users %}
+    {% endif %}
+    <form method="post" action="{{ is_edit ? path('app_admin_expense_save', {id: household.id, expenseId: expense.id}) : path('app_admin_expense_save', {id: household.id}) }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('admin_expense' ~ household.id) }}">
+        <section>
+            <h3>{{ 'admin.expense_form.basic_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.expense_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? expense.title : '' }}" required></label>
+                <label>{{ 'admin.expense_form.amount'|trans }} <span class="ht-required">*</span><input name="amount" class="ht-input" type="number" min="0.01" step="0.01" value="{{ is_edit ? expense.amount : '' }}" required></label>
+                <label>{{ 'admin.expense_form.category'|trans }}<input name="category" class="ht-input" value="{{ is_edit ? expense.category : '' }}" placeholder="{{ 'admin.expense_form.category_placeholder'|trans }}"></label>
+                <label class="ht-checkbox-row ht-span-2"><input type="checkbox" data-optional-date-toggle {{ is_edit and expense.dueDate ? 'checked' : '' }}> {{ 'admin.expense_form.add_due_date'|trans }}</label>
+                <label class="ht-span-2" data-optional-date-field>{{ 'admin.expense_form.due_date'|trans }}<input name="dueDate" class="ht-input" type="date" value="{{ is_edit and expense.dueDate ? expense.dueDate|date('Y-m-d') : '' }}"></label>
+                <label class="ht-span-2">{{ 'admin.expense_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? expense.description : '' }}</textarea></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.expense_form.payment_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.expense_form.payment_type'|trans }} <span class="ht-required">*</span>
+                    <select name="paymentType" class="ht-input" data-payment-type>
+                        <option value="shared" {{ (not is_edit) or expense.paymentType == 'shared' ? 'selected' : '' }}>{{ 'admin.expense_form.shared'|trans }}</option>
+                        <option value="individual" {{ is_edit and expense.paymentType == 'individual' ? 'selected' : '' }}>{{ 'admin.expense_form.individual'|trans }}</option>
+                    </select>
+                </label>
+                <label data-payment-individual>{{ 'admin.expense_form.paid_by'|trans }} <span class="ht-required">*</span>
+                    <select name="paidBy" class="ht-input" required>
+                        {% for member in users %}
+                            <option value="{{ member.id }}" {{ is_edit and expense.paidBy and expense.paidBy.id == member.id ? 'selected' : '' }}>{{ member.fullName }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <div data-shared-members>
+                <span class="ht-field-caption">{{ 'admin.expense_form.participants_label'|trans }}</span>
+                {{ adminui.dual_user_select(users, 'splitUsers', selectedSplitUsers, 'admin.expense_form.not_participating'|trans, 'admin.expense_form.participating'|trans, 'data-participants-list') }}
+            </div>
+            <div data-shared-payment-status>
+                <span class="ht-field-caption">{{ 'admin.expense_form.payment_status'|trans }}</span>
+                {{ adminui.dual_user_select(users, 'paidShares', selectedPaidUsers, 'admin.expense_form.not_paid'|trans, 'admin.expense_form.paid'|trans, 'data-paid-status-list') }}
+            </div>
+            <label class="ht-switch-row" data-payment-individual><input type="checkbox" name="isPaid" value="1" {{ is_edit and expense.paid ? 'checked' : '' }}><span></span> {{ 'admin.expense_form.individual_complete'|trans }}</label>
+        </section>
+        <section>
+            <h3>{{ 'admin.expense_form.periodicity_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.expense_form.repeat'|trans }} <span class="ht-required">*</span>
+                    <select name="periodicity" class="ht-input" data-periodicity>
+                        <option value="" {{ (not is_edit) or not expense.periodicity ? 'selected' : '' }}>{{ 'admin.expense_form.no_repeat'|trans }}</option>
+                        <option value="monthly" {{ is_edit and expense.periodicity == 'monthly' ? 'selected' : '' }}>{{ 'admin.expense_form.monthly'|trans }}</option>
+                        <option value="weekly" {{ is_edit and expense.periodicity == 'weekly' ? 'selected' : '' }}>{{ 'admin.expense_form.weekly'|trans }}</option>
+                        <option value="daily" {{ is_edit and expense.periodicity == 'daily' ? 'selected' : '' }}>{{ 'admin.expense_form.daily'|trans }}</option>
+                    </select>
+                </label>
+                <label data-recurrence-field="">{{ 'admin.expense_form.payment_date'|trans }} <span class="ht-required">*</span><input name="paidAt" class="ht-input" type="date" value="{{ is_edit and expense.paidAt ? expense.paidAt|date('Y-m-d') : '' }}"></label>
+                <label data-recurrence-field="monthly">{{ 'admin.expense_form.month_day'|trans }} <span class="ht-required">*</span><input name="recurrenceDayOfMonth" class="ht-input" type="number" min="1" max="31" value="{{ is_edit ? expense.recurrenceDayOfMonth : '' }}"></label>
+                <label data-recurrence-field="weekly">{{ 'admin.expense_form.weekday'|trans }} <span class="ht-required">*</span>
+                    <select name="recurrenceWeekday" class="ht-input">
+                        <option value="">{{ 'admin.expense_form.select'|trans }}</option>
+                        {% for n in 1..7 %}
+                            <option value="{{ n }}" {{ is_edit and expense.recurrenceWeekday == n ? 'selected' : '' }}>{{ ('admin.expense_form.weekday_' ~ n)|trans }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label data-recurrence-field="daily">{{ 'admin.expense_form.time'|trans }} <span class="ht-required">*</span><input name="recurrenceTime" class="ht-input" type="time" value="{{ is_edit and expense.recurrenceTime ? expense.recurrenceTime|date('H:i') : '' }}"></label>
+            </div>
+        </section>
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ 'admin.expense_form.save'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% macro task_form(household, users, task) %}
+    {% set is_edit = task is not null %}
+    <form method="post" action="{{ is_edit ? path('app_admin_task_save', {id: household.id, taskId: task.id}) : path('app_admin_task_save', {id: household.id}) }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('admin_task' ~ household.id) }}">
+        <section>
+            <h3>{{ 'admin.task_form.info_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.task_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? task.title : '' }}" required></label>
+                <label>{{ 'admin.task_form.category'|trans }}<input name="category" class="ht-input" value="{{ is_edit ? task.category : '' }}"></label>
+                <label class="ht-span-2">{{ 'admin.task_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? task.description : '' }}</textarea></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.task_form.plan_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.task_form.assigned_to'|trans }} <span class="ht-required">*</span><select name="assignedTo" class="ht-input">{% for member in users %}<option value="{{ member.id }}" {{ is_edit and task.assignedTo and task.assignedTo.id == member.id ? 'selected' : '' }}>{{ member.fullName }}</option>{% endfor %}</select></label>
+                <label>{{ 'admin.task_form.priority'|trans }} <span class="ht-required">*</span><select name="priority" class="ht-input"><option {{ is_edit and task.priority == 'Baixa' ? 'selected' : '' }}>{{ 'admin.task_form.priority_low'|trans }}</option><option {{ (not is_edit) or task.priority == 'Mitja' ? 'selected' : '' }}>{{ 'admin.task_form.priority_medium'|trans }}</option><option {{ is_edit and task.priority == 'Alta' ? 'selected' : '' }}>{{ 'admin.task_form.priority_high'|trans }}</option></select></label>
+                <label>{{ 'admin.task_form.due_date'|trans }}<input name="dueDate" class="ht-input" type="date" value="{{ is_edit and task.dueDate ? task.dueDate|date('Y-m-d') : '' }}"></label>
+                <label class="ht-checkbox-row"><input type="checkbox" name="completed" value="1" {{ is_edit and task.completed ? 'checked' : '' }}> {{ 'admin.task_form.completed'|trans }}</label>
+            </div>
+        </section>
+        <footer><button class="ht-btn ht-btn--primary">{{ 'admin.task_form.save'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% macro event_form(household, users, event, startDate) %}
+    {% import _self as adminui %}
+    {% set is_edit = event is not null %}
+    <form method="post" action="{{ is_edit ? path('app_admin_event_save', {id: household.id, eventId: event.id}) : path('app_admin_event_save', {id: household.id}) }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('admin_event' ~ household.id) }}">
+        <section>
+            <h3>{{ 'admin.event_form.title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.event_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? event.title : '' }}" required></label>
+                <label>{{ 'admin.event_form.location'|trans }}<input name="location" class="ht-input" value="{{ is_edit ? event.location : '' }}"></label>
+                <label>{{ 'admin.event_form.start'|trans }} <span class="ht-required">*</span><input name="startDate" class="ht-input" type="datetime-local" value="{{ is_edit ? event.startDate|date('Y-m-d\\TH:i') : startDate ~ 'T09:00' }}" required></label>
+                <label>{{ 'admin.event_form.end'|trans }}<input name="endDate" class="ht-input" type="datetime-local" value="{{ is_edit and event.endDate ? event.endDate|date('Y-m-d\\TH:i') : '' }}"></label>
+                <label>{{ 'admin.event_form.color'|trans }}<input name="color" class="ht-input" type="color" value="{{ is_edit ? event.color|default('#ea580c') : '#ea580c' }}"></label>
+                <label class="ht-span-2">{{ 'admin.event_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? event.description : '' }}</textarea></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.event_form.participants_title'|trans }}</h3>
+            {{ adminui.dual_user_select(users, 'participants', is_edit ? event.participants : []) }}
+        </section>
+        <footer><button class="ht-btn ht-btn--primary">{{ 'admin.event_form.save'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% import _self as adminui %}
+
+{% block body %}
+{% set tabs = {
+    summary: {label: 'admin.household.section_summary'|trans, icon: 'pi-th-large'},
+    expenses: {label: 'admin.household.section_expenses'|trans, icon: 'pi-wallet'},
+    tasks: {label: 'admin.household.section_tasks'|trans, icon: 'pi-list-check'},
+    calendar: {label: 'admin.household.section_calendar'|trans, icon: 'pi-calendar'},
+    settings: {label: 'admin.household.section_settings'|trans, icon: 'pi-cog'}
+} %}
+{% set task_pct = stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks * 100)|round : 0 %}
+
+<div class="ht-household-layout">
+<section class="ht-house-context-bar" aria-label="{{ 'admin.household.nav_aria'|trans }}">
+    <a href="{{ path('app_admin_dashboard') }}" class="ht-back-chip"><span class="pi pi-arrow-left"></span> {{ 'admin.household.back'|trans }}</a>
+    <div class="ht-house-title-block">
+        <span class="ht-house-eyebrow">{{ 'admin.household.house_label'|trans }}</span>
+        <h2>{{ household.name }}</h2>
+    </div>
+    <form class="ht-house-switcher">
+        <label for="houseSwitch">{{ 'admin.household.house_label'|trans }}</label>
+        <select id="houseSwitch" class="ht-mini-select" onchange="if (this.value) window.location.href = this.value;">
+            {% for item in households %}
+                <option value="{{ path('app_admin_household', {id: item.id, section: section}) }}" {{ item.id == household.id ? 'selected' : '' }}>{{ item.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</section>
+
+<nav class="ht-admin-tabs" aria-label="{{ household.name }}">
+    {% for key, tab in tabs %}
+        <a href="{{ path('app_admin_household', {id: household.id, section: key}) }}" class="{{ section == key ? 'is-active' : '' }}"><span class="pi {{ tab.icon }}"></span>{{ tab.label }}</a>
+    {% endfor %}
+</nav>
+
+{% if section == 'summary' %}
+    <section class="ht-content-box">
+        <div class="ht-dashboard-header">
+            <span class="house-name">{{ household.name }}</span>
+            <h2>{{ 'admin.household.summary_title'|trans }}</h2>
+            <p>{{ 'admin.household.summary_intro'|trans({'%name%': app.user.firstName}) }}</p>
+        </div>
+        <div class="ht-dashboard-bento-grid">
+            <article class="ht-bento-card ht-gastos-card">
+                <div class="ht-card-header">
+                    <div class="ht-card-title">
+                        <div class="ht-icon-box ht-icon-expense"><span class="pi pi-wallet"></span></div>
+                        <h3>{{ 'admin.household.section_expenses'|trans }}</h3>
+                    </div>
+                    <a class="ht-card-open-button" href="{{ path('app_admin_household', {id: household.id, section: 'expenses'}) }}"><span class="pi pi-arrow-up-right"></span></a>
+                </div>
+                <div class="ht-expense-compare-grid">
+                    <div class="ht-expense-compare-card ht-expense-compare-card--spent">
+                        <span class="ht-expense-compare-label">{{ 'admin.household.spent_this_month'|trans }}</span>
+                        <span class="ht-expense-compare-amount">{{ stats.monthlySpent is defined ? stats.monthlySpent|number_format(2, '.', ',') : '0.00' }} €</span>
+                    </div>
+                    <div class="ht-expense-compare-card ht-expense-compare-card--pending">
+                        <span class="ht-expense-compare-label">{{ 'admin.household.pending_payment'|trans }}</span>
+                        <span class="ht-expense-compare-amount">{{ stats.pendingAmount|number_format(2, '.', ',') }} €</span>
+                    </div>
+                </div>
+            </article>
+
+            <a class="ht-bento-card ht-tareas-card" href="{{ path('app_admin_household', {id: household.id, section: 'tasks'}) }}">
+                <div class="ht-card-header">
+                    <div class="ht-card-title">
+                        <div class="ht-icon-box ht-icon-tasks"><span class="pi pi-list-check"></span></div>
+                        <h3>{{ 'admin.household.tasks_card'|trans }}</h3>
+                    </div>
+                    <span class="pi pi-arrow-up-right"></span>
+                </div>
+                <div class="ht-progress-info">
+                    <span>{{ task_pct }}%</span>
+                    <small>{{ 'admin.household.completed'|trans }}</small>
+                </div>
+                <div class="ht-progress"><span style="width: {{ task_pct }}%;"></span></div>
+                <div class="ht-quick-list">
+                    {% for task in tasks|filter(t => not t.completed)|slice(0, 2) %}
+                        <div><span class="pi pi-circle-off"></span><strong>{{ task.title }}</strong><small>{{ task.dueDate ? task.dueDate|date('d M') : '' }}</small></div>
+                    {% else %}
+                        <p>{{ 'admin.household.no_pending_tasks'|trans }}</p>
+                    {% endfor %}
+                </div>
+            </a>
+
+            <a class="ht-bento-card ht-eventos-card" href="{{ path('app_admin_household', {id: household.id, section: 'calendar'}) }}">
+                <div class="ht-card-header">
+                    <div class="ht-card-title">
+                        <div class="ht-icon-box ht-icon-events"><span class="pi pi-calendar"></span></div>
+                        <h3>{{ 'admin.household.events_card'|trans }}</h3>
+                    </div>
+                    <span class="pi pi-arrow-up-right"></span>
+                </div>
+                <div class="ht-events-list">
+                    {% for event in events|slice(0, 3) %}
+                        <div class="ht-event-item"><span class="ht-event-date"><strong>{{ event.startDate|date('d') }}</strong><small>{{ event.startDate|date('M') }}</small></span><span><strong>{{ event.title }}</strong><small>{{ event.startDate|date('H:i') }}</small></span></div>
+                    {% else %}
+                        <p>{{ 'admin.household.no_events'|trans }}</p>
+                    {% endfor %}
+                </div>
+            </a>
+
+            <article class="ht-bento-card ht-alertas-card">
+                <div class="ht-card-header">
+                    <div class="ht-card-title">
+                        <div class="ht-icon-box ht-icon-alerts"><span class="pi pi-users"></span></div>
+                        <h3>{{ 'admin.household.admin_card'|trans }}</h3>
+                    </div>
+                </div>
+                <div class="ht-alert-list">
+                    <div><span class="pi pi-users"></span><strong>{{ stats.totalUsers }} {{ 'admin.household.house_label'|trans }}</strong><small>{{ 'admin.household.members_linked'|trans }}</small></div>
+                    <div><span class="pi pi-key"></span><strong>{{ household.inviteCode }}</strong><small>{{ 'admin.household.invite_code_label'|trans }}</small></div>
+                </div>
+            </article>
+        </div>
+    </section>
+{% elseif section == 'expenses' %}
+    <section class="ht-content-box">
+        <div class="ht-section-head"><div><span class="pi pi-wallet"></span><h1>{{ 'admin.household.expenses_title'|trans }}</h1></div><div class="ht-actions"><div class="ht-kpi">{{ 'admin.household.pending_label'|trans }}:<strong>{{ stats.pendingAmount|number_format(2, '.', ',') }} €</strong></div><button class="ht-btn ht-btn--primary" data-dialog-open="expense-new"><span class="pi pi-plus"></span> {{ 'admin.household.new_expense'|trans }}</button></div></div>
+        <div class="ht-admin-table"><table><thead><tr><th>{{ 'admin.household.col_name'|trans }}</th><th>{{ 'admin.household.col_type'|trans }}</th><th>{{ 'admin.household.col_category'|trans }}</th><th>{{ 'admin.household.col_periodicity'|trans }}</th><th>{{ 'admin.household.col_amount'|trans }}</th><th>{{ 'admin.household.col_payments'|trans }}</th><th>{{ 'admin.household.col_status'|trans }}</th><th>{{ 'admin.household.col_actions'|trans }}</th></tr></thead><tbody>
+        {% for expense in expenses %}
+            <tr><td><strong>{{ expense.title }}</strong><small>{{ expense.paymentType == 'individual' and expense.paidBy ? 'admin.household.paid_by'|trans ~ expense.paidBy.fullName : expense.expenseShares|length ~ ' ' ~ 'admin.household.participants'|trans }}</small></td><td>{{ expense.paymentType == 'individual' ? 'admin.household.type_individual'|trans : 'admin.household.type_shared'|trans }}</td><td>{{ expense.category|default('General') }}</td><td>{{ expense.periodicity|default('—') }}{% if expense.recurrenceDayOfMonth %} día {{ expense.recurrenceDayOfMonth }}{% endif %}{% if expense.recurrenceWeekday %} sem. {{ expense.recurrenceWeekday }}{% endif %}{% if expense.recurrenceTime %} {{ expense.recurrenceTime|date('H:i') }}{% endif %}</td><td>{{ expense.amount|number_format(2, '.', ',') }} €</td><td><div class="ht-payment-status">{% for share in expense.expenseShares %}<span class="ht-payment-pill {{ share.paid ? 'is-paid' : 'is-pending' }}"><span class="pi {{ share.paid ? 'pi-check' : 'pi-clock' }}"></span>{{ share.user.fullName }} · {{ share.amountOwed|number_format(2, '.', ',') }} €</span>{% else %}<span class="ht-muted">{{ 'admin.household.no_participants'|trans }}</span>{% endfor %}</div></td><td><span class="ht-badge {{ expense.fullyPaidByAllParticipants ? 'ht-badge--ok' : 'ht-badge--bad' }}">{{ expense.fullyPaidByAllParticipants ? 'admin.household.paid'|trans : 'admin.household.pending'|trans }}</span></td><td class="ht-row-actions"><button class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dialog-open="expense-{{ expense.id }}"><span class="pi pi-pencil"></span></button><form method="post" action="{{ path('app_admin_expense_delete', {id: household.id, expenseId: expense.id}) }}" onsubmit="return confirm('?')"><input type="hidden" name="_token" value="{{ csrf_token('delete_expense' ~ expense.id) }}"><button class="ht-btn ht-btn--danger-outline ht-btn--icon-only"><span class="pi pi-trash"></span></button></form></td></tr>
+        {% else %}
+            <tr><td colspan="8"><em>{{ 'admin.household.no_expenses'|trans }}</em></td></tr>
+        {% endfor %}
+        </tbody></table></div>
+    </section>
+    <dialog class="ht-dialog ht-dialog--wide" id="expense-new"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.new_expense_dialog'|trans }}</h2>{{ adminui.expense_form(household, users, null) }}</div></dialog>
+    {% for expense in expenses %}<dialog class="ht-dialog ht-dialog--wide" id="expense-{{ expense.id }}"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.edit_expense_dialog'|trans }}</h2>{{ adminui.expense_form(household, users, expense) }}</div></dialog>{% endfor %}
+{% elseif section == 'tasks' %}
+    <section class="ht-content-box">
+        <div class="ht-section-head"><div><span class="pi pi-check-square"></span><h1>{{ 'admin.household.tasks_title'|trans }}</h1></div><button class="ht-btn ht-btn--primary" data-dialog-open="task-new"><span class="pi pi-plus"></span> {{ 'admin.household.new_task'|trans }}</button></div>
+        <div class="ht-kanban">
+            <article>
+                <h2>{{ 'admin.household.todo_col'|trans }} <span>{{ tasks|filter(t => not t.completed)|length }}</span></h2>
+                {% for task in tasks|filter(t => not t.completed) %}
+                    <div class="ht-task-row"><button class="ht-plain-action" data-dialog-open="task-{{ task.id }}"><strong>{{ task.title }}</strong><small>{{ task.assignedTo ? task.assignedTo.fullName : 'admin.household.unassigned'|trans }}</small></button><form method="post" action="{{ path('app_admin_task_delete', {id: household.id, taskId: task.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('delete_task' ~ task.id) }}"><button class="ht-btn ht-btn--danger-outline ht-btn--icon-only"><span class="pi pi-trash"></span></button></form></div>
+                {% else %}
+                    <p>{{ 'admin.household.no_tasks_clean'|trans }}</p>
+                {% endfor %}
+            </article>
+            <article>
+                <h2>{{ 'admin.household.done_col'|trans }} <span>{{ tasks|filter(t => t.completed)|length }}</span></h2>
+                {% for task in tasks|filter(t => t.completed) %}
+                    <div class="ht-task-row"><button class="ht-plain-action" data-dialog-open="task-{{ task.id }}"><strong>{{ task.title }}</strong><small>{{ task.assignedTo ? task.assignedTo.fullName : 'admin.household.unassigned'|trans }}</small></button><form method="post" action="{{ path('app_admin_task_delete', {id: household.id, taskId: task.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('delete_task' ~ task.id) }}"><button class="ht-btn ht-btn--danger-outline ht-btn--icon-only"><span class="pi pi-trash"></span></button></form></div>
+                {% else %}
+                    <p>{{ 'admin.household.no_tasks_done'|trans }}</p>
+                {% endfor %}
+            </article>
+        </div>
+    </section>
+    <dialog class="ht-dialog ht-dialog--wide" id="task-new"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.new_task_dialog'|trans }}</h2>{{ adminui.task_form(household, users, null) }}</div></dialog>
+    {% for task in tasks %}<dialog class="ht-dialog ht-dialog--wide" id="task-{{ task.id }}"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.edit_task_dialog'|trans }}</h2>{{ adminui.task_form(household, users, task) }}</div></dialog>{% endfor %}
+{% elseif section == 'calendar' %}
+    <section class="ht-content-box">
+        <div class="ht-section-head"><div><span class="pi pi-calendar"></span><h1>{{ 'admin.household.calendar_title'|trans }}</h1></div><button class="ht-btn ht-btn--primary" data-dialog-open="event-new"><span class="pi pi-plus"></span> {{ 'admin.household.new_event'|trans }}</button></div>
+        <div class="ht-calendar">
+            <div class="ht-calendar__title">
+                <a class="ht-btn ht-btn--ghost ht-btn--icon-only" href="{{ path('app_admin_household', {id: household.id, section: 'calendar', month: prevCalendarMonth|date('Y-m')}) }}"><span class="pi pi-chevron-left"></span></a>
+                <form class="ht-calendar-jump" method="get">
+                    <input class="ht-input" type="month" name="month" value="{{ calendarMonth|date('Y-m') }}">
+                    <button class="ht-btn ht-btn--ghost ht-btn--icon-only"><span class="pi pi-search"></span></button>
+                </form>
+                <strong>{{ calendarMonth|date('F Y')|upper }}</strong>
+                <a class="ht-btn ht-btn--ghost ht-btn--icon-only" href="{{ path('app_admin_household', {id: household.id, section: 'calendar', month: nextCalendarMonth|date('Y-m')}) }}"><span class="pi pi-chevron-right"></span></a>
+            </div>
+            <div class="ht-calendar__weekdays">{% for d in 'admin.household.weekdays'|trans|split(',') %}<span>{{ d }}</span>{% endfor %}</div>
+            <div class="ht-calendar__grid">
+                {% for week in calendarWeeks %}{% for day in week %}
+                    <div class="ht-calendar__day {{ day.inMonth ? '' : 'is-muted' }}"><button class="ht-calendar__num" data-dialog-open="event-new" data-event-date="{{ day.date|date('Y-m-d') }}">{{ day.date|date('j') }}</button>{% for event in day.events %}<button class="ht-calendar__event" data-dialog-open="event-{{ event.id }}">{{ event.title }}</button>{% endfor %}</div>
+                {% endfor %}{% endfor %}
+            </div>
+        </div>
+    </section>
+    <dialog class="ht-dialog ht-dialog--wide" id="event-new"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.new_event'|trans }}</h2>{{ adminui.event_form(household, users, null, calendarMonth|date('Y-m-d')) }}</div></dialog>
+    {% for event in events %}<dialog class="ht-dialog ht-dialog--wide" id="event-{{ event.id }}"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.edit_event_dialog'|trans }}</h2>{{ adminui.event_form(household, users, event, calendarMonth|date('Y-m-d')) }}<form method="post" action="{{ path('app_admin_event_delete', {id: household.id, eventId: event.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('delete_event' ~ event.id) }}"><button class="ht-btn ht-btn--danger-outline">{{ 'admin.household.delete_event'|trans }}</button></form></div></dialog>{% endfor %}
+{% else %}
+    <section class="ht-content-box">
+        <div class="ht-section-head"><div><span class="pi pi-cog"></span><h1>{{ 'admin.household.settings_title'|trans }}</h1></div><button class="ht-btn ht-btn--primary" data-dialog-open="invite-code"><span class="pi pi-pencil"></span> {{ 'admin.household.edit_code'|trans }}</button></div>
+        <div class="ht-settings-box"><h2>{{ 'admin.household.invite_code_title'|trans }}</h2><p>{{ 'admin.household.invite_share'|trans }}</p><div class="ht-invite-code">{{ household.inviteCode }}</div></div>
+        <div class="ht-settings-box"><h2>{{ 'admin.household.members_title'|trans }} ({{ memberships|length }})</h2>{% for membership in memberships %}{% set member = membership.user %}<div class="ht-member-row"><span class="ht-avatar-sm"><span class="pi {{ member.avatarIcon|default('pi-user') }}"></span></span><div><strong>{{ member.fullName }}</strong><small>{{ member.email }}</small></div><span class="ht-badge ht-badge--neutral">{{ membership.role == 'owner' ? 'admin.household.role_owner'|trans : membership.role|capitalize }}</span></div>{% else %}<p class="ht-muted">{{ 'admin.household.no_members'|trans }}</p>{% endfor %}</div>
+    </section>
+    <dialog class="ht-dialog" id="invite-code"><div class="ht-dialog__inner"><button class="ht-dialog__close" data-dialog-close>&times;</button><h2>{{ 'admin.household.invite_code_dialog'|trans }}</h2><form method="post" action="{{ path('app_admin_household_invite_code', {id: household.id}) }}" class="ht-modal-form"><input type="hidden" name="_token" value="{{ csrf_token('invite_code' ~ household.id) }}"><section><label>{{ 'admin.household.code_label'|trans }}<input class="ht-input ht-mono-input" name="inviteCode" value="{{ household.inviteCode }}" maxlength="10" pattern="[A-Za-z0-9]{4,10}" required></label></section><footer><button class="ht-btn ht-btn--primary">{{ 'admin.household.save'|trans }}</button></footer></form></div></dialog>
+{% endif %}
+</div>
+{% endblock %}

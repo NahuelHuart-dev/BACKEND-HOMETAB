@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panell usuari · HomeTab{% endblock %}
+
+{% block body %}
+{% set pct_tasks = stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks * 100)|round : 0 %}
+{% set paid_exp = stats.totalExpenses - stats.unpaidExpenses %}
+
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">La teva llar</div>
+        <h1 class="ht-display">Hola, {{ app.user.firstName|default('') }}</h1>
+        <p class="ht-lead ht-muted">{{ household.name }}</p>
+    </div>
+</div>
+
+<div class="ht-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6);">
+    <div class="ht-card ht-card--accent" style="text-align:center;">
+        <span class="pi pi-check-square" style="font-size:2rem;"></span>
+        <p class="ht-display" style="font-size:2rem;margin:var(--space-3) 0 var(--space-1);">{{ stats.completedTasks }} / {{ stats.totalTasks }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.9rem;">Tasques fetes</p>
+    </div>
+    <div class="ht-card" style="text-align:center;">
+        <span class="pi pi-clock" style="font-size:2rem;color:var(--color-accent);"></span>
+        <p class="ht-display" style="font-size:2rem;margin:var(--space-3) 0 var(--space-1);">{{ stats.totalTasks - stats.completedTasks }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.9rem;">Pendents</p>
+    </div>
+    <div class="ht-card" style="text-align:center;">
+        <span class="pi pi-wallet" style="font-size:2rem;color:var(--color-error);"></span>
+        <p class="ht-display" style="font-size:2rem;margin:var(--space-3) 0 var(--space-1);">{{ stats.unpaidExpenses }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.9rem;">Despeses pendents</p>
+    </div>
+</div>
+
+<div class="ht-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6);">
+    <div class="ht-card" style="text-align:center;padding:var(--space-4);">
+        <span class="pi pi-calendar" style="font-size:1.5rem;"></span>
+        <p style="font-size:1.5rem;font-weight:800;margin:var(--space-2) 0 0;">{{ stats.totalEvents }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.85rem;">Esdeveniments</p>
+    </div>
+    <div class="ht-card" style="text-align:center;padding:var(--space-4);">
+        <span class="pi pi-list" style="font-size:1.5rem;"></span>
+        <p style="font-size:1.5rem;font-weight:800;margin:var(--space-2) 0 0;">{{ stats.totalTasks }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.85rem;">Tasques</p>
+    </div>
+    <div class="ht-card" style="text-align:center;padding:var(--space-4);">
+        <span class="pi pi-wallet" style="font-size:1.5rem;"></span>
+        <p style="font-size:1.5rem;font-weight:800;margin:var(--space-2) 0 0;">{{ stats.totalExpenses }}</p>
+        <p class="ht-muted" style="margin:0;font-size:0.85rem;">Despeses</p>
+    </div>
+</div>
+
+<div class="ht-card" style="max-width:640px;">
+    <h2 class="ht-display" style="font-size:1.2rem;margin:0 0 var(--space-4);"><span class="pi pi-chart-line"></span> Resum</h2>
+    <p class="ht-muted" style="font-size:0.85rem;margin:0 0 var(--space-2);">Progrés de tasques</p>
+    <div class="ht-progress" style="margin-bottom:var(--space-3);">
+        <div class="ht-progress__bar" style="width: {{ pct_tasks }}%;"></div>
+    </div>
+    <p style="font-weight:700;margin:0 0 var(--space-5);">{{ pct_tasks }}%</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3);">
+        <span class="ht-muted">Despeses pendents</span>
+        <span class="ht-badge ht-badge--bad">{{ stats.unpaidExpenses }}</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span class="ht-muted">Despeses pagades</span>
+        <span class="ht-badge ht-badge--ok">{{ paid_exp }}</span>
+    </div>
+</div>
+
+<div class="ht-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--space-3); margin-top: var(--space-6);">
+    <a href="{{ path('app_task_index') }}" class="ht-btn ht-btn--secondary ht-w-full" style="min-height:auto;padding:var(--space-4);flex-direction:column;"><span class="pi pi-check-square"></span> Tasques</a>
+    <a href="{{ path('app_event_index') }}" class="ht-btn ht-btn--secondary ht-w-full" style="min-height:auto;padding:var(--space-4);flex-direction:column;"><span class="pi pi-calendar"></span> Agenda</a>
+    <a href="{{ path('app_expense_index') }}" class="ht-btn ht-btn--secondary ht-w-full" style="min-height:auto;padding:var(--space-4);flex-direction:column;"><span class="pi pi-wallet"></span> Despeses</a>
+</div>
+{% endblock %}

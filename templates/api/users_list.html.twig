@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuaris (API) · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">API</div>
+        <h1 class="ht-display">Usuaris</h1>
+        <p class="ht-lead ht-muted">Mateix recurs que el JSON del llistat d’API.</p>
+    </div>
+    <a href="{{ path('api_users_list') }}" class="ht-btn ht-btn--secondary" target="_blank" rel="noopener"><span class="pi pi-external-link"></span> Veure JSON</a>
+</div>
+
+{% if users is empty %}
+    <div class="ht-card">
+        <p class="ht-muted">No hi ha usuaris a la base de dades.</p>
+    </div>
+{% else %}
+    <div class="ht-card">
+        <div class="ht-table-wrap">
+            <table class="ht-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Rols</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.fullName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td><code style="font-size:0.78rem;font-family:var(--font-mono);word-break:break-word;">{{ user.roles|json_encode }}</code></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

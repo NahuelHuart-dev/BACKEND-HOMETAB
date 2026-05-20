@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear cuenta · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-auth" style="max-width:520px;">
+    <div class="ht-card" style="position:relative;padding-top:var(--space-8);">
+        <div class="ht-tape" aria-hidden="true"></div>
+        <div class="ht-mini-tag">Únete al hogar</div>
+        <h1 class="ht-display" style="text-align:center;">Crear cuenta</h1>
+        <p class="ht-lead" style="text-align:center;">Rellena tus datos</p>
+
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            <div class="ht-grid" style="grid-template-columns:1fr 1fr;gap:var(--space-4);">
+                {{ form_row(registrationForm.firstName) }}
+                {{ form_row(registrationForm.lastName) }}
+            </div>
+            {{ form_row(registrationForm.phoneNumber) }}
+            {{ form_row(registrationForm.household) }}
+            {{ form_row(registrationForm.plainPassword.first) }}
+            {{ form_row(registrationForm.plainPassword.second) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+            <button type="submit" class="ht-btn ht-btn--primary ht-w-full" style="margin-top:var(--space-4);">
+                <span class="pi pi-check"></span> Registrar
+            </button>
+        {{ form_end(registrationForm) }}
+
+        <p class="ht-lead" style="text-align:center;margin-top:var(--space-6);margin-bottom:0;font-size:0.9rem;">
+            ¿Ya tienes cuenta? <a href="{{ path('app_login') }}" style="color:var(--color-accent);font-weight:700;">Entrar</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

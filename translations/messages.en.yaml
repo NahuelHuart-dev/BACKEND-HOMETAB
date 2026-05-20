@@ -1,0 +1,392 @@
+backend:
+  language: Language
+  language_es: Spanish
+  language_ca: Catalan
+  language_en: English
+  nav_label: Main navigation
+  nav:
+    tabs: My Tabs
+    admin: Manage
+    houses: Homes
+    users: Users
+    tasks: Tasks
+    events: Events
+    expenses: Expenses
+    chats: Chats
+    sql_ai: SQL AI
+    sql_console: SQL Console
+    docs: Documentation
+    home: Home
+    profile: Profile
+    logout: Sign out
+  theme:
+    toggle: Toggle mode
+    title: Theme
+    paper: Paper
+    grid: Grid
+    lines: Lines
+    plain: Plain
+    clay: Clay
+    matcha: Matcha
+    ocean: Ocean
+    lavender: Lavender
+    carbon: Carbon
+    coral: Coral
+    custom: Your color
+    choose_custom: Choose your color
+  household:
+    current: Current home
+    change: Change home
+    none: No homes available
+  chat:
+    aria: Homes chat
+    open: Open chat
+    back: Back
+    title: Chats
+    subtitle: Your homes
+    close: Close
+    admin: Manage chats as admin
+    write: Write a message...
+    send: Send
+  footer: your digital home notebook
+auth:
+  login_title: Sign in
+  welcome_tag: Welcome home
+  subtitle: Superadmin access only
+  email: Email
+  password: Password
+  submit: Sign in
+  backend_denied_title: Reserved access
+  backend_denied_text: The backend is only available to superadmins.
+  superadmin_only: Only the superadmin account can access the backend.
+  two_factor_title: Two-step verification
+  security_tag: Security
+  stronger_security_tag: More security
+  code_label: Code
+  verify_code: Verify code
+  access_code_title: Access code
+  access_code_description: Enter the code we just sent to your email.
+  invalid_code: Invalid or expired code.
+  enable_2fa_title: Enable 2FA
+  enable_2fa_description: Enter the code to enable two-step verification.
+  two_factor_offer_title: Two-step verification
+  two_factor_offer_description: Your account does not have 2FA enabled yet. You can enable it with a code sent to your email.
+  enable_2fa: Enable 2FA
+  not_now: Not now
+  two_factor_enabled: Two-step verification enabled.
+registration:
+  disabled: Backend web registration is disabled. Use the superadmin account.
+
+admin:
+  dashboard:
+    title: My Tabs
+    subtitle: Choose which home you want to open today.
+    hint: Admin panel with access to all homes
+    members: member
+    members_plural: members
+    no_houses: No homes created yet.
+    create_tab: Create New Tab
+    create_tab_meta: Quick home setup
+    new_tab_title: New Tab
+    house_section: Home
+    house_name: Name
+    invite_code: Invite code
+    create_house: Create home
+  household:
+    nav_aria: Home navigation
+    back: My Tabs
+    house_label: Home
+    section_summary: Summary
+    section_expenses: Expenses
+    section_tasks: Tasks
+    section_calendar: Calendar
+    section_settings: Settings
+    summary_title: Monthly Summary
+    summary_intro: "Here is a quick look at how the month is going, %name%."
+    spent_this_month: Spent this month
+    pending_payment: Pending payment
+    tasks_card: Tasks
+    completed: Completed
+    no_pending_tasks: No pending tasks.
+    events_card: Upcoming Events
+    no_events: No scheduled events.
+    admin_card: Administration
+    members_linked: Users linked to this home
+    invite_code_label: Invite code
+    expenses_title: Expense Control
+    pending_label: Pending
+    new_expense: New expense
+    col_name: Name
+    col_type: Type
+    col_category: Category
+    col_periodicity: Periodicity
+    col_amount: Amount
+    col_payments: Payments
+    col_status: Status
+    col_actions: Actions
+    type_individual: Individual
+    type_shared: Shared
+    paid_by: "Paid by "
+    participants: participants
+    no_participants: No participants
+    paid: Paid
+    pending: Pending
+    no_expenses: No financial records.
+    new_expense_dialog: New expense
+    edit_expense_dialog: Edit expense
+    tasks_title: Task Board
+    new_task: New task
+    todo_col: To Do
+    done_col: Completed
+    no_tasks_clean: All clean and up to date.
+    no_tasks_done: No completed tasks yet.
+    unassigned: Unassigned
+    new_task_dialog: New task
+    edit_task_dialog: Edit task
+    calendar_title: General Calendar
+    new_event: New event
+    weekdays: "MON,TUE,WED,THU,FRI,SAT,SUN"
+    edit_event_dialog: Edit event
+    delete_event: Delete event
+    settings_title: Home Settings
+    edit_code: Edit code
+    invite_code_title: Invite Code
+    invite_share: Share this code with your housemates.
+    members_title: Members
+    no_members: No members in this home.
+    role_owner: Owner
+    invite_code_dialog: Invite code
+    code_label: Code
+    save: Save
+  expense_form:
+    basic_title: Basic data
+    name: Name
+    amount: Amount
+    category: Category
+    category_placeholder: "Bills, food, leisure..."
+    add_due_date: Add due date
+    due_date: Due date
+    description: Description
+    payment_title: Payment and members
+    payment_type: Payment type
+    shared: Shared payment
+    individual: Individual payment
+    paid_by: Paid by
+    select_member: Select member
+    participants_label: Shared payment participants
+    not_participating: Not participating
+    participating: Participating
+    payment_status: Payment status by person
+    not_paid: Not paid
+    paid: Paid
+    individual_complete: Individual payment completed
+    periodicity_title: Periodicity
+    repeat: Repeat
+    no_repeat: No recurrence
+    monthly: Monthly
+    weekly: Weekly
+    daily: Daily
+    payment_date: Payment date
+    month_day: Day of month
+    weekday: Day of week
+    select: Select
+    weekday_1: Monday
+    weekday_2: Tuesday
+    weekday_3: Wednesday
+    weekday_4: Thursday
+    weekday_5: Friday
+    weekday_6: Saturday
+    weekday_7: Sunday
+    time: Time
+    save: Save
+  task_form:
+    info_title: Information
+    name: Name
+    category: Category
+    description: Description
+    plan_title: Planning
+    assigned_to: Assigned to
+    priority: Priority
+    priority_low: Low
+    priority_medium: Medium
+    priority_high: High
+    due_date: Due date
+    completed: Completed
+    save: Save task
+  event_form:
+    title: Event
+    name: Name
+    location: Location
+    start: Start
+    end: End
+    color: Color
+    description: Description
+    participants_title: Participants
+    save: Save event
+    delete: Delete event
+  records:
+    super_admin: Super Admin
+    global_view: "Global view with filters by home, user and status."
+    back: My Tabs
+    control: Control of
+    total: "Total:"
+    search: Search
+    search_placeholder: Title
+    house: Home
+    all_houses: All
+    assigned_to: Assigned to
+    user: User
+    all_users: All
+    status: Status
+    all_status: All
+    active: Active
+    inactive: Inactive
+    filter: Filter
+    clear: Clear
+    col_id: ID
+    col_title: Title
+    col_house: Home
+    col_assigned: Assigned
+    col_payment: Payment
+    col_creator: Creator
+    col_detail: Detail
+    col_status: Status
+    col_dates: Join/Leave
+    col_actions: Actions
+    priority: "Priority:"
+    expires: "Expires:"
+    amount: "Amount:"
+    category: "Category:"
+    start: "Start:"
+    location: "Location:"
+    active_badge: Active
+    inactive_badge: Inactive
+    joined: "Joined:"
+    disabled: "Left:"
+    view: View detail
+    edit: Edit
+    no_records: No records for these filters.
+    detail_house: Home
+    detail_assigned: Assigned
+    detail_priority: Priority
+    detail_due: Due date
+    detail_status: Status
+    detail_amount: Amount
+    detail_type: Type
+    detail_paid: Payment date
+    detail_periodicity: Periodicity
+    detail_creator: Creator
+    detail_start: Start
+    detail_end: End
+    detail_location: Location
+    detail_description: Description
+    detail_payment_status: Payment status
+    detail_participants: Participants
+    no_participants: No participants
+    task_completed: Completed
+    task_pending: Pending
+    type_individual: Individual
+    type_shared: Shared
+    no_periodicity: No recurrence
+    edit_task: task
+    edit_event: event
+    edit_expense: expense
+    new_task: New task
+    new_event: New event
+    new_expense: New expense
+    house_info: Home and information
+    select_house: Select a home
+    select_member: Select member
+    planning: Planning
+    periodicity_placeholder: "One-off, weekly..."
+    available: Available
+    selected: Selected
+    add: Add
+    remove: Remove
+    move_participants: Move participants
+    participants_label: Shared payment participants
+    not_participating: Not participating
+    participating: Participating
+    payment_status: Payment status by person
+    not_paid: Not paid
+    paid: Paid
+    individual_complete: Individual payment completed
+  households:
+    title: Homes
+    subtitle: "Manage homes, invite codes and icons from a single panel."
+    back: My Tabs
+    new_house: New home
+    edit_house: Edit home
+    section_title: Home Control
+    search_placeholder: Name or code
+    col_house: Home
+    col_invite: Code
+    col_members: Members
+    col_activity: Activity
+    records_hint: "%tasks% tasks - %events% events - %expenses% expenses"
+    with_activity: With activity
+    empty: Empty
+    form_title: Home details
+    name: Name
+    invite_code: Invite code
+    photo_title: Home photo
+    upload_photo: Upload photo
+    remove_photo: Remove current photo
+    icon_title: Icon
+    save: Save home
+    delete: Delete home
+    confirm_delete: "Delete this home? It can only be removed if it has no linked activity."
+    no_houses: No homes for these filters.
+  users:
+    title: Users
+    subtitle: "Manage profiles, roles, avatars and access from a single panel."
+    back: My Tabs
+    new_user: New user
+    section_title: User Control
+    total: "Total:"
+    search: Search
+    search_placeholder: Name or email
+    house: Home
+    all_houses: All
+    role: Role
+    all_roles: All
+    status: Status
+    all_status: All
+    active: Active
+    inactive: Inactive
+    filter: Filter
+    clear: Clear
+    col_user: User
+    col_email: Email
+    col_phone: Phone
+    col_houses: Homes
+    col_role: Role
+    col_status: Status
+    col_dates: Join/Leave
+    col_actions: Actions
+    no_house: No home
+    active_badge: Active
+    inactive_badge: Inactive
+    joined: "Joined:"
+    disabled: "Left:"
+    edit: Edit
+    deactivate: Deactivate
+    confirm_deactivate: "Deactivate this user?"
+    no_users: No registered users.
+    edit_dialog: Edit user
+    identity_title: Identity
+    name: First name
+    surname: Last name
+    email: Email
+    phone: Phone
+    bio: Bio
+    photo_title: Photo and avatar
+    upload_photo: Upload photo
+    zoom: Zoom
+    remove_photo: Remove current photo
+    access_title: Access
+    role_label: Role
+    new_password: New password
+    new_password_placeholder: Leave blank to keep unchanged
+    is_active: Active user
+    save: Save changes

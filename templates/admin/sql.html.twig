@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consola SQL - Admin - HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">SQL</div>
+        <h1 class="ht-display">Consola SQL</h1>
+        <p class="ht-lead ht-muted">Consulta la base de datos desde el backend. Solo lectura: SELECT, SHOW, DESCRIBE y EXPLAIN.</p>
+    </div>
+    <a href="{{ path('app_admin_chat') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-comment"></span> IA SQL</a>
+</div>
+
+<section class="ht-admin-panel">
+    <form method="post" class="ht-sql-console">
+        <label for="sql-query">Consulta</label>
+        <textarea id="sql-query" name="sql" class="ht-input ht-sql-input" spellcheck="false">{{ sql }}</textarea>
+        <div class="ht-actions">
+            <button class="ht-btn ht-btn--primary"><span class="pi pi-play"></span> Ejecutar</button>
+            <button class="ht-btn ht-btn--ghost" type="button" data-sql-sample="SELECT id, email, roles, is_active FROM user ORDER BY id DESC LIMIT 20"><span class="pi pi-users"></span> Usuarios</button>
+            <button class="ht-btn ht-btn--ghost" type="button" data-sql-sample="SHOW TABLES"><span class="pi pi-database"></span> Tablas</button>
+        </div>
+    </form>
+
+    {% if error %}
+        <div class="ht-flash ht-flash--danger" role="alert">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+        <div class="ht-sql-meta">
+            <span>{{ result.count }} fila{{ result.count == 1 ? '' : 's' }}</span>
+            {% if durationMs is not null %}<span>{{ durationMs }} ms</span>{% endif %}
+        </div>
+        <div class="ht-admin-table ht-admin-table--comfortable">
+            <table>
+                <thead>
+                    <tr>
+                        {% for column in result.columns %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in result.rows %}
+                        <tr>
+                            {% for column in result.columns %}
+                                <td><code>{{ row[column] is defined and row[column] is not null ? row[column] : 'NULL' }}</code></td>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <tr><td><em>La consulta no devolvió filas.</em></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const textarea = document.getElementById('sql-query');
+    document.querySelectorAll('[data-sql-sample]').forEach((button) => {
+        button.addEventListener('click', () => {
+            textarea.value = button.dataset.sqlSample;
+            textarea.focus();
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+.git
+.github
+vendor
+var/cache
+var/log
+node_modules
+.env.local
+.env.*.local
+config/jwt/*.pem
+Dockerfile*
+docker-compose*.yml
+

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Despeses · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Gastos compartidos</div>
+        <h1 class="ht-display">Despeses</h1>
+        <p class="ht-lead ht-muted">Llistat de despeses de la llar</p>
+    </div>
+    <a href="{{ path('app_expense_new') }}" class="ht-btn ht-btn--primary"><span class="pi pi-plus"></span> Nova despesa</a>
+</div>
+
+<div class="ht-card">
+    <div class="ht-table-wrap">
+        <table class="ht-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Títol</th>
+                    <th>Import</th>
+                    <th>Categoria</th>
+                    <th>Data</th>
+                    <th>Pagada</th>
+                    <th class="ht-table__actions">Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.id }}</td>
+                    <td><strong>{{ expense.title }}</strong></td>
+                    <td>{{ expense.amount|number_format(2, ',', '.') }} €</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.paidAt ? expense.paidAt|date('d/m/Y H:i') : '—' }}</td>
+                    <td>
+                        {% if expense.isPaid %}
+                            <span class="ht-badge ht-badge--ok">Sí</span>
+                        {% else %}
+                            <span class="ht-badge ht-badge--bad">No</span>
+                        {% endif %}
+                    </td>
+                    <td class="ht-table__actions">
+                        <a href="{{ path('app_expense_show', {'id': expense.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Veure"><span class="pi pi-eye"></span></a>
+                        <a href="{{ path('app_expense_edit', {'id': expense.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Editar"><span class="pi pi-pencil"></span></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="ht-muted" style="text-align:center;padding:var(--space-8);">No hi ha despeses encara.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

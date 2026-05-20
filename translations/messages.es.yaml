@@ -1,0 +1,392 @@
+backend:
+  language: Idioma
+  language_es: Castellano
+  language_ca: Catalan
+  language_en: English
+  nav_label: Navegacion principal
+  nav:
+    tabs: Mis Tabs
+    admin: Administrar
+    houses: Casas
+    users: Usuarios
+    tasks: Tareas
+    events: Eventos
+    expenses: Gastos
+    chats: Chats
+    sql_ai: IA SQL
+    sql_console: Consola SQL
+    docs: Documentacion
+    home: Inicio
+    profile: Perfil
+    logout: Salir
+  theme:
+    toggle: Cambiar modo
+    title: Tema
+    paper: Papel
+    grid: Cuadricula
+    lines: Lineas
+    plain: Liso
+    clay: Arcilla
+    matcha: Matcha
+    ocean: Oceano
+    lavender: Lavanda
+    carbon: Carbon
+    coral: Coral
+    custom: Tu color
+    choose_custom: Elige tu color
+  household:
+    current: Casa actual
+    change: Cambiar casa
+    none: No hay casas disponibles
+  chat:
+    aria: Chat de casas
+    open: Abrir chat
+    back: Volver
+    title: Chats
+    subtitle: Tus casas
+    close: Cerrar
+    admin: Gestionar chats como admin
+    write: Escribe un mensaje...
+    send: Enviar
+  footer: tu libreta digital del hogar
+auth:
+  login_title: Entrar
+  welcome_tag: Bienvenida a casa
+  subtitle: Acceso exclusivo para superadministradores
+  email: Email
+  password: Contrasena
+  submit: Entrar
+  backend_denied_title: Acceso reservado
+  backend_denied_text: El backend solo esta disponible para superadministradores.
+  superadmin_only: Solo la cuenta superadmin puede entrar en el backend.
+  two_factor_title: Verificacion en dos pasos
+  security_tag: Seguridad
+  stronger_security_tag: Mas seguridad
+  code_label: Codigo
+  verify_code: Verificar codigo
+  access_code_title: Codigo de acceso
+  access_code_description: Introduce el codigo que acabamos de enviarte por correo.
+  invalid_code: Codigo incorrecto o caducado.
+  enable_2fa_title: Activar 2FA
+  enable_2fa_description: Introduce el codigo para activar la verificacion en dos pasos.
+  two_factor_offer_title: Verificacion en dos pasos
+  two_factor_offer_description: Tu cuenta aun no tiene 2FA. Puedes activarlo con un codigo enviado a tu correo.
+  enable_2fa: Activar 2FA
+  not_now: Ahora no
+  two_factor_enabled: Verificacion en dos pasos activada.
+registration:
+  disabled: El registro web del backend esta desactivado. Usa la cuenta superadmin.
+
+admin:
+  dashboard:
+    title: Mis Tabs
+    subtitle: Selecciona a que casa quieres entrar hoy.
+    hint: Panel administrativo con acceso a todas las casas
+    members: miembro
+    members_plural: miembros
+    no_houses: No hay casas creadas todavia.
+    create_tab: Crear Nueva Tab
+    create_tab_meta: Alta rapida de casa
+    new_tab_title: Nueva Tab
+    house_section: Casa
+    house_name: Nombre
+    invite_code: Codigo de invitacion
+    create_house: Crear casa
+  household:
+    nav_aria: Navegacion de la casa
+    back: Mis Tabs
+    house_label: Casa
+    section_summary: Resumen
+    section_expenses: Gastos
+    section_tasks: Tareas
+    section_calendar: Calendario
+    section_settings: Config
+    summary_title: Resumen Mensual
+    summary_intro: "Aqui tienes un vistazo rapido de como va el mes, %name%."
+    spent_this_month: Gastado este mes
+    pending_payment: Pendiente de pago
+    tasks_card: Tareas
+    completed: Completadas
+    no_pending_tasks: No hay tareas pendientes.
+    events_card: Proximos Eventos
+    no_events: Sin eventos programados.
+    admin_card: Administracion
+    members_linked: Usuarios vinculados a la casa
+    invite_code_label: Codigo de invitacion
+    expenses_title: Control de Gastos
+    pending_label: Pendiente
+    new_expense: Nuevo gasto
+    col_name: Nombre
+    col_type: Tipo
+    col_category: Categoria
+    col_periodicity: Periodicidad
+    col_amount: Importe
+    col_payments: Pagos
+    col_status: Estado
+    col_actions: Acciones
+    type_individual: Individual
+    type_shared: Conjunto
+    paid_by: "Pago "
+    participants: participantes
+    no_participants: Sin participantes
+    paid: Pagado
+    pending: Pendiente
+    no_expenses: No hay registros financieros.
+    new_expense_dialog: Nuevo gasto
+    edit_expense_dialog: Editar gasto
+    tasks_title: "Tablon de Tareas"
+    new_task: Nueva tarea
+    todo_col: Por Hacer
+    done_col: Completadas
+    no_tasks_clean: Todo limpio y al dia.
+    no_tasks_done: Aun no hay tareas hechas.
+    unassigned: Sin asignar
+    new_task_dialog: Nueva tarea
+    edit_task_dialog: Editar tarea
+    calendar_title: Calendario General
+    new_event: Nuevo evento
+    weekdays: "LUN,MAR,MIE,JUE,VIE,SAB,DOM"
+    edit_event_dialog: Editar evento
+    delete_event: Eliminar evento
+    settings_title: Configuracion de la Casa
+    edit_code: Editar codigo
+    invite_code_title: Codigo de Invitacion
+    invite_share: Comparte este codigo con tus companeros.
+    members_title: Miembros
+    no_members: No hay miembros en esta casa.
+    role_owner: Propietario
+    invite_code_dialog: Codigo de invitacion
+    code_label: Codigo
+    save: Guardar
+  expense_form:
+    basic_title: Datos basicos
+    name: Nombre
+    amount: Importe
+    category: Categoria
+    category_placeholder: "Facturas, comida, ocio..."
+    add_due_date: Anadir fecha limite
+    due_date: Fecha limite
+    description: Descripcion
+    payment_title: Pago y miembros
+    payment_type: Tipo de pago
+    shared: Pago conjunto
+    individual: Pago individual
+    paid_by: Pagado por
+    select_member: Selecciona miembro
+    participants_label: Participantes del pago conjunto
+    not_participating: No participan
+    participating: Participan
+    payment_status: Estado de pago por persona
+    not_paid: No pagado
+    paid: Pagado
+    individual_complete: Pago individual completado
+    periodicity_title: Periodicidad
+    repeat: "Repeticion"
+    no_repeat: Sin periodicidad
+    monthly: Mensual
+    weekly: Semanal
+    daily: Diario
+    payment_date: Fecha de pago
+    month_day: Dia del mes
+    weekday: Dia de la semana
+    select: Selecciona
+    weekday_1: Lunes
+    weekday_2: Martes
+    weekday_3: Miercoles
+    weekday_4: Jueves
+    weekday_5: Viernes
+    weekday_6: Sabado
+    weekday_7: Domingo
+    time: Hora
+    save: Guardar
+  task_form:
+    info_title: Informacion
+    name: Nombre
+    category: Categoria
+    description: Descripcion
+    plan_title: Planificacion
+    assigned_to: Asignada a
+    priority: Prioridad
+    priority_low: Baixa
+    priority_medium: Mitja
+    priority_high: Alta
+    due_date: Fecha limite
+    completed: Completada
+    save: Guardar tarea
+  event_form:
+    title: Evento
+    name: Nombre
+    location: Lugar
+    start: Inicio
+    end: Fin
+    color: Color
+    description: Descripcion
+    participants_title: Participantes
+    save: Guardar evento
+    delete: Eliminar evento
+  records:
+    super_admin: Super Admin
+    global_view: "Vista global con filtros por casa, usuario y estado."
+    back: Mis Tabs
+    control: Control de
+    total: "Total:"
+    search: Buscar
+    search_placeholder: Titulo
+    house: Casa
+    all_houses: Todas
+    assigned_to: Asignado a
+    user: Usuario
+    all_users: Todos
+    status: Estado
+    all_status: Todos
+    active: Activos
+    inactive: Baja
+    filter: Filtrar
+    clear: Limpiar
+    col_id: ID
+    col_title: Titulo
+    col_house: Casa
+    col_assigned: Asignado
+    col_payment: Pago
+    col_creator: Creador
+    col_detail: Detalle
+    col_status: Estado
+    col_dates: Alta/Baja
+    col_actions: Acciones
+    priority: "Prioridad:"
+    expires: "Vence:"
+    amount: "Importe:"
+    category: "Categoria:"
+    start: "Inicio:"
+    location: "Lugar:"
+    active_badge: Activo
+    inactive_badge: Baja
+    joined: "Alta:"
+    disabled: "Baja:"
+    view: Ver detalle
+    edit: Editar
+    no_records: No hay registros para estos filtros.
+    detail_house: Casa
+    detail_assigned: Asignado
+    detail_priority: Prioridad
+    detail_due: Fecha limite
+    detail_status: Estado
+    detail_amount: Importe
+    detail_type: Tipo
+    detail_paid: Fecha de pago
+    detail_periodicity: Periodicidad
+    detail_creator: Creador
+    detail_start: Inicio
+    detail_end: Fin
+    detail_location: Lugar
+    detail_description: Descripcion
+    detail_payment_status: Estado de pago
+    detail_participants: Participantes
+    no_participants: Sin participantes
+    task_completed: Completada
+    task_pending: Pendiente
+    type_individual: Individual
+    type_shared: Conjunto
+    no_periodicity: Sin periodicidad
+    edit_task: tarea
+    edit_event: evento
+    edit_expense: gasto
+    new_task: Nueva tarea
+    new_event: Nuevo evento
+    new_expense: Nuevo gasto
+    house_info: Casa e informacion
+    select_house: Selecciona una casa
+    select_member: Selecciona miembro
+    planning: Planificacion
+    periodicity_placeholder: "Unica, semanal..."
+    available: Disponibles
+    selected: Seleccionados
+    add: Anadir
+    remove: Quitar
+    move_participants: Mover participantes
+    participants_label: Participantes del pago conjunto
+    not_participating: No participan
+    participating: Participan
+    payment_status: Estado de pago por persona
+    not_paid: No pagado
+    paid: Pagado
+    individual_complete: Pago individual completado
+  households:
+    title: Casas
+    subtitle: "Gestiona las casas, codigos de invitacion e iconos desde un solo panel."
+    back: Mis Tabs
+    new_house: Nueva casa
+    edit_house: Editar casa
+    section_title: Control de Casas
+    search_placeholder: Nombre o codigo
+    col_house: Casa
+    col_invite: Codigo
+    col_members: Miembros
+    col_activity: Actividad
+    records_hint: "%tasks% tareas - %events% eventos - %expenses% gastos"
+    with_activity: Con actividad
+    empty: Vacia
+    form_title: Datos de la casa
+    name: Nombre
+    invite_code: Codigo de invitacion
+    photo_title: Foto de la casa
+    upload_photo: Subir foto
+    remove_photo: Quitar foto actual
+    icon_title: Icono
+    save: Guardar casa
+    delete: Eliminar casa
+    confirm_delete: "Eliminar esta casa? Solo se puede borrar si no tiene actividad vinculada."
+    no_houses: No hay casas para estos filtros.
+  users:
+    title: Usuarios
+    subtitle: "Gestiona perfiles, roles, avatares y acceso desde un solo panel."
+    back: Mis Tabs
+    new_user: Nuevo usuario
+    section_title: Control de Usuarios
+    total: "Total:"
+    search: Buscar
+    search_placeholder: Nombre o email
+    house: Casa
+    all_houses: Todas
+    role: Rol
+    all_roles: Todos
+    status: Estado
+    all_status: Todos
+    active: Activos
+    inactive: Inactivos
+    filter: Filtrar
+    clear: Limpiar
+    col_user: Usuario
+    col_email: Email
+    col_phone: Telefono
+    col_houses: Casas
+    col_role: Rol
+    col_status: Estado
+    col_dates: Alta/Baja
+    col_actions: Acciones
+    no_house: Sin casa
+    active_badge: Activo
+    inactive_badge: Inactivo
+    joined: "Alta:"
+    disabled: "Baja:"
+    edit: Editar
+    deactivate: Dar de baja
+    confirm_deactivate: "Dar de baja este usuario?"
+    no_users: No hay usuarios registrados.
+    edit_dialog: Editar usuario
+    identity_title: Identidad
+    name: Nombre
+    surname: Apellidos
+    email: Email
+    phone: Telefono
+    bio: Bio
+    photo_title: Foto y avatar
+    upload_photo: Subir foto
+    zoom: Zoom
+    remove_photo: Quitar foto actual
+    access_title: Acceso
+    role_label: Rol
+    new_password: Nueva contrasena
+    new_password_placeholder: Dejar vacio para no cambiar
+    is_active: Usuario activo
+    save: Guardar cambios

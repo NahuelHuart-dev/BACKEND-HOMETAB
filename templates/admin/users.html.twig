@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.users.title'|trans }} - Admin - HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">{{ 'admin.records.super_admin'|trans }}</div>
+        <h1 class="ht-display">{{ 'admin.users.title'|trans }}</h1>
+        <p class="ht-lead">{{ 'admin.users.subtitle'|trans }}</p>
+    </div>
+    <div class="ht-actions">
+        <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> {{ 'admin.users.back'|trans }}</a>
+        <a href="{{ path('app_admin_user_new') }}" class="ht-btn ht-btn--primary"><span class="pi pi-user-plus"></span> {{ 'admin.users.new_user'|trans }}</a>
+    </div>
+</div>
+
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi pi-users"></span><h1>{{ 'admin.users.section_title'|trans }}</h1></div>
+        <div class="ht-kpi">{{ 'admin.users.total'|trans }}<strong>{{ users|length }}</strong></div>
+    </div>
+
+    <form class="ht-filter-bar" method="get">
+        <label>{{ 'admin.users.search'|trans }}<input class="ht-input" name="q" value="{{ filters.q|default('') }}" placeholder="{{ 'admin.users.search_placeholder'|trans }}"></label>
+        <label>{{ 'admin.users.house'|trans }}
+            <select class="ht-input" name="household">
+                <option value="">{{ 'admin.users.all_houses'|trans }}</option>
+                {% for household in households %}
+                    <option value="{{ household.id }}" {{ filters.household|default('') == household.id ? 'selected' : '' }}>{{ household.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>{{ 'admin.users.role'|trans }}
+            <select class="ht-input" name="role">
+                <option value="">{{ 'admin.users.all_roles'|trans }}</option>
+                <option value="ROLE_SUPER_ADMIN" {{ filters.role|default('') == 'ROLE_SUPER_ADMIN' ? 'selected' : '' }}>Super admin</option>
+                <option value="ROLE_ADMIN" {{ filters.role|default('') == 'ROLE_ADMIN' ? 'selected' : '' }}>Admin</option>
+                <option value="ROLE_USER" {{ filters.role|default('') == 'ROLE_USER' ? 'selected' : '' }}>User</option>
+            </select>
+        </label>
+        <label>{{ 'admin.users.status'|trans }}
+            <select class="ht-input" name="status">
+                <option value="">{{ 'admin.users.all_status'|trans }}</option>
+                <option value="active" {{ filters.status|default('') == 'active' ? 'selected' : '' }}>{{ 'admin.users.active'|trans }}</option>
+                <option value="inactive" {{ filters.status|default('') == 'inactive' ? 'selected' : '' }}>{{ 'admin.users.inactive'|trans }}</option>
+            </select>
+        </label>
+        <button class="ht-btn ht-btn--secondary"><span class="pi pi-filter"></span> {{ 'admin.users.filter'|trans }}</button>
+        <a class="ht-btn ht-btn--ghost" href="{{ path('app_admin_users') }}"><span class="pi pi-times"></span> {{ 'admin.users.clear'|trans }}</a>
+    </form>
+
+    <div class="ht-admin-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'admin.users.col_user'|trans }}</th>
+                    <th>{{ 'admin.users.col_email'|trans }}</th>
+                    <th>{{ 'admin.users.col_phone'|trans }}</th>
+                    <th>{{ 'admin.users.col_houses'|trans }}</th>
+                    <th>{{ 'admin.users.col_role'|trans }}</th>
+                    <th>{{ 'admin.users.col_status'|trans }}</th>
+                    <th>{{ 'admin.users.col_dates'|trans }}</th>
+                    <th>{{ 'admin.users.col_actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                {% set is_super = 'ROLE_SUPER_ADMIN' in user.roles %}
+                {% set is_admin = is_super or 'ROLE_ADMIN' in user.roles %}
+                <tr>
+                    <td>
+                        <div class="ht-user-cell">
+                            <span class="ht-avatar-sm">{% if user.avatar %}<img src="{{ asset(user.avatar|trim('/', 'left')) }}" alt="">{% else %}<span class="pi {{ user.avatarIcon|default('pi-user') }}"></span>{% endif %}</span>
+                            <div>
+                                <strong>{{ user.fullName }}</strong>
+                                <small>#{{ user.id }}{% if user.bio %} - {{ user.bio|slice(0, 60) }}{% endif %}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td><small>{{ user.email }}</small></td>
+                    <td>{{ user.phoneNumber ?: '-' }}</td>
+                    <td>
+                        {% for membership in user.householdMemberships %}
+                            <span class="ht-badge ht-badge--neutral">{{ membership.household.name }}</span>
+                        {% else %}
+                            <span class="ht-muted">{{ 'admin.users.no_house'|trans }}</span>
+                        {% endfor %}
+                    </td>
+                    <td><span class="ht-badge {{ is_admin ? 'ht-badge--bad' : 'ht-badge--neutral' }}">{{ is_super ? 'Super admin' : (is_admin ? 'Admin' : 'User') }}</span></td>
+                    <td><span class="ht-badge {{ user.isActive ? 'ht-badge--ok' : 'ht-badge--neutral' }}">{{ user.isActive ? 'admin.users.active_badge'|trans : 'admin.users.inactive_badge'|trans }}</span></td>
+                    <td><small>{{ 'admin.users.joined'|trans }} {{ user.joinedAt ? user.joinedAt|date('d/m/Y') : '-' }}</small><small>{{ 'admin.users.disabled'|trans }} {{ user.disabledAt ? user.disabledAt|date('d/m/Y') : '-' }}</small></td>
+                    <td class="ht-row-actions">
+                        <button class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dialog-open="user-{{ user.id }}" title="{{ 'admin.users.edit'|trans }}"><span class="pi pi-pencil"></span></button>
+                        {% if user.id != app.user.id %}
+                            <form method="post" action="{{ path('app_admin_user_delete', {id: user.id}) }}" onsubmit="return confirm('{{ 'admin.users.confirm_deactivate'|trans }}')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button class="ht-btn ht-btn--danger-outline ht-btn--icon-only" title="{{ 'admin.users.deactivate'|trans }}"><span class="pi pi-ban"></span></button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="8"><em>{{ 'admin.users.no_users'|trans }}</em></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% for user in users %}
+    {% set selected_role = 'ROLE_SUPER_ADMIN' in user.roles ? 'ROLE_SUPER_ADMIN' : ('ROLE_ADMIN' in user.roles ? 'ROLE_ADMIN' : 'ROLE_USER') %}
+    <dialog class="ht-dialog ht-dialog--wide" id="user-{{ user.id }}">
+        <div class="ht-dialog__inner">
+            <button class="ht-dialog__close" data-dialog-close>&times;</button>
+            <h2>{{ 'admin.users.edit_dialog'|trans }}</h2>
+            <form method="post" action="{{ path('app_admin_user_save', {id: user.id}) }}" class="ht-modal-form" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="{{ csrf_token('admin_user' ~ user.id) }}">
+                <section>
+                    <h3>{{ 'admin.users.identity_title'|trans }}</h3>
+                    <div class="ht-form-grid">
+                        <label>{{ 'admin.users.name'|trans }} <span class="ht-required">*</span><input name="firstName" class="ht-input" value="{{ user.firstName }}" required></label>
+                        <label>{{ 'admin.users.surname'|trans }} <span class="ht-required">*</span><input name="lastName" class="ht-input" value="{{ user.lastName }}" required></label>
+                        <label>{{ 'admin.users.email'|trans }} <span class="ht-required">*</span><input name="email" class="ht-input" type="email" value="{{ user.email }}" required></label>
+                        <label>{{ 'admin.users.phone'|trans }}<input name="phoneNumber" class="ht-input" value="{{ user.phoneNumber }}"></label>
+                        <label class="ht-span-2">{{ 'admin.users.bio'|trans }}<textarea name="bio" class="ht-input">{{ user.bio }}</textarea></label>
+                    </div>
+                </section>
+                <section>
+                    <h3>{{ 'admin.users.photo_title'|trans }}</h3>
+                    <div class="ht-avatar-edit">
+                        <span class="ht-avatar-lg" data-avatar-preview>{% if user.avatar %}<img src="{{ asset(user.avatar|trim('/', 'left')) }}" alt="">{% else %}<span class="pi {{ user.avatarIcon|default('pi-user') }}"></span>{% endif %}</span>
+                        <div>
+                            <input type="hidden" name="avatarCropData" data-avatar-crop-data>
+                            <label>{{ 'admin.users.upload_photo'|trans }}<input class="ht-input" type="file" name="avatarFile" accept="image/*"></label>
+                            <label class="ht-avatar-zoom" hidden data-avatar-zoom-wrap>{{ 'admin.users.zoom'|trans }}<input type="range" min="1" max="2.4" step="0.05" value="1" data-avatar-zoom></label>
+                            {% if user.avatar %}
+                                <label class="ht-checkbox-row"><input type="checkbox" name="removeAvatar" value="1"> {{ 'admin.users.remove_photo'|trans }}</label>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ht-avatar-picker">
+                        {% for icon in avatarIcons %}
+                            <label class="{{ user.avatarIcon == icon ? 'is-selected' : '' }}">
+                                <input type="radio" name="avatarIcon" value="{{ icon }}" {{ user.avatarIcon == icon ? 'checked' : '' }}>
+                                <span class="pi {{ icon }}"></span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </section>
+                <section>
+                    <h3>{{ 'admin.users.access_title'|trans }}</h3>
+                    <div class="ht-form-grid">
+                        <label>{{ 'admin.users.role_label'|trans }} <span class="ht-required">*</span>
+                            <select name="role" class="ht-input">
+                                <option value="ROLE_USER" {{ selected_role == 'ROLE_USER' ? 'selected' : '' }}>User</option>
+                                <option value="ROLE_ADMIN" {{ selected_role == 'ROLE_ADMIN' ? 'selected' : '' }}>Admin</option>
+                                <option value="ROLE_SUPER_ADMIN" {{ selected_role == 'ROLE_SUPER_ADMIN' ? 'selected' : '' }}>Super admin</option>
+                            </select>
+                        </label>
+                        <label>{{ 'admin.users.new_password'|trans }}<input name="newPassword" class="ht-input" type="password" minlength="6" autocomplete="new-password" placeholder="{{ 'admin.users.new_password_placeholder'|trans }}"></label>
+                        <label class="ht-checkbox-row"><input type="checkbox" name="isActive" value="1" {{ user.isActive ? 'checked' : '' }}> {{ 'admin.users.is_active'|trans }}</label>
+                    </div>
+                </section>
+                <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ 'admin.users.save'|trans }}</button></footer>
+            </form>
+        </div>
+    </dialog>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'auth.enable_2fa_title'|trans }} · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-auth">
+    <div class="ht-card ht-auth__card" style="position:relative;padding-top:var(--space-8);">
+        <div class="ht-tape" aria-hidden="true"></div>
+        <div class="ht-mini-tag">{{ 'auth.stronger_security_tag'|trans }}</div>
+        <h1 class="ht-display" style="text-align:center;">{{ 'auth.two_factor_offer_title'|trans }}</h1>
+        <p class="ht-lead" style="text-align:center;">{{ 'auth.two_factor_offer_description'|trans }}</p>
+
+        <form method="post" style="display:grid;gap:var(--space-3);">
+            <button class="ht-btn ht-btn--primary ht-w-full" type="submit" name="action" value="enable">
+                <span class="pi pi-shield"></span> {{ 'auth.enable_2fa'|trans }}
+            </button>
+            <button class="ht-btn ht-btn--ghost ht-w-full" type="submit" name="action" value="skip">
+                {{ 'auth.not_now'|trans }}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

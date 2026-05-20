@@ -1,0 +1,416 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }} - Admin - HomeTab{% endblock %}
+
+{% macro user_household_attr(user) %}
+{% apply spaceless %},{% for membership in user.householdMemberships %}{{ membership.household.id }},{% endfor %}{% endapply %}
+{% endmacro %}
+
+{% macro dual_user_select(users, fieldName, selectedUsers, scoped, availableLabel = 'Disponibles', selectedLabel = 'Seleccionados', extraAttr = '') %}
+    {% import _self as recordsui %}
+    {% set selectedIds = [] %}
+    {% for selectedUser in selectedUsers %}
+        {% set selectedIds = selectedIds|merge([selectedUser.id]) %}
+    {% endfor %}
+    <div class="ht-dual-select" data-dual-list {{ extraAttr|raw }}>
+        <div class="ht-dual-select__panel">
+            <label>{{ availableLabel }}</label>
+            <select class="ht-input" multiple size="8" data-dual-available>
+                {% for user in users %}
+                    {% if user.id not in selectedIds %}
+                        <option value="{{ user.id }}" {% if scoped %}data-households="{{ recordsui.user_household_attr(user)|trim }}"{% endif %}>{{ user.fullName }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="ht-dual-select__actions" aria-label="{{ 'admin.records.move_participants'|trans }}">
+            <button type="button" class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dual-add title="{{ 'admin.records.add'|trans }}"><span class="pi pi-angle-right"></span></button>
+            <button type="button" class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dual-remove title="{{ 'admin.records.remove'|trans }}"><span class="pi pi-angle-left"></span></button>
+        </div>
+        <div class="ht-dual-select__panel">
+            <label>{{ selectedLabel }}</label>
+            <select class="ht-input" name="{{ fieldName }}[]" multiple size="8" data-dual-selected>
+                {% for user in users %}
+                    {% if user.id in selectedIds %}
+                        <option value="{{ user.id }}" selected {% if scoped %}data-households="{{ recordsui.user_household_attr(user)|trim }}"{% endif %}>{{ user.fullName }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro task_form(households, users, task = null) %}
+    {% import _self as recordsui %}
+    {% set is_edit = task is not null %}
+    <form method="post" action="{{ is_edit ? path('app_admin_task_save', {id: task.household.id, taskId: task.id}) : path('app_admin_task_global_create') }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ is_edit ? csrf_token('admin_task' ~ task.household.id) : csrf_token('admin_global_task') }}">
+        <section>
+            <h3>{{ 'admin.records.house_info'|trans }}</h3>
+            <div class="ht-form-grid">
+                {% if is_edit %}
+                    <input type="hidden" data-household-filter value="{{ task.household.id }}">
+                    <label>{{ 'admin.records.house_info'|trans }}<input class="ht-input" value="{{ task.household.name }}" disabled></label>
+                {% else %}
+                    <label>{{ 'admin.household.house_label'|trans }} <span class="ht-required">*</span>
+                        <select name="householdId" class="ht-input" required data-household-filter>
+                            <option value="">{{ 'admin.records.select_house'|trans }}</option>
+                            {% for household in households %}
+                                <option value="{{ household.id }}">{{ household.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                {% endif %}
+                <label>{{ 'admin.task_form.assigned_to'|trans }} <span class="ht-required">*</span>
+                    <select name="assignedTo" class="ht-input" required data-household-user-select>
+                        <option value="">{{ 'admin.records.select_member'|trans }}</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" data-households="{{ recordsui.user_household_attr(user)|trim }}" {{ is_edit and task.assignedTo and task.assignedTo.id == user.id ? 'selected' : '' }}>{{ user.fullName }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>{{ 'admin.task_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? task.title : '' }}" required></label>
+                <label>{{ 'admin.task_form.category'|trans }}<input name="category" class="ht-input" value="{{ is_edit ? task.category : '' }}"></label>
+                <label class="ht-span-2">{{ 'admin.task_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? task.description : '' }}</textarea></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.records.planning'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.task_form.priority'|trans }}
+                    <select name="priority" class="ht-input">
+                        <option value="Baixa" {{ is_edit and task.priority == 'Baixa' ? 'selected' : '' }}>{{ 'admin.task_form.priority_low'|trans }}</option>
+                        <option value="Mitja" {{ (not is_edit) or task.priority == 'Mitja' ? 'selected' : '' }}>{{ 'admin.task_form.priority_medium'|trans }}</option>
+                        <option value="Alta" {{ is_edit and task.priority == 'Alta' ? 'selected' : '' }}>{{ 'admin.task_form.priority_high'|trans }}</option>
+                    </select>
+                </label>
+                <label>{{ 'admin.task_form.due_date'|trans }}<input name="dueDate" class="ht-input" type="date" value="{{ is_edit and task.dueDate ? task.dueDate|date('Y-m-d') : '' }}"></label>
+                <label>{{ 'admin.task_form.category'|trans }}<input name="periodicity" class="ht-input" value="{{ is_edit ? task.periodicity : '' }}" placeholder="{{ 'admin.records.periodicity_placeholder'|trans }}"></label>
+                <label class="ht-checkbox-row"><input type="checkbox" name="completed" value="1" {{ is_edit and task.completed ? 'checked' : '' }}> {{ 'admin.task_form.completed'|trans }}</label>
+            </div>
+        </section>
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ is_edit ? 'admin.task_form.save'|trans : 'admin.records.new_task'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% macro event_form(households, users, event = null) %}
+    {% import _self as recordsui %}
+    {% set is_edit = event is not null %}
+    <form method="post" action="{{ is_edit ? path('app_admin_event_save', {id: event.household.id, eventId: event.id}) : path('app_admin_event_global_create') }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ is_edit ? csrf_token('admin_event' ~ event.household.id) : csrf_token('admin_global_event') }}">
+        <section>
+            <h3>{{ 'admin.event_form.title'|trans }}</h3>
+            <div class="ht-form-grid">
+                {% if is_edit %}
+                    <input type="hidden" data-household-filter value="{{ event.household.id }}">
+                    <label>{{ 'admin.household.house_label'|trans }}<input class="ht-input" value="{{ event.household.name }}" disabled></label>
+                {% else %}
+                    <label>{{ 'admin.household.house_label'|trans }} <span class="ht-required">*</span>
+                        <select name="householdId" class="ht-input" required data-household-filter>
+                            <option value="">{{ 'admin.records.select_house'|trans }}</option>
+                            {% for household in households %}
+                                <option value="{{ household.id }}">{{ household.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                {% endif %}
+                <label>{{ 'admin.event_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? event.title : '' }}" required></label>
+                <label>{{ 'admin.event_form.start'|trans }} <span class="ht-required">*</span><input name="startDate" class="ht-input" type="datetime-local" value="{{ is_edit ? event.startDate|date('Y-m-d\\TH:i') : '' }}" required></label>
+                <label>{{ 'admin.event_form.end'|trans }}<input name="endDate" class="ht-input" type="datetime-local" value="{{ is_edit and event.endDate ? event.endDate|date('Y-m-d\\TH:i') : '' }}"></label>
+                <label>{{ 'admin.event_form.location'|trans }}<input name="location" class="ht-input" value="{{ is_edit ? event.location : '' }}"></label>
+                <label>{{ 'admin.event_form.color'|trans }}<input name="color" class="ht-input" type="color" value="{{ is_edit ? event.color|default('#ea580c') : '#ea580c' }}"></label>
+                <label class="ht-span-2">{{ 'admin.event_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? event.description : '' }}</textarea></label>
+                <label class="ht-checkbox-row"><input type="checkbox" name="isAllDay" value="1" {{ is_edit and event.allDay ? 'checked' : '' }}> Todo el día</label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.event_form.participants_title'|trans }}</h3>
+            {{ recordsui.dual_user_select(users, 'participants', is_edit ? event.participants : [], true) }}
+        </section>
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ is_edit ? 'admin.event_form.save'|trans : 'admin.records.new_event'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% macro expense_form(households, users, expense = null) %}
+    {% import _self as recordsui %}
+    {% set is_edit = expense is not null %}
+    {% set selectedSplitUsers = [] %}
+    {% set selectedPaidUsers = [] %}
+    {% if is_edit %}
+        {% for share in expense.expenseShares %}
+            {% if share.user %}
+                {% set selectedSplitUsers = selectedSplitUsers|merge([share.user]) %}
+                {% if share.paid %}
+                    {% set selectedPaidUsers = selectedPaidUsers|merge([share.user]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <form method="post" action="{{ is_edit ? path('app_admin_expense_save', {id: expense.household.id, expenseId: expense.id}) : path('app_admin_expense_global_create') }}" class="ht-modal-form">
+        <input type="hidden" name="_token" value="{{ is_edit ? csrf_token('admin_expense' ~ expense.household.id) : csrf_token('admin_global_expense') }}">
+        <section>
+            <h3>{{ 'admin.expense_form.basic_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                {% if is_edit %}
+                    <input type="hidden" data-household-filter value="{{ expense.household.id }}">
+                    <label>{{ 'admin.household.house_label'|trans }}<input class="ht-input" value="{{ expense.household.name }}" disabled></label>
+                {% else %}
+                    <label>{{ 'admin.household.house_label'|trans }} <span class="ht-required">*</span>
+                        <select name="householdId" class="ht-input" required data-household-filter>
+                            <option value="">{{ 'admin.records.select_house'|trans }}</option>
+                            {% for household in households %}
+                                <option value="{{ household.id }}">{{ household.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                {% endif %}
+                <label>{{ 'admin.expense_form.name'|trans }} <span class="ht-required">*</span><input name="title" class="ht-input" value="{{ is_edit ? expense.title : '' }}" required></label>
+                <label>{{ 'admin.expense_form.amount'|trans }} <span class="ht-required">*</span><input name="amount" class="ht-input" type="number" min="0.01" step="0.01" value="{{ is_edit ? expense.amount : '' }}" required></label>
+                <label>{{ 'admin.expense_form.category'|trans }}<input name="category" class="ht-input" value="{{ is_edit ? expense.category : '' }}" placeholder="{{ 'admin.expense_form.category_placeholder'|trans }}"></label>
+                <label class="ht-checkbox-row ht-span-2"><input type="checkbox" data-optional-date-toggle {{ is_edit and expense.dueDate ? 'checked' : '' }}> {{ 'admin.expense_form.add_due_date'|trans }}</label>
+                <label class="ht-span-2" data-optional-date-field>{{ 'admin.expense_form.due_date'|trans }}<input name="dueDate" class="ht-input" type="date" value="{{ is_edit and expense.dueDate ? expense.dueDate|date('Y-m-d') : '' }}"></label>
+                <label class="ht-span-2">{{ 'admin.expense_form.description'|trans }}<textarea name="description" class="ht-input">{{ is_edit ? expense.description : '' }}</textarea></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.expense_form.payment_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.expense_form.payment_type'|trans }} <span class="ht-required">*</span>
+                    <select name="paymentType" class="ht-input" data-payment-type>
+                        <option value="shared" {{ (not is_edit) or expense.paymentType == 'shared' ? 'selected' : '' }}>{{ 'admin.expense_form.shared'|trans }}</option>
+                        <option value="individual" {{ is_edit and expense.paymentType == 'individual' ? 'selected' : '' }}>{{ 'admin.expense_form.individual'|trans }}</option>
+                    </select>
+                </label>
+                <label data-payment-individual>{{ 'admin.expense_form.paid_by'|trans }} <span class="ht-required">*</span>
+                    <select name="paidBy" class="ht-input" required data-household-user-select>
+                        <option value="">{{ 'admin.records.select_member'|trans }}</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" data-households="{{ recordsui.user_household_attr(user)|trim }}" {{ is_edit and expense.paidBy and expense.paidBy.id == user.id ? 'selected' : '' }}>{{ user.fullName }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <div data-shared-members>
+                <span class="ht-field-caption">{{ 'admin.records.participants_label'|trans }}</span>
+                {{ recordsui.dual_user_select(users, 'splitUsers', selectedSplitUsers, true, 'admin.records.not_participating'|trans, 'admin.records.participating'|trans, 'data-participants-list') }}
+            </div>
+            <div data-shared-payment-status>
+                <span class="ht-field-caption">{{ 'admin.records.payment_status'|trans }}</span>
+                {{ recordsui.dual_user_select(users, 'paidShares', selectedPaidUsers, true, 'admin.records.not_paid'|trans, 'admin.records.paid'|trans, 'data-paid-status-list') }}
+            </div>
+            <label class="ht-switch-row" data-payment-individual><input type="checkbox" name="isPaid" value="1" {{ is_edit and expense.paid ? 'checked' : '' }}><span></span> {{ 'admin.records.individual_complete'|trans }}</label>
+        </section>
+        <section>
+            <h3>{{ 'admin.expense_form.periodicity_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.expense_form.repeat'|trans }} <span class="ht-required">*</span>
+                    <select name="periodicity" class="ht-input" data-periodicity>
+                        <option value="" {{ (not is_edit) or not expense.periodicity ? 'selected' : '' }}>{{ 'admin.expense_form.no_repeat'|trans }}</option>
+                        <option value="monthly" {{ is_edit and expense.periodicity == 'monthly' ? 'selected' : '' }}>{{ 'admin.expense_form.monthly'|trans }}</option>
+                        <option value="weekly" {{ is_edit and expense.periodicity == 'weekly' ? 'selected' : '' }}>{{ 'admin.expense_form.weekly'|trans }}</option>
+                        <option value="daily" {{ is_edit and expense.periodicity == 'daily' ? 'selected' : '' }}>{{ 'admin.expense_form.daily'|trans }}</option>
+                    </select>
+                </label>
+                <label data-recurrence-field="">{{ 'admin.expense_form.payment_date'|trans }} <span class="ht-required">*</span><input name="paidAt" class="ht-input" type="date" value="{{ is_edit and expense.paidAt ? expense.paidAt|date('Y-m-d') : '' }}"></label>
+                <label data-recurrence-field="monthly">{{ 'admin.expense_form.month_day'|trans }} <span class="ht-required">*</span><input name="recurrenceDayOfMonth" class="ht-input" type="number" min="1" max="31" value="{{ is_edit ? expense.recurrenceDayOfMonth : '' }}"></label>
+                <label data-recurrence-field="weekly">{{ 'admin.expense_form.weekday'|trans }} <span class="ht-required">*</span>
+                    <select name="recurrenceWeekday" class="ht-input">
+                        <option value="">{{ 'admin.expense_form.select'|trans }}</option>
+                        {% for n in 1..7 %}
+                            <option value="{{ n }}" {{ is_edit and expense.recurrenceWeekday == n ? 'selected' : '' }}>{{ ('admin.expense_form.weekday_' ~ n)|trans }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label data-recurrence-field="daily">{{ 'admin.expense_form.time'|trans }} <span class="ht-required">*</span><input name="recurrenceTime" class="ht-input" type="time" value="{{ is_edit and expense.recurrenceTime ? expense.recurrenceTime|date('H:i') : '' }}"></label>
+            </div>
+        </section>
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ is_edit ? 'admin.expense_form.save'|trans : 'admin.records.new_expense'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% import _self as recordsui %}
+
+{% block body %}
+{% set create_label = type == 'tasks' ? 'admin.records.new_task'|trans : (type == 'events' ? 'admin.records.new_event'|trans : 'admin.records.new_expense'|trans) %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">{{ 'admin.records.super_admin'|trans }}</div>
+        <h1 class="ht-display">{{ title }}</h1>
+        <p class="ht-lead">{{ 'admin.records.global_view'|trans }}</p>
+    </div>
+    <div class="ht-actions">
+        <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> {{ 'admin.records.back'|trans }}</a>
+        <button class="ht-btn ht-btn--primary" data-dialog-open="{{ type }}-new"><span class="pi pi-plus"></span> {{ create_label }}</button>
+    </div>
+</div>
+
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi {{ icon }}"></span><h1>{{ 'admin.records.control'|trans }} {{ title }}</h1></div>
+        <div class="ht-kpi">{{ 'admin.records.total'|trans }}<strong>{{ records|length }}</strong></div>
+    </div>
+
+    <form class="ht-filter-bar" method="get">
+        <label>{{ 'admin.records.search'|trans }}<input class="ht-input" name="q" value="{{ filters.q|default('') }}" placeholder="{{ 'admin.records.search_placeholder'|trans }}"></label>
+        <label>{{ 'admin.records.house'|trans }}
+            <select class="ht-input" name="household">
+                <option value="">{{ 'admin.records.all_houses'|trans }}</option>
+                {% for household in households %}
+                    <option value="{{ household.id }}" {{ filters.household|default('') == household.id ? 'selected' : '' }}>{{ household.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>{{ type == 'tasks' ? 'admin.records.assigned_to'|trans : 'admin.records.user'|trans }}
+            <select class="ht-input" name="{{ type == 'tasks' ? 'assignedTo' : 'createdBy' }}">
+                <option value="">{{ 'admin.records.all_users'|trans }}</option>
+                {% for user in users %}
+                    {% set selected_user = type == 'tasks' ? filters.assignedTo|default('') : filters.createdBy|default('') %}
+                    <option value="{{ user.id }}" {{ selected_user == user.id ? 'selected' : '' }}>{{ user.fullName }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>{{ 'admin.records.status'|trans }}
+            <select class="ht-input" name="status">
+                <option value="">{{ 'admin.records.all_status'|trans }}</option>
+                <option value="active" {{ filters.status|default('') == 'active' ? 'selected' : '' }}>{{ 'admin.records.active'|trans }}</option>
+                <option value="inactive" {{ filters.status|default('') == 'inactive' ? 'selected' : '' }}>{{ 'admin.records.inactive'|trans }}</option>
+            </select>
+        </label>
+        <button class="ht-btn ht-btn--secondary"><span class="pi pi-filter"></span> {{ 'admin.records.filter'|trans }}</button>
+        <a class="ht-btn ht-btn--ghost" href="{{ path(type == 'tasks' ? 'app_admin_tasks' : (type == 'events' ? 'app_admin_events' : 'app_admin_expenses')) }}"><span class="pi pi-times"></span> {{ 'admin.records.clear'|trans }}</a>
+    </form>
+
+    <div class="ht-admin-table ht-admin-table--comfortable">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'admin.records.col_id'|trans }}</th>
+                    <th>{{ 'admin.records.col_title'|trans }}</th>
+                    <th>{{ 'admin.records.col_house'|trans }}</th>
+                    <th>{{ type == 'tasks' ? 'admin.records.col_assigned'|trans : (type == 'expenses' ? 'admin.records.col_payment'|trans : 'admin.records.col_creator'|trans) }}</th>
+                    <th>{{ 'admin.records.col_detail'|trans }}</th>
+                    <th>{{ 'admin.records.col_status'|trans }}</th>
+                    <th>{{ 'admin.records.col_dates'|trans }}</th>
+                    <th>{{ 'admin.records.col_actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>#{{ record.id }}</td>
+                        <td><strong>{{ record.title }}</strong><small>{{ record.description|default('')|slice(0, 70) }}</small></td>
+                        <td><span class="ht-badge ht-badge--neutral">{{ record.household.name }}</span></td>
+                        <td>
+                            {% if type == 'tasks' %}
+                                {{ record.assignedTo.fullName }}
+                            {% elseif type == 'expenses' %}
+                                {{ record.paymentType == 'individual' ? record.paidBy.fullName : record.expenseShares|length ~ ' ' ~ 'admin.household.participants'|trans }}
+                            {% else %}
+                                {{ record.createdBy.fullName }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if type == 'tasks' %}
+                                <small>{{ 'admin.records.priority'|trans }} {{ record.priority|default('-') }}</small><small>{{ 'admin.records.expires'|trans }} {{ record.dueDate ? record.dueDate|date('d/m/Y H:i') : '-' }}</small>
+                            {% elseif type == 'expenses' %}
+                                <small>{{ 'admin.records.amount'|trans }} {{ record.amount|number_format(2, ',', '.') }} €</small><small>{{ 'admin.records.category'|trans }} {{ record.category|default('-') }}</small>
+                            {% else %}
+                                <small>{{ 'admin.records.start'|trans }} {{ record.startDate|date('d/m/Y H:i') }}</small><small>{{ 'admin.records.location'|trans }} {{ record.location|default('-') }}</small>
+                            {% endif %}
+                        </td>
+                        <td><span class="ht-badge {{ record.isActive ? 'ht-badge--ok' : 'ht-badge--neutral' }}">{{ record.isActive ? 'admin.records.active_badge'|trans : 'admin.records.inactive_badge'|trans }}</span></td>
+                        <td><small>{{ 'admin.records.joined'|trans }} {{ record.createdAt ? record.createdAt|date('d/m/Y') : '-' }}</small><small>{{ 'admin.records.disabled'|trans }} {{ record.disabledAt ? record.disabledAt|date('d/m/Y') : '-' }}</small></td>
+                        <td class="ht-row-actions">
+                            <button class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dialog-open="{{ type }}-detail-{{ record.id }}" title="{{ 'admin.records.view'|trans }}"><span class="pi pi-eye"></span></button>
+                            <button class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dialog-open="{{ type }}-edit-{{ record.id }}" title="{{ 'admin.records.edit'|trans }}"><span class="pi pi-pencil"></span></button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="8"><em>{{ 'admin.records.no_records'|trans }}</em></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% for record in records %}
+    <dialog class="ht-dialog ht-dialog--wide" id="{{ type }}-detail-{{ record.id }}">
+        <div class="ht-dialog__inner">
+            <button class="ht-dialog__close" data-dialog-close>&times;</button>
+            <h2>{{ record.title }}</h2>
+            <div class="ht-detail-grid">
+                <div><span>{{ 'admin.records.detail_house'|trans }}</span><strong>{{ record.household.name }}</strong></div>
+                {% if type == 'tasks' %}
+                    <div><span>{{ 'admin.records.detail_assigned'|trans }}</span><strong>{{ record.assignedTo.fullName }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_priority'|trans }}</span><strong>{{ record.priority|default('-') }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_due'|trans }}</span><strong>{{ record.dueDate ? record.dueDate|date('d/m/Y') : '-' }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_status'|trans }}</span><strong>{{ record.completed ? 'admin.records.task_completed'|trans : 'admin.records.task_pending'|trans }}</strong></div>
+                {% elseif type == 'expenses' %}
+                    <div><span>{{ 'admin.records.detail_amount'|trans }}</span><strong>{{ record.amount|number_format(2, ',', '.') }} €</strong></div>
+                    <div><span>{{ 'admin.records.detail_type'|trans }}</span><strong>{{ record.paymentType == 'individual' ? 'admin.records.type_individual'|trans : 'admin.records.type_shared'|trans }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_paid'|trans }}</span><strong>{{ record.paidAt ? record.paidAt|date('d/m/Y') : '-' }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_periodicity'|trans }}</span><strong>{{ record.periodicity|default('admin.records.no_periodicity'|trans) }}</strong></div>
+                {% else %}
+                    <div><span>{{ 'admin.records.detail_creator'|trans }}</span><strong>{{ record.createdBy.fullName }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_start'|trans }}</span><strong>{{ record.startDate|date('d/m/Y H:i') }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_end'|trans }}</span><strong>{{ record.endDate ? record.endDate|date('d/m/Y H:i') : '-' }}</strong></div>
+                    <div><span>{{ 'admin.records.detail_location'|trans }}</span><strong>{{ record.location|default('-') }}</strong></div>
+                {% endif %}
+            </div>
+            {% if record.description %}
+                <section class="ht-detail-section"><h3>{{ 'admin.records.detail_description'|trans }}</h3><p>{{ record.description }}</p></section>
+            {% endif %}
+            {% if type == 'expenses' %}
+                <section class="ht-detail-section">
+                    <h3>{{ 'admin.records.detail_payment_status'|trans }}</h3>
+                    <div class="ht-payment-status">
+                        {% for share in record.expenseShares %}
+                            <span class="ht-payment-pill {{ share.paid ? 'is-paid' : 'is-pending' }}"><span class="pi {{ share.paid ? 'pi-check' : 'pi-clock' }}"></span>{{ share.user.fullName }} · {{ share.amountOwed|number_format(2, ',', '.') }} €</span>
+                        {% else %}
+                            <span class="ht-muted">{{ 'admin.records.no_participants'|trans }}</span>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% elseif type == 'events' %}
+                <section class="ht-detail-section">
+                    <h3>{{ 'admin.records.detail_participants'|trans }}</h3>
+                    <div class="ht-payment-status">
+                        {% for participant in record.participants %}
+                            <span class="ht-payment-pill is-paid"><span class="pi pi-user"></span>{{ participant.fullName }}</span>
+                        {% else %}
+                            <span class="ht-muted">{{ 'admin.records.no_participants'|trans }}</span>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </dialog>
+    <dialog class="ht-dialog ht-dialog--wide" id="{{ type }}-edit-{{ record.id }}">
+        <div class="ht-dialog__inner">
+            <button class="ht-dialog__close" data-dialog-close>&times;</button>
+            <h2>{{ 'admin.records.edit'|trans }} {{ type == 'tasks' ? 'admin.records.edit_task'|trans : (type == 'events' ? 'admin.records.edit_event'|trans : 'admin.records.edit_expense'|trans) }}</h2>
+            {% if type == 'tasks' %}
+                {{ recordsui.task_form(households, users, record) }}
+            {% elseif type == 'events' %}
+                {{ recordsui.event_form(households, users, record) }}
+            {% else %}
+                {{ recordsui.expense_form(households, users, record) }}
+            {% endif %}
+        </div>
+    </dialog>
+{% endfor %}
+
+<dialog class="ht-dialog ht-dialog--wide" id="{{ type }}-new">
+    <div class="ht-dialog__inner">
+        <button class="ht-dialog__close" data-dialog-close>&times;</button>
+        <h2>{{ create_label }}</h2>
+        {% if type == 'tasks' %}
+            {{ recordsui.task_form(households, users) }}
+        {% elseif type == 'events' %}
+            {{ recordsui.event_form(households, users) }}
+        {% else %}
+            {{ recordsui.expense_form(households, users) }}
+        {% endif %}
+    </div>
+</dialog>
+{% endblock %}

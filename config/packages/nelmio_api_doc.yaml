@@ -1,0 +1,54 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: HomeTab API
+            description: |
+                API REST de **HomeTab**, aplicacio de gestio de convivencia en llars compartides.
+                Aquesta especificacio es genera des de les rutes Symfony reals amb NelmioApiDocBundle.
+
+                ## Autenticació
+
+                Tots els endpoints excepte login, verificacio 2FA, registre, feedback, recuperacio de contrasenya i Swagger requereixen un JWT Bearer token.
+
+                1. Fes `POST /api/login_check` amb `username` (email) i `password`.
+                2. Si no tens 2FA, reps directament el `token`.
+                3. Afegeix `Authorization: Bearer <token>` a cada petició.
+
+                ## Entorns
+                - **Local**: `http://localhost:8000/api`
+                - **DEV/PROD**: depenen dels dominis configurats al deploy.
+
+                ## Relacio amb MkDocs
+                Swagger documenta el contracte viu de l'API. MkDocs explica els fluxos, decisions tecniques, exemples de codi i operacio del projecte.
+
+            version: '1.0.0'
+            contact:
+                name: GenSync — Grup 6
+        tags:
+            - name: Autenticacio
+              description: Login, 2FA i recuperacio de contrasenya.
+            - name: Llars
+              description: Gestio de llars, membres, ordre i codis d'invitacio.
+            - name: Recursos de llar
+              description: Tasques, despeses, events, chat i multimedia.
+            - name: Usuari
+              description: Perfil, notificacions i preferencies.
+            - name: Integracions
+              description: Feedback, assistent IA i serveis externs.
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - Bearer: []
+
+    areas:
+        default:
+            path_patterns:
+                - ^/api(?!/doc(?:\.json)?$)
+            host_patterns: []
+
+    html_config:
+        assets_mode: bundle

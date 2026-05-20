@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% if user.id %}Editar{% else %}Nou{% endif %} usuari · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Admin</div>
+        <h1 class="ht-display">{% if user.id %}Editar usuari{% else %}Nou usuari{% endif %}</h1>
+    </div>
+    <a href="{{ path('app_admin_users') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-arrow-left"></span> Llistat</a>
+</div>
+
+<div class="ht-card" style="max-width:720px;">
+    {{ form_start(form) }}
+        {{ form_row(form.firstName, { label: 'Nom *' }) }}
+        {{ form_row(form.lastName, { label: 'Cognom *' }) }}
+        {{ form_row(form.email, { label: 'Email *' }) }}
+        {{ form_row(form.phoneNumber) }}
+        {{ form_row(form.bio) }}
+        {% if form.household is defined %}
+            {{ form_row(form.household) }}
+        {% endif %}
+        {% if form.role is defined %}
+            {{ form_row(form.role) }}
+        {% endif %}
+        {% if form.isActive is defined %}
+            {{ form_row(form.isActive) }}
+        {% endif %}
+        {{ form_row(form.plainPassword, { label: user.id ? 'Nova contrasenya (opcional)' : 'Contrasenya *' }) }}
+        {% if user.id %}
+            <p class="ht-muted" style="font-size:0.85rem;margin-top:calc(-1 * var(--space-2));margin-bottom:var(--space-4);">Deixa la contrasenya en blanc si no la vols canviar.</p>
+        {% endif %}
+
+        {% if form.roles is defined %}
+            <div class="ht-field">
+                {{ form_label(form.roles) }}
+                {{ form_errors(form.roles) }}
+                {% for child in form.roles %}
+                    <div class="ht-checkbox-row">
+                        {{ form_widget(child) }}
+                        {{ form_label(child, null, { label_attr: { class: 'ht-checkbox-label' } }) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="ht-actions" style="margin-top:var(--space-6); justify-content:space-between; width:100%;">
+            <a href="{{ path('app_admin_users') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-times"></span> Cancel·lar</a>
+            <button type="submit" class="ht-btn ht-btn--primary"><span class="pi pi-check"></span> Guardar</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

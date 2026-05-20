@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nova tasca · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Tasques</div>
+        <h1 class="ht-display">Nova tasca</h1>
+    </div>
+    <a href="{{ path('app_task_index') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-arrow-left"></span> Llistat</a>
+</div>
+
+<div class="ht-card" style="max-width:720px;">
+    {{ include('task/_form.html.twig') }}
+</div>
+{% endblock %}

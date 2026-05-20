@@ -1,0 +1,392 @@
+backend:
+  language: Idioma
+  language_es: Castella
+  language_ca: Catala
+  language_en: English
+  nav_label: Navegacio principal
+  nav:
+    tabs: Els meus Tabs
+    admin: Administrar
+    houses: Cases
+    users: Usuaris
+    tasks: Tasques
+    events: Esdeveniments
+    expenses: Despeses
+    chats: Xats
+    sql_ai: IA SQL
+    sql_console: Consola SQL
+    docs: Documentacio
+    home: Inici
+    profile: Perfil
+    logout: Sortir
+  theme:
+    toggle: Canviar mode
+    title: Tema
+    paper: Paper
+    grid: Quadricula
+    lines: Linies
+    plain: Llis
+    clay: Argila
+    matcha: Matcha
+    ocean: Ocea
+    lavender: Lavanda
+    carbon: Carbo
+    coral: Coral
+    custom: El teu color
+    choose_custom: Tria el teu color
+  household:
+    current: Casa actual
+    change: Canviar casa
+    none: No hi ha cases disponibles
+  chat:
+    aria: Xat de cases
+    open: Obrir xat
+    back: Tornar
+    title: Xats
+    subtitle: Les teves cases
+    close: Tancar
+    admin: Gestionar xats com a admin
+    write: Escriu un missatge...
+    send: Enviar
+  footer: la teva llibreta digital de la llar
+auth:
+  login_title: Entrar
+  welcome_tag: Benvinguda a casa
+  subtitle: Acces exclusiu per a superadministradors
+  email: Email
+  password: Contrasenya
+  submit: Entrar
+  backend_denied_title: Acces reservat
+  backend_denied_text: El backend nomes esta disponible per a superadministradors.
+  superadmin_only: Nomes el compte superadmin pot entrar al backend.
+  two_factor_title: Verificacio en dos passos
+  security_tag: Seguretat
+  stronger_security_tag: Mes seguretat
+  code_label: Codi
+  verify_code: Verificar codi
+  access_code_title: Codi d'acces
+  access_code_description: Introdueix el codi que t'acabem d'enviar per correu.
+  invalid_code: Codi incorrecte o caducat.
+  enable_2fa_title: Activar 2FA
+  enable_2fa_description: Introdueix el codi per activar la verificacio en dos passos.
+  two_factor_offer_title: Verificacio en dos passos
+  two_factor_offer_description: El teu compte encara no te 2FA. Pots activar-lo amb un codi enviat al teu correu.
+  enable_2fa: Activar 2FA
+  not_now: Ara no
+  two_factor_enabled: Verificacio en dos passos activada.
+registration:
+  disabled: El registre web del backend esta desactivat. Fes servir el compte superadmin.
+
+admin:
+  dashboard:
+    title: Els meus Tabs
+    subtitle: Selecciona a quina casa vols entrar avui.
+    hint: Tauler administratiu amb acces a totes les cases
+    members: membre
+    members_plural: membres
+    no_houses: Encara no hi ha cases creades.
+    create_tab: Crear nou Tab
+    create_tab_meta: Alta rapida de casa
+    new_tab_title: Nou Tab
+    house_section: Casa
+    house_name: Nom
+    invite_code: Codi d'invitacio
+    create_house: Crear casa
+  household:
+    nav_aria: Navegacio de la casa
+    back: Els meus Tabs
+    house_label: Casa
+    section_summary: Resum
+    section_expenses: Despeses
+    section_tasks: Tasques
+    section_calendar: Calendari
+    section_settings: Config
+    summary_title: Resum Mensual
+    summary_intro: "Aqui tens un cop d'ull rapid de com va el mes, %name%."
+    spent_this_month: Gastat aquest mes
+    pending_payment: Pendent de pagament
+    tasks_card: Tasques
+    completed: Completades
+    no_pending_tasks: No hi ha tasques pendents.
+    events_card: Propers Esdeveniments
+    no_events: Sense esdeveniments programats.
+    admin_card: Administracio
+    members_linked: Usuaris vinculats a la casa
+    invite_code_label: Codi d'invitacio
+    expenses_title: Control de Despeses
+    pending_label: Pendent
+    new_expense: Nova despesa
+    col_name: Nom
+    col_type: Tipus
+    col_category: Categoria
+    col_periodicity: Periodicitat
+    col_amount: Import
+    col_payments: Pagaments
+    col_status: Estat
+    col_actions: Accions
+    type_individual: Individual
+    type_shared: Conjunt
+    paid_by: "Pago "
+    participants: participants
+    no_participants: Sense participants
+    paid: Pagat
+    pending: Pendent
+    no_expenses: No hi ha registres financers.
+    new_expense_dialog: Nova despesa
+    edit_expense_dialog: Editar despesa
+    tasks_title: Tauler de Tasques
+    new_task: Nova tasca
+    todo_col: Per Fer
+    done_col: Completades
+    no_tasks_clean: Tot net i al dia.
+    no_tasks_done: Encara no hi ha tasques fetes.
+    unassigned: Sense assignar
+    new_task_dialog: Nova tasca
+    edit_task_dialog: Editar tasca
+    calendar_title: Calendari General
+    new_event: Nou esdeveniment
+    weekdays: "DLL,DIM,DME,DJO,DIV,DIS,DIG"
+    edit_event_dialog: Editar esdeveniment
+    delete_event: Eliminar esdeveniment
+    settings_title: Configuracio de la Casa
+    edit_code: Editar codi
+    invite_code_title: Codi d'Invitacio
+    invite_share: Comparteix aquest codi amb els teus companys.
+    members_title: Membres
+    no_members: No hi ha membres en aquesta casa.
+    role_owner: Propietari
+    invite_code_dialog: Codi d'invitacio
+    code_label: Codi
+    save: Desar
+  expense_form:
+    basic_title: Dades basiques
+    name: Nom
+    amount: Import
+    category: Categoria
+    category_placeholder: "Factures, menjar, oci..."
+    add_due_date: Afegir data limit
+    due_date: Data limit
+    description: Descripcio
+    payment_title: Pagament i membres
+    payment_type: Tipus de pagament
+    shared: Pagament conjunt
+    individual: Pagament individual
+    paid_by: Pagat per
+    select_member: Selecciona membre
+    participants_label: Participants del pagament conjunt
+    not_participating: No participen
+    participating: Participen
+    payment_status: Estat de pagament per persona
+    not_paid: No pagat
+    paid: Pagat
+    individual_complete: Pagament individual completat
+    periodicity_title: Periodicitat
+    repeat: Repeticio
+    no_repeat: Sense periodicitat
+    monthly: Mensual
+    weekly: Setmanal
+    daily: Diari
+    payment_date: Data de pagament
+    month_day: Dia del mes
+    weekday: Dia de la setmana
+    select: Selecciona
+    weekday_1: Dilluns
+    weekday_2: Dimarts
+    weekday_3: Dimecres
+    weekday_4: Dijous
+    weekday_5: Divendres
+    weekday_6: Dissabte
+    weekday_7: Diumenge
+    time: Hora
+    save: Desar
+  task_form:
+    info_title: Informacio
+    name: Nom
+    category: Categoria
+    description: Descripcio
+    plan_title: Planificacio
+    assigned_to: Assignada a
+    priority: Prioritat
+    priority_low: Baixa
+    priority_medium: Mitja
+    priority_high: Alta
+    due_date: Data limit
+    completed: Completada
+    save: Desar tasca
+  event_form:
+    title: Esdeveniment
+    name: Nom
+    location: Lloc
+    start: Inici
+    end: Fi
+    color: Color
+    description: Descripcio
+    participants_title: Participants
+    save: Desar esdeveniment
+    delete: Eliminar esdeveniment
+  records:
+    super_admin: Super Admin
+    global_view: "Vista global amb filtres per casa, usuari i estat."
+    back: Els meus Tabs
+    control: Control de
+    total: "Total:"
+    search: Cercar
+    search_placeholder: Titol
+    house: Casa
+    all_houses: Totes
+    assigned_to: Assignat a
+    user: Usuari
+    all_users: Tots
+    status: Estat
+    all_status: Tots
+    active: Actius
+    inactive: Baixa
+    filter: Filtrar
+    clear: Netejar
+    col_id: ID
+    col_title: Titol
+    col_house: Casa
+    col_assigned: Assignat
+    col_payment: Pagament
+    col_creator: Creador
+    col_detail: Detall
+    col_status: Estat
+    col_dates: Alta/Baixa
+    col_actions: Accions
+    priority: "Prioritat:"
+    expires: "Vence:"
+    amount: "Import:"
+    category: "Categoria:"
+    start: "Inici:"
+    location: "Lloc:"
+    active_badge: Actiu
+    inactive_badge: Baixa
+    joined: "Alta:"
+    disabled: "Baixa:"
+    view: Veure detall
+    edit: Editar
+    no_records: No hi ha registres per a aquests filtres.
+    detail_house: Casa
+    detail_assigned: Assignat
+    detail_priority: Prioritat
+    detail_due: Data limit
+    detail_status: Estat
+    detail_amount: Import
+    detail_type: Tipus
+    detail_paid: Data de pagament
+    detail_periodicity: Periodicitat
+    detail_creator: Creador
+    detail_start: Inici
+    detail_end: Fi
+    detail_location: Lloc
+    detail_description: Descripcio
+    detail_payment_status: Estat de pagament
+    detail_participants: Participants
+    no_participants: Sense participants
+    task_completed: Completada
+    task_pending: Pendent
+    type_individual: Individual
+    type_shared: Conjunt
+    no_periodicity: Sense periodicitat
+    edit_task: tasca
+    edit_event: esdeveniment
+    edit_expense: despesa
+    new_task: Nova tasca
+    new_event: Nou esdeveniment
+    new_expense: Nova despesa
+    house_info: Casa i informacio
+    select_house: Selecciona una casa
+    select_member: Selecciona membre
+    planning: Planificacio
+    periodicity_placeholder: "Unica, setmanal..."
+    available: Disponibles
+    selected: Seleccionats
+    add: Afegir
+    remove: Treure
+    move_participants: Moure participants
+    participants_label: Participants del pagament conjunt
+    not_participating: No participen
+    participating: Participen
+    payment_status: Estat de pagament per persona
+    not_paid: No pagat
+    paid: Pagat
+    individual_complete: Pagament individual completat
+  households:
+    title: Cases
+    subtitle: "Gestiona les cases, codis d'invitacio i icones des d'un sol tauler."
+    back: Els meus Tabs
+    new_house: Nova casa
+    edit_house: Editar casa
+    section_title: Control de Cases
+    search_placeholder: Nom o codi
+    col_house: Casa
+    col_invite: Codi
+    col_members: Membres
+    col_activity: Activitat
+    records_hint: "%tasks% tasques - %events% esdeveniments - %expenses% despeses"
+    with_activity: Amb activitat
+    empty: Buida
+    form_title: Dades de la casa
+    name: Nom
+    invite_code: Codi d'invitacio
+    photo_title: Foto de la casa
+    upload_photo: Pujar foto
+    remove_photo: Treure foto actual
+    icon_title: Icona
+    save: Desar casa
+    delete: Eliminar casa
+    confirm_delete: "Eliminar aquesta casa? Nomes es pot borrar si no te activitat vinculada."
+    no_houses: No hi ha cases per a aquests filtres.
+  users:
+    title: Usuaris
+    subtitle: "Gestiona perfils, rols, avatars i acces des d'un sol tauler."
+    back: Els meus Tabs
+    new_user: Nou usuari
+    section_title: Control d'Usuaris
+    total: "Total:"
+    search: Cercar
+    search_placeholder: Nom o email
+    house: Casa
+    all_houses: Totes
+    role: Rol
+    all_roles: Tots
+    status: Estat
+    all_status: Tots
+    active: Actius
+    inactive: Inactius
+    filter: Filtrar
+    clear: Netejar
+    col_user: Usuari
+    col_email: Email
+    col_phone: Telefon
+    col_houses: Cases
+    col_role: Rol
+    col_status: Estat
+    col_dates: Alta/Baixa
+    col_actions: Accions
+    no_house: Sense casa
+    active_badge: Actiu
+    inactive_badge: Inactiu
+    joined: "Alta:"
+    disabled: "Baixa:"
+    edit: Editar
+    deactivate: Donar de baixa
+    confirm_deactivate: "Donar de baixa aquest usuari?"
+    no_users: No hi ha usuaris registrats.
+    edit_dialog: Editar usuari
+    identity_title: Identitat
+    name: Nom
+    surname: Cognoms
+    email: Email
+    phone: Telefon
+    bio: Bio
+    photo_title: Foto i avatar
+    upload_photo: Pujar foto
+    zoom: Zoom
+    remove_photo: Treure foto actual
+    access_title: Acces
+    role_label: Rol
+    new_password: Nova contrasenya
+    new_password_placeholder: Deixar buit per no canviar
+    is_active: Usuari actiu
+    save: Desar canvis

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nova despesa · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Gastos</div>
+        <h1 class="ht-display">Nova despesa</h1>
+    </div>
+    <a href="{{ path('app_expense_index') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-arrow-left"></span> Tornar al llistat</a>
+</div>
+
+<div class="ht-card" style="max-width:720px;">
+    {{ include('expense/_form.html.twig') }}
+</div>
+{% endblock %}

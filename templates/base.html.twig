@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="{{ app.locale|default('es') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HomeTab{% endblock %}</title>
+    <link rel="icon" href="{{ asset('hometab-favicon-white.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@7.0.0/primeicons.css">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+{% set ht_route = app.request.attributes.get('_route') %}
+{% set ht_is_super_admin = is_granted('ROLE_SUPER_ADMIN') %}
+{% set ht_is_adminish = is_granted('ROLE_ADMIN') or ht_is_super_admin %}
+<body class="ht-body ht-shell {{ ht_route starts with 'app_admin' ? 'ht-admin-mode' : '' }}">
+    {% set ht_auth_routes = ['app_login', 'app_register', 'app_2fa_web_verify', 'app_2fa_web_verify_submit', 'app_2fa_web_offer', 'app_2fa_web_enable', 'app_2fa_web_enable_submit'] %}
+    {% if app.user and ht_route not in ht_auth_routes %}
+        <header class="ht-header">
+            <nav class="ht-nav" aria-label="{{ 'backend.nav_label'|trans }}">
+                {% set ht_dash_path = path(ht_is_adminish ? 'app_admin_dashboard' : 'app_user_dashboard') %}
+                {% set casa = app.user.household %}
+                <a class="ht-brand" href="{{ ht_dash_path }}">
+                    <img class="ht-brand__logo" src="{{ asset('hometab-logo.svg') }}" alt="" aria-hidden="true">
+                    <span class="ht-brand__text">HomeTab</span>
+                </a>
+                <div class="ht-nav__links">
+                    {% if ht_is_super_admin %}
+                        <a href="{{ path('app_admin_dashboard') }}" class="ht-nav__link {{ ht_route in ['app_admin_dashboard', 'app_admin_household'] ? 'is-active' : '' }}">
+                            <span class="pi pi-th-large"></span><span>{{ 'backend.nav.tabs'|trans }}</span>
+                        </a>
+                        <details class="ht-nav-dropdown">
+                            <summary class="ht-nav__link {{ ht_route starts with 'app_admin_user' or ht_route in ['app_admin_users', 'app_admin_households', 'app_admin_tasks', 'app_admin_events', 'app_admin_expenses'] ? 'is-active' : '' }}">
+                                <span class="pi pi-sliders-h"></span><span>{{ 'backend.nav.admin'|trans }}</span><span class="pi pi-chevron-down"></span>
+                            </summary>
+                            <div class="ht-nav-dropdown__menu">
+                                <a href="{{ path('app_admin_households') }}"><span class="pi pi-home"></span> {{ 'backend.nav.houses'|trans }}</a>
+                                <a href="{{ path('app_admin_users') }}"><span class="pi pi-users"></span> {{ 'backend.nav.users'|trans }}</a>
+                                <a href="{{ path('app_admin_tasks') }}"><span class="pi pi-check-square"></span> {{ 'backend.nav.tasks'|trans }}</a>
+                                <a href="{{ path('app_admin_events') }}"><span class="pi pi-calendar"></span> {{ 'backend.nav.events'|trans }}</a>
+                                <a href="{{ path('app_admin_expenses') }}"><span class="pi pi-wallet"></span> {{ 'backend.nav.expenses'|trans }}</a>
+                                <a href="{{ path('app_admin_chats') }}"><span class="pi pi-comments"></span> {{ 'backend.nav.chats'|trans }}</a>
+                            </div>
+                        </details>
+                        <details class="ht-nav-dropdown">
+                            <summary class="ht-nav__link {{ ht_route in ['app_admin_chat', 'app_admin_sql', 'app_admin_documentation', 'app_admin_documentation_file'] ? 'is-active' : '' }}">
+                                <span class="pi pi-database"></span><span>SQL</span><span class="pi pi-chevron-down"></span>
+                            </summary>
+                            <div class="ht-nav-dropdown__menu">
+                                <a href="{{ path('app_admin_chat') }}"><span class="pi pi-comment"></span> {{ 'backend.nav.sql_ai'|trans }}</a>
+                                <a href="{{ path('app_admin_sql') }}"><span class="pi pi-code"></span> {{ 'backend.nav.sql_console'|trans }}</a>
+                                <a href="{{ path('app_admin_documentation') }}"><span class="pi pi-book"></span> {{ 'backend.nav.docs'|trans }}</a>
+                            </div>
+                        </details>
+                    {% else %}
+                        <a href="{{ ht_dash_path }}" class="ht-nav__link {{ ht_route in ['app_admin_dashboard', 'app_user_dashboard'] ? 'is-active' : '' }}">
+                            <span class="pi pi-th-large"></span><span>{{ 'backend.nav.home'|trans }}</span>
+                        </a>
+                        <a href="{{ path('app_task_index') }}" class="ht-nav__link {{ ht_route starts with 'app_task' ? 'is-active' : '' }}">
+                            <span class="pi pi-check-square"></span><span>{{ 'backend.nav.tasks'|trans }}</span>
+                        </a>
+                        <a href="{{ path('app_event_index') }}" class="ht-nav__link {{ ht_route starts with 'app_event' ? 'is-active' : '' }}">
+                            <span class="pi pi-calendar"></span><span>{{ 'backend.nav.events'|trans }}</span>
+                        </a>
+                        <a href="{{ path('app_expense_index') }}" class="ht-nav__link {{ ht_route starts with 'app_expense' ? 'is-active' : '' }}">
+                            <span class="pi pi-wallet"></span><span>{{ 'backend.nav.expenses'|trans }}</span>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="ht-toolbar">
+                    <button type="button" class="ht-btn ht-btn--ghost ht-btn--icon-only" id="ht-theme-toggle" aria-label="{{ 'backend.theme.toggle'|trans }}" title="{{ 'backend.theme.toggle'|trans }}"><span class="pi pi-sun"></span></button>
+                    <details class="ht-details">
+                        <summary class="ht-btn ht-btn--ghost" aria-label="{{ 'backend.language'|trans }}">
+                            <span class="pi pi-language"></span> {{ app.locale|upper }}
+                        </summary>
+                        <div class="ht-details__menu">
+                            {% set ht_route_params = app.request.attributes.get('_route_params')|default({}) %}
+                            {% for code in ['es', 'ca', 'en'] %}
+                                <a href="{{ path(ht_route, ht_route_params|merge(app.request.query.all)|merge({_locale: code})) }}" aria-current="{{ app.locale == code ? 'page' : 'false' }}">
+                                    <span class="pi {{ app.locale == code ? 'pi-check' : 'pi-circle' }}"></span> {{ ('backend.language_' ~ code)|trans }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </details>
+                    <details class="ht-details">
+                        <summary class="ht-details__summary">
+                            <span class="ht-header-avatar">
+                                {% if app.user.avatar %}
+                                    <img src="{{ asset(app.user.avatar|trim('/', 'left')) }}" alt="">
+                                {% else %}
+                                    <span class="pi {{ app.user.avatarIcon|default('pi-user') }}"></span>
+                                {% endif %}
+                            </span>
+                            {{ app.user.fullName }}
+                            <span class="pi pi-chevron-down" style="opacity:.6;"></span>
+                        </summary>
+                        <div class="ht-details__menu">
+                            {% set switch_households = ht_is_super_admin ? admin_households() : app.user.households %}
+                            {% if switch_households|length > 0 %}
+                                <form class="ht-menu-select-form" data-house-switch>
+                                    <label for="house-switch">{{ 'backend.household.current'|trans }}</label>
+                                    <select id="house-switch" class="ht-input">
+                                        {% for switch_house in switch_households %}
+                                            <option value="{{ path(ht_is_adminish ? 'app_admin_household' : 'app_user_dashboard', ht_is_adminish ? {id: switch_house.id} : {}) }}" {{ casa and switch_house.id == casa.id ? 'selected' : '' }}>{{ switch_house.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            {% else %}
+                                <form class="ht-menu-select-form">
+                                    <label for="house-switch-empty">{{ 'backend.household.change'|trans }}</label>
+                                    <select id="house-switch-empty" class="ht-input" disabled>
+                                        <option>{{ 'backend.household.none'|trans }}</option>
+                                    </select>
+                                </form>
+                            {% endif %}
+                            <a href="{{ path('app_profile') }}"><span class="pi pi-user-edit"></span> {{ 'backend.nav.profile'|trans }}</a>
+                            <a href="{{ path('app_logout') }}"><span class="pi pi-sign-out"></span> {{ 'backend.nav.logout'|trans }}</a>
+                        </div>
+                    </details>
+                </div>
+            </nav>
+        </header>
+        <section class="ht-chat-widget" data-chat-widget aria-label="{{ 'backend.chat.aria'|trans }}">
+            <button class="ht-chat-fab" type="button" data-chat-toggle aria-label="{{ 'backend.chat.open'|trans }}"><span class="pi pi-comments"></span></button>
+            <div class="ht-chat-panel" data-chat-panel hidden>
+                <header class="ht-chat-panel__head" data-chat-drag>
+                    <button class="ht-chat-back" type="button" data-chat-back hidden aria-label="{{ 'backend.chat.back'|trans }}"><span class="pi pi-arrow-left"></span></button>
+                    <div>
+                        <strong data-chat-title>{{ 'backend.chat.title'|trans }}</strong>
+                        <small data-chat-subtitle>{{ 'backend.chat.subtitle'|trans }}</small>
+                    </div>
+                    <button class="ht-chat-close" type="button" data-chat-close aria-label="{{ 'backend.chat.close'|trans }}"><span class="pi pi-times"></span></button>
+                </header>
+                {% if ht_is_super_admin %}
+                    <a class="ht-chat-admin-link" href="{{ path('app_admin_chats') }}"><span class="pi pi-shield"></span> {{ 'backend.chat.admin'|trans }}</a>
+                {% endif %}
+                <div class="ht-chat-houses" data-chat-houses></div>
+                <div class="ht-chat-room" data-chat-room hidden>
+                    <div class="ht-chat-messages" data-chat-messages></div>
+                    <div class="ht-chat-typing" data-chat-typing hidden></div>
+                    <form class="ht-chat-compose" data-chat-form>
+                        <div class="ht-chat-emoji-row" data-chat-emojis>
+                            {% for emoji in ['😊', '😂', '❤️', '👍', '🙏', '🎉'] %}
+                                <button type="button" data-emoji="{{ emoji }}">{{ emoji }}</button>
+                            {% endfor %}
+                        </div>
+                        <div class="ht-chat-input-row">
+                            <textarea class="ht-input" data-chat-input rows="1" maxlength="1000" placeholder="{{ 'backend.chat.write'|trans }}" autocomplete="off"></textarea>
+                            <button class="ht-btn ht-btn--primary ht-btn--icon-only" type="submit" aria-label="{{ 'backend.chat.send'|trans }}"><span class="pi pi-send"></span></button>
+                        </div>
+                    </form>
+                </div>
+                <p class="ht-chat-empty" data-chat-empty hidden></p>
+            </div>
+        </section>
+        <button class="ht-theme-fab" id="ht-config-open" type="button" aria-label="{{ 'backend.theme.title'|trans }}"><span class="pi pi-palette"></span></button>
+        <aside class="ht-config-drawer" id="ht-config-drawer" hidden>
+            <h2>{{ 'backend.theme.title'|trans }}</h2>
+            <section>
+                <span class="ht-config-label">{{ 'backend.theme.paper'|trans }}</span>
+                <div class="ht-config-options">
+                    <button class="ht-paper-option cuadricula" type="button" data-paper="cuadricula" title="{{ 'backend.theme.grid'|trans }}"></button>
+                    <button class="ht-paper-option lineas" type="button" data-paper="lineas" title="{{ 'backend.theme.lines'|trans }}"></button>
+                    <button class="ht-paper-option liso" type="button" data-paper="liso" title="{{ 'backend.theme.plain'|trans }}"></button>
+                </div>
+            </section>
+            <section>
+                <span class="ht-config-label">{{ 'backend.theme.title'|trans }}</span>
+                <div class="ht-config-options">
+                    <button class="ht-accent-circle" type="button" data-accent="#ea580c" style="background:#ea580c" title="{{ 'backend.theme.clay'|trans }}"></button>
+                    <button class="ht-accent-circle" type="button" data-accent="#16a34a" style="background:#16a34a" title="Matcha"></button>
+                    <button class="ht-accent-circle" type="button" data-accent="#2563eb" style="background:#2563eb" title="{{ 'backend.theme.ocean'|trans }}"></button>
+                    <button class="ht-accent-circle" type="button" data-accent="#9333ea" style="background:#9333ea" title="{{ 'backend.theme.lavender'|trans }}"></button>
+                    <button class="ht-accent-circle" type="button" data-accent="#44403c" style="background:#44403c" title="{{ 'backend.theme.carbon'|trans }}"></button>
+                    <button class="ht-accent-circle" type="button" data-accent="#f43f5e" style="background:#f43f5e" title="Coral"></button>
+                </div>
+            </section>
+            <section>
+                <span class="ht-config-label">{{ 'backend.theme.custom'|trans }}</span>
+                <label class="ht-manual-color" title="{{ 'backend.theme.choose_custom'|trans }}">
+                    <input type="color" data-accent-input aria-label="{{ 'backend.theme.choose_custom'|trans }}">
+                    <span class="pi pi-pencil"></span>
+                </label>
+            </section>
+        </aside>
+    {% endif %}
+
+    <main class="ht-main">
+        {% block flashes %}
+            {% for label, messages in app.flashes %}
+                {% set flash_modifier = ({
+                    success: 'ht-flash--success',
+                    danger: 'ht-flash--danger',
+                    error: 'ht-flash--danger',
+                    warning: 'ht-flash--warning',
+                    info: 'ht-flash--info'
+                })[label]|default('ht-flash--info') %}
+                {% for message in messages %}
+                    <div class="ht-flash {{ flash_modifier }}" role="status">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock %}
+
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="ht-footer">
+        HomeTab © {{ 'now'|date('Y') }} — {{ 'backend.footer'|trans }}
+    </footer>
+
+    {% block javascripts %}
+        {% if app.user and ht_route not in ht_auth_routes %}
+            <script>
+                window.HomeTabChat = {
+                    mode: 'session',
+                    currentUserId: {{ app.user.id|json_encode|raw }},
+                    csrfToken: {{ csrf_token('chat_widget')|json_encode|raw }},
+                    endpoints: {
+                        households: {{ path('app_chat_widget_households')|json_encode|raw }},
+                        messages: {{ path('app_chat_widget_messages', {homeId: '__HOUSE_ID__'})|json_encode|raw }},
+                        typing: {{ path('app_chat_widget_typing_list', {homeId: '__HOUSE_ID__'})|json_encode|raw }}
+                    }
+                };
+            </script>
+        {% endif %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</body>
+</html>

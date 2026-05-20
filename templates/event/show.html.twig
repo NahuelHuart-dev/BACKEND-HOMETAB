@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Esdeveniment · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Esdeveniments</div>
+        <h1 class="ht-display">{{ event.title }}</h1>
+        <p class="ht-lead ht-muted">{{ event.startDate ? event.startDate|date('d/m/Y H:i') : '' }}{% if event.location %} · {{ event.location }}{% endif %}</p>
+    </div>
+    <div class="ht-actions">
+        <a href="{{ path('app_event_index') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-arrow-left"></span> Llistat</a>
+        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="ht-btn ht-btn--primary"><span class="pi pi-pencil"></span> Editar</a>
+    </div>
+</div>
+
+<div class="ht-grid" style="grid-template-columns: 1fr; gap: var(--space-4); max-width: 720px;">
+    <div class="ht-card">
+        <table class="ht-table">
+            <tbody>
+                <tr><th scope="row">Descripció</th><td>{{ event.description|default('—') }}</td></tr>
+                <tr><th scope="row">Inici</th><td>{{ event.startDate ? event.startDate|date('d/m/Y H:i') : '—' }}</td></tr>
+                <tr><th scope="row">Fi</th><td>{{ event.endDate ? event.endDate|date('d/m/Y H:i') : '—' }}</td></tr>
+                <tr><th scope="row">Tot el dia</th><td>{{ event.isAllDay ? 'Sí' : 'No' }}</td></tr>
+                <tr><th scope="row">Color</th><td>{% if event.color %}<span style="display:inline-block;width:1.25rem;height:1.25rem;border-radius:4px;vertical-align:middle;background:{{ event.color }};border:1px solid var(--color-border-strong);"></span> {{ event.color }}{% else %}—{% endif %}</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ht-card">
+        <p class="ht-lead ht-muted" style="margin:0 0 var(--space-3);">Eliminar</p>
+        {{ include('event/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tasques · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Feines de la llar</div>
+        <h1 class="ht-display">Tasques</h1>
+        <p class="ht-lead ht-muted">Prioritza i marca el que ja està fet</p>
+    </div>
+    <a href="{{ path('app_task_new') }}" class="ht-btn ht-btn--primary"><span class="pi pi-plus"></span> Nova tasca</a>
+</div>
+
+<div class="ht-card">
+    <div class="ht-table-wrap">
+        <table class="ht-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Títol</th>
+                    <th>Completada</th>
+                    <th>Creada</th>
+                    <th class="ht-table__actions">Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.id }}</td>
+                    <td><strong>{{ task.title }}</strong></td>
+                    <td>{% if task.completed %}<span class="ht-badge ht-badge--ok">Sí</span>{% else %}<span class="ht-badge ht-badge--neutral">Pendent</span>{% endif %}</td>
+                    <td>{{ task.createdAt ? task.createdAt|date('d/m/Y H:i') : '—' }}</td>
+                    <td class="ht-table__actions">
+                        <a href="{{ path('app_task_show', {'id': task.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Veure"><span class="pi pi-eye"></span></a>
+                        <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Editar"><span class="pi pi-pencil"></span></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="ht-muted" style="text-align:center;padding:var(--space-8);">No hi ha tasques.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

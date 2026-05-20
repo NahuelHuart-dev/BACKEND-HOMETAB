@@ -1,0 +1,103 @@
+site_name: HomeTab - Documentació tècnica
+site_description: Documentació tècnica, API, manual d'usuari i material final del projecte HomeTab de GenSync.
+site_author: GenSync — Grup 6
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+theme:
+  name: material
+  language: ca
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.expand
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Canvia a mode fosc
+    - scheme: slate
+      primary: deep orange
+      accent: green
+      toggle:
+        icon: material/weather-sunny
+        name: Canvia a mode clar
+extra:
+  generator: false
+  alternate:
+    - name: Català
+      link: /admin/documentacio/index.html
+      lang: ca
+    - name: English
+      link: /admin/documentacio/en/index.html
+      lang: en
+    - name: Español
+      link: /admin/documentacio/es/index.html
+      lang: es
+extra_css:
+  - stylesheets/extra.css
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+nav:
+  - Inici: index.md
+  - Manual d'usuari:
+      - Guia d'usuari: manual/usuari.md
+  - Presentació:
+      - Documentació de presentació: presentacio/documentacio-presentacio.md
+      - Evolució MVP → Final: presentacio/evolucio-mvp.md
+  - Tècnica:
+      - Arquitectura general: tecnica/arquitectura.md
+      - Mapa del projecte: tecnica/mapa-projecte.md
+      - Backend Symfony: tecnica/backend.md
+      - Frontend Vue: tecnica/frontend.md
+      - Seguretat i permisos: tecnica/seguretat.md
+      - Auditoria de seguretat: tecnica/auditoria-seguretat.md
+      - Testing i qualitat: tecnica/testing.md
+      - Model de dades: tecnica/base-dades.md
+      - Fluxos principals: tecnica/fluxos-principals.md
+      - Cobertura i deute tècnic: tecnica/cobertura-deute.md
+      - Desplegament local i producció: tecnica/desplegament-local-produccio.md
+      - Integració contínua (CI/CD): tecnica/integracio-continua.md
+      - Variables d'entorn: tecnica/variables-entorn.md
+      - Mòdul Digitalització i IA: tecnica/digitalitzacio-ia.md
+      - Guia backend admin i IA: tecnica/backend-admin-ai-guide.md
+  - API:
+      - Guia general: api/index.md
+      - Registre: api/register.md
+      - Autenticació i 2FA: api/auth.md
+      - Llars: api/households.md
+      - Tasques: api/tasks.md
+      - Despeses: api/expenses.md
+      - Esdeveniments: api/events.md
+      - Chat de llar: api/chat.md
+      - Notificacions: api/notifications.md
+      - Perfil: api/profile.md
+      - Multimèdia: api/multimedia.md
+      - Assistent IA: api/assistant.md
+  - Materials:
+      - Checklist final: materials/checklist-final.md
+      - Usuaris de prova: materials/usuaris-prova.md
+      - Decisions tècniques: materials/decisions.md
+      - Backlog i deute: materials/backlog.md

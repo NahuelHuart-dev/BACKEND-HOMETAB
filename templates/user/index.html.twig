@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuaris (Vue) · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Interactiu</div>
+        <h1 class="ht-display">Llistat d’usuaris</h1>
+        <p class="ht-lead ht-muted">Component marcat aquí (<code>#app</code>).</p>
+    </div>
+    <a href="{{ path('app_user_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> Panell</a>
+</div>
+
+<div class="ht-card">
+    <div id="app">
+        <user-list></user-list>
+    </div>
+</div>
+{% endblock %}

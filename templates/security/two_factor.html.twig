@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'auth.two_factor_title'|trans }} · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-auth">
+    <div class="ht-card ht-auth__card" style="position:relative;padding-top:var(--space-8);">
+        <div class="ht-tape" aria-hidden="true"></div>
+        <div class="ht-mini-tag">{{ 'auth.security_tag'|trans }}</div>
+        <h1 class="ht-display" style="text-align:center;">{{ title }}</h1>
+        <p class="ht-lead" style="text-align:center;">{{ description }}</p>
+
+        {% if error %}
+            <div class="ht-flash ht-flash--danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            <div class="ht-field">
+                <label for="twoFactorCode" class="form-label">{{ 'auth.code_label'|trans }}</label>
+                <input type="text" name="code" id="twoFactorCode" class="ht-input ht-mono-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required autofocus>
+            </div>
+            <button class="ht-btn ht-btn--primary ht-w-full" type="submit">
+                <span class="pi pi-shield"></span> {{ 'auth.verify_code'|trans }}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

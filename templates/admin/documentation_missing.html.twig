@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Documentacio tecnica | HomeTab{% endblock %}
+
+{% block body %}
+<section class="ht-admin-panel">
+    <div class="ht-admin-panel__title">
+        <h1>Documentacio tecnica</h1>
+        <p>La font MkDocs ja existeix al repositori, pero encara no s'ha generat el lloc estatic.</p>
+    </div>
+
+    <div class="ht-sql-result" style="margin-top: var(--space-4);">
+        <p><strong>Ruta del projecte MkDocs:</strong> <code>{{ mkdocsPath }}</code></p>
+        <p><strong>Comanda de build:</strong> <code>{{ buildCommand }}</code></p>
+        <p>Un cop generat, aquesta mateixa ruta servira el lloc MkDocs nomes per a usuaris amb <code>ROLE_SUPER_ADMIN</code>.</p>
+    </div>
+</section>
+{% endblock %}

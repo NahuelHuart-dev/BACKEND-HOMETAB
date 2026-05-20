@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.dashboard.title'|trans }} · Admin · HomeTab{% endblock %}
+
+{% block body %}
+<section class="ht-tabhub-hero">
+    <h1 class="ht-tabhub-title">{{ 'admin.dashboard.title'|trans }}</h1>
+    <p class="ht-tabhub-subtitle">{{ 'admin.dashboard.subtitle'|trans }}</p>
+    <p class="ht-tabhub-hint">{{ 'admin.dashboard.hint'|trans }}</p>
+</section>
+
+<div class="ht-postit-grid">
+    {% for household in households %}
+        <a class="ht-postit-card {{ loop.index is even ? 'rotate-right' : 'rotate-left' }} variant-house" href="{{ path('app_admin_household', {id: household.id}) }}">
+            <span class="ht-postit-tape" aria-hidden="true"></span>
+            {% if household.avatar %}
+                <img class="ht-postit-avatar" src="{{ asset(household.avatar|trim('/', 'left')) }}" alt="">
+            {% else %}
+                <span class="pi {{ household.avatarIcon starts with 'pi ' ? household.avatarIcon : 'pi ' ~ household.avatarIcon }} ht-postit-icon"></span>
+            {% endif %}
+            <strong class="ht-postit-label">{{ household.name }}</strong>
+            <small class="ht-postit-meta">{{ household.users|length }} {{ household.users|length == 1 ? 'admin.dashboard.members'|trans : 'admin.dashboard.members_plural'|trans }}</small>
+        </a>
+    {% else %}
+        <div class="ht-card">
+            <p class="ht-muted">{{ 'admin.dashboard.no_houses'|trans }}</p>
+        </div>
+    {% endfor %}
+    <button class="ht-postit-card ht-postit-card--create rotate-left" data-dialog-open="house-new" type="button">
+        <span class="ht-postit-tape" aria-hidden="true"></span>
+        <span class="pi pi-plus ht-postit-icon"></span>
+        <strong class="ht-postit-label">{{ 'admin.dashboard.create_tab'|trans }}</strong>
+        <small class="ht-postit-meta">{{ 'admin.dashboard.create_tab_meta'|trans }}</small>
+    </button>
+</div>
+
+<dialog class="ht-dialog" id="house-new">
+    <div class="ht-dialog__inner">
+        <button class="ht-dialog__close" data-dialog-close>&times;</button>
+        <h2>{{ 'admin.dashboard.new_tab_title'|trans }}</h2>
+        <form method="post" action="{{ path('app_admin_household_create') }}" class="ht-modal-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('admin_household_create') }}">
+            <section>
+                <h3>{{ 'admin.dashboard.house_section'|trans }}</h3>
+                <div class="ht-form-grid">
+                    <label>{{ 'admin.dashboard.house_name'|trans }}<input class="ht-input" name="name" required></label>
+                    <label>{{ 'admin.dashboard.invite_code'|trans }}<input class="ht-input ht-mono-input" name="inviteCode" maxlength="10" pattern="[A-Za-z0-9]{4,10}" placeholder="Auto"></label>
+                </div>
+            </section>
+            <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ 'admin.dashboard.create_house'|trans }}</button></footer>
+        </form>
+    </div>
+</dialog>
+{% endblock %}

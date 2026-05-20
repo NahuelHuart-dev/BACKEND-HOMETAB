@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Perfil · HomeTab{% endblock %}
+
+{% block body %}
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi {{ app.user.avatarIcon|default('pi-user') }}"></span><h1>Perfil de {{ app.user.firstName }}</h1></div>
+    </div>
+
+    <form method="post" class="ht-modal-form ht-profile-form" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{ csrf_token('profile' ~ app.user.id) }}">
+        <section>
+            <h3>Identidad</h3>
+            <div class="ht-form-grid">
+                <label>Nombre<input class="ht-input" name="firstName" value="{{ app.user.firstName }}" required></label>
+                <label>Apellidos<input class="ht-input" name="lastName" value="{{ app.user.lastName }}" required></label>
+                <label>Email<input class="ht-input" type="email" name="email" value="{{ app.user.email }}" required></label>
+                <label>Teléfono<input class="ht-input" name="phoneNumber" value="{{ app.user.phoneNumber }}"></label>
+                <label class="ht-span-2">Bio<textarea class="ht-input" name="bio">{{ app.user.bio }}</textarea></label>
+            </div>
+        </section>
+
+        <section>
+            <h3>Foto y avatar</h3>
+            <div class="ht-avatar-edit">
+                <span class="ht-avatar-lg" data-avatar-preview>{% if app.user.avatar %}<img src="{{ asset(app.user.avatar|trim('/', 'left')) }}" alt="">{% else %}<span class="pi {{ app.user.avatarIcon|default('pi-user') }}"></span>{% endif %}</span>
+                <div>
+                    {% if app.user.avatar %}
+                        <p class="ht-muted">Ahora estás usando una foto de perfil. Borra la foto para volver a elegir un avatar.</p>
+                        <button class="ht-btn ht-btn--danger-outline" type="submit" name="removeAvatar" value="1"><span class="pi pi-trash"></span> Borrar foto actual</button>
+                    {% else %}
+                        <input type="hidden" name="avatarCropData" data-avatar-crop-data>
+                        <label>Subir foto<input class="ht-input" type="file" name="avatarFile" accept="image/*"></label>
+                        <label class="ht-avatar-zoom" hidden data-avatar-zoom-wrap>Zoom<input type="range" min="1" max="2.4" step="0.05" value="1" data-avatar-zoom></label>
+                    {% endif %}
+                </div>
+            </div>
+            {% if not app.user.avatar %}
+                <div class="ht-avatar-picker">
+                    {% for icon in avatarIcons %}
+                        <label class="{{ app.user.avatarIcon == icon ? 'is-selected' : '' }}">
+                            <input type="radio" name="avatarIcon" value="{{ icon }}" {{ app.user.avatarIcon == icon ? 'checked' : '' }}>
+                            <span class="pi {{ icon }}"></span>
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+
+        <section>
+            <h3>Contraseña</h3>
+            <p class="ht-muted">Rellena estos campos solo si quieres cambiarla.</p>
+            <div class="ht-form-grid">
+                <label>Contraseña actual<input class="ht-input" type="password" name="currentPassword" autocomplete="current-password"></label>
+                <label>Nueva contraseña<input class="ht-input" type="password" name="newPassword" autocomplete="new-password"></label>
+                <label>Confirmar contraseña<input class="ht-input" type="password" name="confirmPassword" autocomplete="new-password"></label>
+            </div>
+        </section>
+
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> Guardar perfil</button></footer>
+    </form>
+</section>
+{% endblock %}

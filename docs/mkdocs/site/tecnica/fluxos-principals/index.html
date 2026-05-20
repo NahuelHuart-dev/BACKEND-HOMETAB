@@ -1,0 +1,2420 @@
+
+<!doctype html>
+<html lang="ca" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentació tècnica, API, manual d'usuari i material final del projecte HomeTab de GenSync.">
+      
+      
+        <meta name="author" content="GenSync — Grup 6">
+      
+      
+      
+        <link rel="prev" href="../base-dades/">
+      
+      
+        <link rel="next" href="../cobertura-deute/">
+      
+      
+        
+          <link rel="alternate" href="/admin/documentacio/index.html" hreflang="ca">
+        
+          <link rel="alternate" href="/admin/documentacio/en/index.html" hreflang="en">
+        
+          <link rel="alternate" href="/admin/documentacio/es/index.html" hreflang="es">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Fluxos principals - HomeTab - Documentació tècnica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fluxos-principals" class="md-skip">
+          Salta el contingut
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Capçalera">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-header__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HomeTab - Documentació tècnica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fluxos principals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode fosc"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode fosc" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode clar"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode clar" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecciona la llengua">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/index.html" hreflang="ca" class="md-select__link">
+              Català
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/en/index.html" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/es/index.html" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Neteja" aria-label="Neteja" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicialitzant cerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestanyes" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inici
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../manual/usuari/" class="md-tabs__link">
+          
+  
+  
+  Manual d'usuari
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../presentacio/documentacio-presentacio/" class="md-tabs__link">
+          
+  
+  
+  Presentació
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../arquitectura/" class="md-tabs__link">
+          
+  
+  
+  Tècnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../materials/checklist-final/" class="md-tabs__link">
+          
+  
+  
+  Materials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegació" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-nav__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HomeTab - Documentació tècnica
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inici
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manual d'usuari
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Manual d'usuari
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/usuari/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia d'usuari
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentació
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Presentació
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/documentacio-presentacio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentació de presentació
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/evolucio-mvp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolució MVP → Final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tècnica
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tècnica
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitectura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitectura general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mapa-projecte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapa del projecte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Symfony
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Vue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seguretat i permisos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auditoria-seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auditoria de seguretat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing i qualitat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base-dades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model de dades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fluxos principals
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fluxos principals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vista-global-de-fluxos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vista global de fluxos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-login-normal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Login normal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-login-amb-2fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Login amb 2FA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-crear-una-llar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Crear una llar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-unir-se-a-una-llar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Unir-se a una llar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-crear-una-tasca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Crear una tasca
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-crear-una-despesa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Crear una despesa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-crear-un-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Crear un event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-usar-el-xat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Usar el xat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-llegir-notificacions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Llegir notificacions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-crear-una-playlist-multimedia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Crear una playlist multimèdia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-editar-el-perfil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Editar el perfil
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-accedir-al-backoffice-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Accedir al backoffice (admin)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cobertura-deute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cobertura i deute tècnic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desplegament-local-produccio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desplegament local i producció
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integracio-continua/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integració contínua (CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables-entorn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables d'entorn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../digitalitzacio-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mòdul Digitalització i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend-admin-ai-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia backend admin i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autenticació i 2FA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/households/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Llars
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/expenses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Despeses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Esdeveniments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/chat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat de llar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notificacions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/profile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perfil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/multimedia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimèdia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assistent IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/checklist-final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/usuaris-prova/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usuaris de prova
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions tècniques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backlog i deute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vista-global-de-fluxos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vista global de fluxos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-login-normal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Login normal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-login-amb-2fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Login amb 2FA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-crear-una-llar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Crear una llar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-unir-se-a-una-llar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Unir-se a una llar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-crear-una-tasca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Crear una tasca
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-crear-una-despesa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Crear una despesa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-crear-un-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Crear un event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-usar-el-xat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Usar el xat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-llegir-notificacions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Llegir notificacions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-crear-una-playlist-multimedia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Crear una playlist multimèdia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-editar-el-perfil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Editar el perfil
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-accedir-al-backoffice-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Accedir al backoffice (admin)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fluxos-principals">Fluxos principals<a class="headerlink" href="#fluxos-principals" title="Permanent link">&para;</a></h1>
+<p>Aquesta secció documenta els fluxos d'ús crítics de l'aplicació HomeTab, indicant quines vistes Vue intervenen, quins endpoints s'utilitzen, quines entitats es modifiquen i quins tests els cobreixen.</p>
+<hr />
+<h2 id="vista-global-de-fluxos">Vista global de fluxos<a class="headerlink" href="#vista-global-de-fluxos" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    Login[Login / 2FA] --&gt; TabHub[TabHub]
+    TabHub --&gt; CrearLlar[Crear o unir-se a llar]
+    CrearLlar --&gt; Layout[HouseholdLayoutView]
+    Layout --&gt; Tasques[TasksTab]
+    Layout --&gt; Despeses[ExpensesTab]
+    Layout --&gt; Calendari[CalendarTab]
+    Layout --&gt; Multimedia[MultimediaTab]
+    Layout --&gt; Widgets[Chat + Notificacions]
+    Layout --&gt; Perfil[ProfileView]</code></pre>
+<h2 id="1-login-normal">1. Login normal<a class="headerlink" href="#1-login-normal" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>LoginView.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari escriu email i contrasenya i prem "Entrar".</li>
+<li><code>LoginView</code> fa <code>POST /api/login_check</code> amb <code>{ username, password }</code>.</li>
+<li>El backend valida credencials a <code>AuthController::loginCheck()</code>.</li>
+<li>Si la contrasenya és correcta i l'usuari és actiu:</li>
+<li>Si <code>twoFactorEnabled = false</code> → retorna JWT directament.</li>
+<li>Si <code>twoFactorEnabled = true</code> → retorna <code>{ requiresTwoFactor: true, challengeId }</code>.</li>
+<li>El frontend desa <code>token</code> a <code>localStorage</code> i redirigeix a <code>/tabhub</code>.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/login_check</code></p>
+<p><strong>Entitats llegides</strong>: <code>User</code></p>
+<p><strong>Permisos</strong>: públic (cap JWT requerit)</p>
+<p><strong>Tests</strong>:
+- Backend: <code>AuthApiTest</code> — login correcte, credencials incorrectes, usuari inactiu.
+- Frontend: <code>LoginView.test.js</code> — submit, error, redirecció si ja hi ha token.
+- E2E: <code>critical-flows.spec.js</code> — login complet al navegador.</p>
+<hr />
+<h2 id="2-login-amb-2fa">2. Login amb 2FA<a class="headerlink" href="#2-login-amb-2fa" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>LoginView.vue</code> (canvia d'step)</p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>Login inicial retorna <code>{ requiresTwoFactor: true, challengeId }</code>.</li>
+<li><code>LoginView</code> mostra el camp de codi (step 2).</li>
+<li>L'usuari rep el codi per correu electrònic (generat per <code>TwoFactorService</code>, enviat per <code>TwoFactorEmailSender</code>).</li>
+<li>L'usuari introdueix el codi i prem "Verificar".</li>
+<li>El frontend fa <code>POST /api/login/verify</code> amb <code>{ challengeId, code }</code>.</li>
+<li>El backend verifica el hash del codi a <code>TwoFactorCode</code>. Si és vàlid i no ha expirat, retorna JWT.</li>
+<li>El frontend desa el token i redirigeix.</li>
+</ol>
+<p><strong>Endpoints</strong>:
+- <code>POST /api/login_check</code> (step 1)
+- <code>POST /api/login/verify</code> (step 2)</p>
+<p><strong>Entitats modificades</strong>: <code>TwoFactorCode</code> (marcada com a usada)</p>
+<p><strong>Permisos</strong>: públic</p>
+<p><strong>Tests</strong>:
+- Backend: <code>AuthTwoFactorApiTest</code> — challengeId generat, codi invàlid retorna 400.
+- Frontend: <code>LoginView.test.js</code> — vista mostra el camp de codi quan <code>requiresTwoFactor</code>.
+- E2E: <code>critical-flows.spec.js</code> — gestiona el prompt 2FA si apareix.</p>
+<hr />
+<h2 id="3-crear-una-llar">3. Crear una llar<a class="headerlink" href="#3-crear-una-llar" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>TabHubView.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    actor U as Usuari
+    participant FE as TabHubView
+    participant API as ApiHouseholdController
+    participant DB as MySQL
+
+    U-&gt;&gt;FE: Escriu nom de llar
+    FE-&gt;&gt;API: POST /api/households/new
+    API-&gt;&gt;DB: Crea Household
+    API-&gt;&gt;DB: Crea HouseholdMember owner
+    API--&gt;&gt;FE: 201 {household, message}
+    FE--&gt;&gt;U: Mostra nova targeta</code></pre>
+<ol>
+<li>L'usuari fa clic a "Crear nova llar" al TabHub.</li>
+<li>Omple el nom (i opcionalment avatar o icona).</li>
+<li>El frontend fa <code>POST /api/households/new</code> amb <code>{ name, avatarIcon?, avatarCropData? }</code>.</li>
+<li>El backend (<code>ApiHouseholdController::new()</code>) crea la <code>Household</code> amb codi aleatori de 6 caràcters.</li>
+<li>Crea una <code>HouseholdMember</code> amb rol <code>owner</code> per a l'usuari autenticat.</li>
+<li>Retorna la llar creada amb <code>{ household: {...}, message: "..." }</code>.</li>
+<li>El frontend afegeix la nova targeta al TabHub.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/households/new</code></p>
+<p><strong>Entitats creades</strong>: <code>Household</code>, <code>HouseholdMember</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> (JWT requerit)</p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdApiTest</code> — creació correcta, nom buit retorna 400.
+- E2E: <code>critical-flows.spec.js</code> — crea llar via interfície.</p>
+<hr />
+<h2 id="4-unir-se-a-una-llar">4. Unir-se a una llar<a class="headerlink" href="#4-unir-se-a-una-llar" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>TabHubView.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari fa clic a "Unir-se" i introdueix el codi de 6 caràcters.</li>
+<li>El frontend fa <code>POST /api/households/join</code> amb <code>{ code }</code>.</li>
+<li>El backend cerca la llar pel codi (<code>findOneBy(['inviteCode' =&gt; $code])</code>).</li>
+<li>Comprova que l'usuari no sigui ja membre.</li>
+<li>Crea una <code>HouseholdMember</code> amb rol <code>member</code>.</li>
+<li>Retorna missatge d'èxit.</li>
+<li>El frontend afegeix la llar a les targetes.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/households/join</code></p>
+<p><strong>Entitats creades</strong>: <code>HouseholdMember</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code></p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdApiTest</code> — unió correcta, codi invàlid 404, ja membre 409.</p>
+<hr />
+<h2 id="5-crear-una-tasca">5. Crear una tasca<a class="headerlink" href="#5-crear-una-tasca" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>TasksTab.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant FE as TasksTab
+    participant API as ApiTaskController
+    participant Access as Membership check
+    participant DB as MySQL
+
+    FE-&gt;&gt;API: POST /api/households/{homeId}/tasks
+    API-&gt;&gt;Access: Verifica membre de la llar
+    Access--&gt;&gt;API: OK
+    API-&gt;&gt;DB: Persisteix Task
+    API--&gt;&gt;FE: 201 Task</code></pre>
+<ol>
+<li>L'usuari fa clic a "Nova tasca" dins la pestanya de tasques.</li>
+<li>Omple el formulari: títol, descripció, data, prioritat, periodicitat, assignat.</li>
+<li>El frontend fa <code>POST /api/households/{homeId}/tasks</code> amb el cos JSON.</li>
+<li>El backend (<code>ApiTaskController::new()</code>) verifica que l'usuari és membre de la llar.</li>
+<li>Crea la <code>Task</code> assignada a l'usuari indicat (o al creador per defecte).</li>
+<li>Retorna la tasca creada.</li>
+<li>El frontend afegeix la tasca a la llista.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/households/{homeId}/tasks</code></p>
+<p><strong>Entitats creades</strong>: <code>Task</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> + membre de la llar</p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdResourceApiTest</code> — tasca creada, títol buit 400, llar aliena 403.
+- E2E: crea tasca per API autenticada, comprova renderitzat a la pestanya.</p>
+<hr />
+<h2 id="6-crear-una-despesa">6. Crear una despesa<a class="headerlink" href="#6-crear-una-despesa" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>ExpensesTab.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant FE as ExpensesTab
+    participant API as ApiExpenseController
+    participant DB as MySQL
+
+    FE-&gt;&gt;API: POST /api/households/{homeId}/expenses
+    API-&gt;&gt;API: Valida llar i participants
+    API-&gt;&gt;DB: Crea Expense
+    API-&gt;&gt;DB: Crea ExpenseShare per participant
+    API--&gt;&gt;FE: 201 Expense + shares</code></pre>
+<ol>
+<li>L'usuari fa clic a "Nova despesa".</li>
+<li>Omple: títol, import, categoria, tipus (individual/compartida), participants.</li>
+<li>El frontend fa <code>POST /api/households/{homeId}/expenses</code>.</li>
+<li>El backend (<code>ApiExpenseController::new()</code>) valida la pertinença a la llar de tots els participants.</li>
+<li>Crea l'<code>Expense</code> i les <code>ExpenseShare</code> corresponents (una per participant, import dividit).</li>
+<li>Retorna la despesa amb tots els <code>shares</code>.</li>
+<li>El frontend actualitza la llista i el balance.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/households/{homeId}/expenses</code></p>
+<p><strong>Entitats creades</strong>: <code>Expense</code>, <code>ExpenseShare</code> (una per participant)</p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> + membre de la llar</p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdResourceApiTest</code> — despesa compartida, participant de llar aliena 400.</p>
+<hr />
+<h2 id="7-crear-un-event">7. Crear un event<a class="headerlink" href="#7-crear-un-event" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>CalendarTab.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant FE as CalendarTab
+    participant API as ApiEventController
+    participant DB as MySQL
+
+    FE-&gt;&gt;API: POST /api/households/{homeId}/events
+    API-&gt;&gt;API: Valida llar i participants
+    API-&gt;&gt;DB: Crea Event
+    API--&gt;&gt;FE: 201 Event</code></pre>
+<ol>
+<li>L'usuari fa clic a "Nou event" o en un dia del calendari.</li>
+<li>Omple: títol, data inici, data fi, ubicació, color, participants.</li>
+<li>El frontend fa <code>POST /api/households/{homeId}/events</code>.</li>
+<li>El backend (<code>ApiEventController::new()</code>) verifica que els participants pertanyen a la llar.</li>
+<li>Crea l'<code>Event</code> amb la llista de participants.</li>
+<li>Retorna l'event creat.</li>
+<li>El frontend situa l'event al calendari.</li>
+</ol>
+<p><strong>Endpoints</strong>: <code>POST /api/households/{homeId}/events</code></p>
+<p><strong>Entitats creades</strong>: <code>Event</code> (amb relació ManyToMany a <code>User</code>)</p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> + membre de la llar</p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdResourceApiTest</code> — event creat, participant invàlid 400.</p>
+<hr />
+<h2 id="8-usar-el-xat">8. Usar el xat<a class="headerlink" href="#8-usar-el-xat" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>HouseChatWidget.vue</code> (widget global)</p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari fa clic a la icona de xat disponible a totes les pestanyes de la llar.</li>
+<li>El widget es desplega (desktop: lateralment; mòbil: slide-up a pantalla completa).</li>
+<li>El frontend fa <code>GET /api/households/{homeId}/chat/messages</code> per carregar els missatges.</li>
+<li>L'usuari escriu un missatge i prem Enviar.</li>
+<li>El frontend fa <code>POST /api/households/{homeId}/chat/messages</code> amb <code>{ content }</code>.</li>
+<li>El backend (<code>ApiHouseholdChatController</code>) verifica que l'usuari és membre.</li>
+<li>Crea el <code>HouseholdMessage</code> i el retorna.</li>
+<li>El frontend afegeix el missatge al chat.</li>
+</ol>
+<p><strong>Endpoints</strong>:
+- <code>GET /api/households/{id}/chat/messages</code>
+- <code>POST /api/households/{id}/chat/messages</code></p>
+<p><strong>Entitats creades</strong>: <code>HouseholdMessage</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> + membre de la llar (comprovat per <code>HouseholdAccessService</code>)</p>
+<p><strong>Tests</strong>:
+- Backend: <code>HouseholdChatApiTest</code> — llistar, crear, llar aliena 403, missatge buit 400.
+- E2E: obre widget, envia missatge, comprova renderitzat.</p>
+<hr />
+<h2 id="9-llegir-notificacions">9. Llegir notificacions<a class="headerlink" href="#9-llegir-notificacions" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>HouseNotificationsWidget.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari fa clic a la icona de campana.</li>
+<li>El widget fa <code>GET /api/notifications</code>.</li>
+<li>El backend (<code>ApiNotificationController::index()</code>) crida <code>NotificationService::syncForUser()</code>.</li>
+<li>El <code>NotificationService</code> genera noves notificacions basades en tasques vencudes, despeses pendents i events pròxims.</li>
+<li>Retorna la llista agrupada per llar amb <code>totalUnread</code> i <code>households[]</code>.</li>
+<li>L'usuari fa clic a una notificació → <code>POST /api/notifications/{id}/read</code>.</li>
+<li>O "Marcar totes com a llegides" → <code>POST /api/notifications/read-all</code>.</li>
+</ol>
+<p><strong>Endpoints</strong>:
+- <code>GET /api/notifications</code>
+- <code>POST /api/notifications/{id}/read</code>
+- <code>POST /api/notifications/read-all</code></p>
+<p><strong>Entitats modificades</strong>: <code>Notification</code> (camp <code>isRead</code>)</p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> (cada usuari veu les seves pròpies notificacions)</p>
+<p><strong>Tests</strong>:
+- Backend: <code>NotificationApiTest</code> — agrupació, marcar una, marcar totes, bloqueig alienes.
+- Frontend: <code>useNotifications.test.js</code> — fetch, mark read, polling, comptador.</p>
+<hr />
+<h2 id="10-crear-una-playlist-multimedia">10. Crear una playlist multimèdia<a class="headerlink" href="#10-crear-una-playlist-multimedia" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>MultimediaTab.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari va a la pestanya "Multimèdia".</li>
+<li>Fa clic a "Nova playlist" i posa un nom.</li>
+<li>El frontend fa <code>POST /api/households/{homeId}/multimedia/playlists</code> amb <code>{ name }</code>.</li>
+<li>El backend crea la <code>MultimediaPlaylist</code> associada a la llar i creada per l'usuari.</li>
+<li>L'usuari fa clic a "Afegir vídeo", cerca per paraula clau o URL.</li>
+<li>El frontend fa <code>GET /api/households/{homeId}/multimedia/search?q=query</code> (YouTube).</li>
+<li>L'usuari selecciona un vídeo i el frontend fa <code>POST .../playlists/{id}/videos</code> amb les metadades.</li>
+<li>El backend crea el <code>MultimediaVideo</code> amb el <code>youtubeId</code> i la posició.</li>
+</ol>
+<p><strong>Endpoints</strong>:
+- <code>GET /api/households/{homeId}/multimedia/playlists</code>
+- <code>POST /api/households/{homeId}/multimedia/playlists</code>
+- <code>GET /api/households/{homeId}/multimedia/search?q=...</code>
+- <code>POST /api/households/{homeId}/multimedia/playlists/{id}/videos</code></p>
+<p><strong>Entitats creades</strong>: <code>MultimediaPlaylist</code>, <code>MultimediaVideo</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> + membre de la llar</p>
+<p><strong>Tests</strong>:
+- Backend: <code>MultimediaApiTest</code> — llista, creació, llar aliena 403, nom buit 400, vídeo afegit.
+- Frontend: <code>MultimediaTab.test.js</code> — càrrega playlists, creació, afegir vídeo, error.
+- E2E: crea playlist i comprova renderitzat. Afegir vídeo queda cobert per test unitari/frontend i funcional/backend.</p>
+<hr />
+<h2 id="11-editar-el-perfil">11. Editar el perfil<a class="headerlink" href="#11-editar-el-perfil" title="Permanent link">&para;</a></h2>
+<p><strong>Vista Vue</strong>: <code>ProfileView.vue</code></p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>L'usuari va a <code>/profile</code>.</li>
+<li>El frontend fa <code>GET /api/profile</code> per carregar les dades actuals.</li>
+<li>L'usuari modifica camps (nom, correu, telèfon, bio, avatar).</li>
+<li>El frontend fa <code>POST /api/profile</code> amb els camps modificats.</li>
+<li>El backend (<code>ApiProfileController::updateProfile()</code>) valida el nou email (que no estigui en ús), processa la imatge si n'hi ha, i actualitza l'<code>User</code>.</li>
+<li>Retorna les dades actualitzades.</li>
+</ol>
+<p><strong>Endpoints</strong>:
+- <code>GET /api/profile</code>
+- <code>POST /api/profile</code></p>
+<p><strong>Entitats modificades</strong>: <code>User</code></p>
+<p><strong>Permisos</strong>: <code>ROLE_USER</code> (cada usuari edita el seu propi perfil)</p>
+<p><strong>Tests</strong>:
+- Backend: <code>ProfileApiTest</code> — lectura, actualització, email duplicat, contrasenya incorrecta.
+- Frontend: <code>ProfileView.test.js</code> — càrrega, validació avatar, guardat, errors API.</p>
+<hr />
+<h2 id="12-accedir-al-backoffice-admin">12. Accedir al backoffice (admin)<a class="headerlink" href="#12-accedir-al-backoffice-admin" title="Permanent link">&para;</a></h2>
+<p><strong>Vista</strong>: Twig (no Vue)</p>
+<p><strong>Flux</strong>:</p>
+<ol>
+<li>El superadmin va a <code>/login</code> al backend desplegat.</li>
+<li>Introdueix credencials amb rol <code>ROLE_SUPER_ADMIN</code>.</li>
+<li><code>SecurityController</code> i <code>LoginFormAuthenticator</code> autentiquen via formulari (sessió PHP).</li>
+<li>Symfony crea la sessió al firewall <code>main</code>.</li>
+<li>El superadmin accedeix a <code>/admin</code> — <code>AdminController</code> renderitza el panell.</li>
+<li>Des d'aquí pot gestionar: llars, usuaris (activar/desactivar), tasques, despeses, events, xats, SQL i documentació.</li>
+</ol>
+<p><strong>Permisos</strong>: <code>ROLE_SUPER_ADMIN</code> obligatori per a totes les rutes <code>/admin/*</code></p>
+<p><strong>Especial</strong>:
+- Accés als xats deixa rastre a <code>ChatAccessLog</code> (admin + llar + motiu + data).
+- La documentació MkDocs es serveix via <code>AdminDocumentationController</code> que verifica <code>ROLE_SUPER_ADMIN</code> i que el path no surti del directori <code>site/</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Torna a l'inici
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.highlight", "search.suggest", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiat al porta-retalls", "clipboard.copy": "C\u00f2pia al porta-retalls", "search.result.more.one": "1 m\u00e9s en aquesta p\u00e0gina", "search.result.more.other": "# m\u00e9s en aquesta p\u00e0gina", "search.result.none": "Cap document coincideix", "search.result.one": "1 document coincident", "search.result.other": "# documents coincidents", "search.result.placeholder": "Escriu per a comen\u00e7ar a cercar", "search.result.term.missing": "Desaparegut", "select.version": "Selecciona la versi\u00f3"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

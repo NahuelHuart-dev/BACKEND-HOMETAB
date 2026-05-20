@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'admin.households.title'|trans }} - Admin - HomeTab{% endblock %}
+
+{% macro household_form(household, avatarIcons) %}
+    {% set is_edit = household is not null %}
+    <form method="post" action="{{ is_edit ? path('app_admin_household_save', {id: household.id}) : path('app_admin_household_create') }}" class="ht-modal-form" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{ csrf_token(is_edit ? 'admin_household' ~ household.id : 'admin_household_create') }}">
+        {% if not is_edit %}<input type="hidden" name="_redirect" value="households">{% endif %}
+        <section>
+            <h3>{{ 'admin.households.form_title'|trans }}</h3>
+            <div class="ht-form-grid">
+                <label>{{ 'admin.households.name'|trans }} <span class="ht-required">*</span><input class="ht-input" name="name" value="{{ is_edit ? household.name : '' }}" required></label>
+                <label>{{ 'admin.households.invite_code'|trans }}<input class="ht-input ht-mono-input" name="inviteCode" value="{{ is_edit ? household.inviteCode : '' }}" maxlength="10" pattern="[A-Za-z0-9]{4,10}" placeholder="Auto"></label>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.households.photo_title'|trans }}</h3>
+            <div class="ht-avatar-edit">
+                <span class="ht-avatar-lg" data-avatar-preview>
+                    {% if is_edit and household.avatar %}
+                        <img src="{{ asset(household.avatar|trim('/', 'left')) }}" alt="">
+                    {% else %}
+                        <span class="pi {{ is_edit ? household.avatarIcon|default('pi-home') : 'pi-home' }}"></span>
+                    {% endif %}
+                </span>
+                <div>
+                    <input type="hidden" name="avatarCropData" data-avatar-crop-data>
+                    <label>{{ 'admin.households.upload_photo'|trans }}<input class="ht-input" type="file" name="avatarFile" accept="image/*"></label>
+                    <label class="ht-avatar-zoom" hidden data-avatar-zoom-wrap>{{ 'admin.users.zoom'|trans }}<input type="range" min="1" max="2.4" step="0.05" value="1" data-avatar-zoom></label>
+                    {% if is_edit and household.avatar %}
+                        <label class="ht-checkbox-row"><input type="checkbox" name="removeAvatar" value="1"> {{ 'admin.households.remove_photo'|trans }}</label>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <section>
+            <h3>{{ 'admin.households.icon_title'|trans }}</h3>
+            <div class="ht-avatar-picker">
+                {% for icon in avatarIcons %}
+                    <label class="{{ (is_edit ? household.avatarIcon : 'pi-home') == icon ? 'is-selected' : '' }}">
+                        <input type="radio" name="avatarIcon" value="{{ icon }}" {{ (is_edit ? household.avatarIcon : 'pi-home') == icon ? 'checked' : '' }}>
+                        <span class="pi {{ icon }}"></span>
+                    </label>
+                {% endfor %}
+            </div>
+        </section>
+        <footer><button class="ht-btn ht-btn--primary"><span class="pi pi-save"></span> {{ 'admin.households.save'|trans }}</button></footer>
+    </form>
+{% endmacro %}
+
+{% import _self as housesui %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">{{ 'admin.records.super_admin'|trans }}</div>
+        <h1 class="ht-display">{{ 'admin.households.title'|trans }}</h1>
+        <p class="ht-lead">{{ 'admin.households.subtitle'|trans }}</p>
+    </div>
+    <div class="ht-actions">
+        <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> {{ 'admin.households.back'|trans }}</a>
+        <button class="ht-btn ht-btn--primary" data-dialog-open="house-new" type="button"><span class="pi pi-plus"></span> {{ 'admin.households.new_house'|trans }}</button>
+    </div>
+</div>
+
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi pi-home"></span><h1>{{ 'admin.households.section_title'|trans }}</h1></div>
+        <div class="ht-kpi">{{ 'admin.records.total'|trans }}<strong>{{ households|length }}</strong></div>
+    </div>
+
+    <form class="ht-filter-bar" method="get">
+        <label>{{ 'admin.records.search'|trans }}<input class="ht-input" name="q" value="{{ filters.q|default('') }}" placeholder="{{ 'admin.households.search_placeholder'|trans }}"></label>
+        <button class="ht-btn ht-btn--secondary"><span class="pi pi-filter"></span> {{ 'admin.records.filter'|trans }}</button>
+        <a class="ht-btn ht-btn--ghost" href="{{ path('app_admin_households') }}"><span class="pi pi-times"></span> {{ 'admin.records.clear'|trans }}</a>
+    </form>
+
+    <div class="ht-admin-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'admin.records.col_id'|trans }}</th>
+                    <th>{{ 'admin.households.col_house'|trans }}</th>
+                    <th>{{ 'admin.households.col_invite'|trans }}</th>
+                    <th>{{ 'admin.households.col_members'|trans }}</th>
+                    <th>{{ 'admin.households.col_activity'|trans }}</th>
+                    <th>{{ 'admin.records.col_actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in households %}
+                {% set household = row.entity %}
+                {% set has_activity = row.taskCount + row.eventCount + row.expenseCount + row.messageCount > 0 %}
+                <tr>
+                    <td>#{{ household.id }}</td>
+                    <td>
+                        <div class="ht-user-cell">
+                            <span class="ht-avatar-sm">
+                                {% if household.avatar %}
+                                    <img src="{{ asset(household.avatar|trim('/', 'left')) }}" alt="">
+                                {% else %}
+                                    <span class="pi {{ household.avatarIcon|default('pi-home') }}"></span>
+                                {% endif %}
+                            </span>
+                            <div>
+                                <strong>{{ household.name }}</strong>
+                                <small>{{ 'admin.households.records_hint'|trans({'%tasks%': row.taskCount, '%events%': row.eventCount, '%expenses%': row.expenseCount}) }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="ht-badge ht-badge--neutral ht-mono-input">{{ household.inviteCode ?: '-' }}</span></td>
+                    <td>
+                        <strong>{{ row.memberCount }}</strong>
+                        <small>{{ row.memberCount == 1 ? 'admin.dashboard.members'|trans : 'admin.dashboard.members_plural'|trans }}</small>
+                    </td>
+                    <td>
+                        <span class="ht-badge {{ has_activity ? 'ht-badge--ok' : 'ht-badge--neutral' }}">{{ has_activity ? 'admin.households.with_activity'|trans : 'admin.households.empty'|trans }}</span>
+                        <small>{{ row.messageCount }} {{ 'backend.nav.chats'|trans|lower }}</small>
+                    </td>
+                    <td class="ht-row-actions">
+                        <a class="ht-btn ht-btn--ghost ht-btn--icon-only" href="{{ path('app_admin_household', {id: household.id}) }}" title="{{ 'admin.records.view'|trans }}"><span class="pi pi-eye"></span></a>
+                        <button class="ht-btn ht-btn--ghost ht-btn--icon-only" data-dialog-open="house-edit-{{ household.id }}" title="{{ 'admin.records.edit'|trans }}"><span class="pi pi-pencil"></span></button>
+                        <form method="post" action="{{ path('app_admin_household_delete', {id: household.id}) }}" onsubmit="return confirm('{{ 'admin.households.confirm_delete'|trans }}')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_household' ~ household.id) }}">
+                            <button class="ht-btn ht-btn--danger-outline ht-btn--icon-only" title="{{ 'admin.households.delete'|trans }}" {{ has_activity ? 'disabled' : '' }}><span class="pi pi-trash"></span></button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6"><em>{{ 'admin.households.no_houses'|trans }}</em></td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<dialog class="ht-dialog" id="house-new">
+    <div class="ht-dialog__inner">
+        <button class="ht-dialog__close" data-dialog-close>&times;</button>
+        <h2>{{ 'admin.households.new_house'|trans }}</h2>
+        {{ housesui.household_form(null, avatarIcons) }}
+    </div>
+</dialog>
+
+{% for row in households %}
+    {% set household = row.entity %}
+    <dialog class="ht-dialog" id="house-edit-{{ household.id }}">
+        <div class="ht-dialog__inner">
+            <button class="ht-dialog__close" data-dialog-close>&times;</button>
+            <h2>{{ 'admin.households.edit_house'|trans }}</h2>
+            {{ housesui.household_form(household, avatarIcons) }}
+        </div>
+    </dialog>
+{% endfor %}
+{% endblock %}

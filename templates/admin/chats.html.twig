@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chats · Admin · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Privacidad por defecto</div>
+        <h1 class="ht-display">Chats de casas</h1>
+        <p class="ht-lead">Vista administrativa con métricas. El contenido solo se abre registrando un motivo.</p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> Mis Tabs</a>
+</div>
+
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi pi-comments"></span><h1>Resumen de actividad</h1></div>
+        <div class="ht-kpi">Casas:<strong>{{ rows|length }}</strong></div>
+    </div>
+
+    <div class="ht-admin-table ht-admin-table--comfortable">
+        <table>
+            <thead>
+                <tr>
+                    <th>Casa</th>
+                    <th>Mensajes</th>
+                    <th>Última actividad</th>
+                    <th>Usuarios participantes</th>
+                    <th>Estado</th>
+                    <th>Acceso administrativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    {% set household = row.household %}
+                    <tr>
+                        <td><strong>{{ household.name }}</strong><small>#{{ household.id }}</small></td>
+                        <td><span class="ht-badge ht-badge--neutral">{{ row.messageCount }}</span></td>
+                        <td>{{ row.lastActivity ? row.lastActivity|date('d/m/Y H:i') : 'Sin actividad' }}</td>
+                        <td>
+                            {% if row.participants %}
+                                {% for participant in row.participants %}
+                                    <span class="ht-badge ht-badge--neutral">{{ participant.name ?: participant.email }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="ht-muted">Sin mensajes todavía</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="ht-badge {{ row.messageCount > 0 ? 'ht-badge--ok' : 'ht-badge--neutral' }}">{{ row.messageCount > 0 ? 'Activo' : 'Sin uso' }}</span></td>
+                        <td>
+                            {% if row.lastAccess %}
+                                <small>Último acceso: {{ row.lastAccess.accessedAt|date('d/m/Y H:i') }}</small>
+                            {% endif %}
+                            <form class="ht-admin-chat-access" method="post" action="{{ path('app_admin_chat_access', {id: household.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('admin_chat_access' ~ household.id) }}">
+                                <label>
+                                    <span class="sr-only">Motivo administrativo</span>
+                                    <textarea class="ht-input" name="reason" rows="2" minlength="10" maxlength="1000" required placeholder="Motivo administrativo obligatorio"></textarea>
+                                </label>
+                                <button class="ht-btn ht-btn--secondary"><span class="pi pi-shield"></span> Acceder al chat por motivo administrativo</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6"><em>No hay casas creadas.</em></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

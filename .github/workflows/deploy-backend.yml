@@ -1,0 +1,242 @@
+name: Deploy Backend Hometab
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Environment to deploy"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: db_hometab_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      APP_ENV: test
+      APP_DEBUG: 1
+      DATABASE_URL: mysql://root:@127.0.0.1:3306/db_hometab_test?serverVersion=8.0.43&charset=utf8mb4
+      JWT_SECRET_KEY: '%kernel.project_dir%/config/jwt/private.pem'
+      JWT_PUBLIC_KEY: '%kernel.project_dir%/config/jwt/public.pem'
+      JWT_PASSPHRASE: change-me-in-env-local
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+      MAILER_DSN: null://null
+      MAILER_FROM: hometab-test@example.test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: ctype, iconv, pdo_mysql
+          tools: composer
+          coverage: xdebug
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install Symfony public assets
+        run: php bin/console assets:install public --symlink --relative
+
+      - name: Prepare JWT keys
+        run: |
+          mkdir -p config/jwt
+          php bin/console lexik:jwt:generate-keypair --skip-if-exists --env=test
+
+      - name: Prepare test database
+        run: composer test:setup
+
+      - name: Run backend tests
+        run: composer test
+
+      - name: Build backend Twig assets
+        run: |
+          npm ci
+          npm run build
+
+  deploy-dev:
+    needs: test
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/develop') || (github.event_name == 'workflow_dispatch' && inputs.target == 'dev')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate composer
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies on runner
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install Symfony public assets
+        run: php bin/console assets:install public --symlink --relative
+
+      - name: Build backend Twig assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare backend permissions on DEV EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          script: |
+            set -e
+            sudo mkdir -p "${{ secrets.DEV_BACKEND_PATH }}"
+            sudo chown -R "${USER}:www-data" "${{ secrets.DEV_BACKEND_PATH }}"
+            sudo find "${{ secrets.DEV_BACKEND_PATH }}" -type d -exec chmod 775 {} \;
+            sudo find "${{ secrets.DEV_BACKEND_PATH }}" -type f -exec chmod 664 {} \;
+
+      - name: Sync backend to DEV EC2
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.DEV_SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.DEV_SERVER_USER }}
+          SOURCE: ./
+          TARGET: ${{ secrets.DEV_BACKEND_PATH }}
+          ARGS: "-az --delete"
+          EXCLUDE: "/.git/, /.github/, /var/, /vendor/, /node_modules/, /.env.local, /config/jwt/*.pem"
+
+      - name: Configure and warm Symfony on DEV
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          script: |
+            set -e
+            cd "${{ secrets.DEV_BACKEND_PATH }}"
+            sudo chown -R "${USER}:www-data" .
+            mkdir -p config/jwt var/cache var/log
+            printf '%s' "${{ secrets.JWT_PRIVATE_KEY_B64 }}" | tr -d '\r\n ' | base64 -d > config/jwt/private.pem
+            printf '%s' "${{ secrets.JWT_PUBLIC_KEY_B64 }}" | tr -d '\r\n ' | base64 -d > config/jwt/public.pem
+            cat > .env.local <<'ENV'
+            APP_ENV=dev
+            APP_DEBUG=0
+            APP_SECRET=${{ secrets.APP_SECRET }}
+            DATABASE_URL='${{ secrets.DEV_DATABASE_URL }}'
+            CORS_ALLOW_ORIGIN='${{ secrets.DEV_CORS_ALLOW_ORIGIN }}'
+            JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+            JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+            JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}
+            MAILER_DSN='${{ secrets.MAILER_DSN }}'
+            MAILER_FROM=${{ secrets.MAILER_FROM }}
+            OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}
+            OPENROUTER_MODELS=${{ secrets.OPENROUTER_MODELS }}
+            YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
+            ENV
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php bin/console assets:install public --symlink --relative
+            php bin/console doctrine:migrations:sync-metadata-storage -n
+            php bin/console doctrine:migrations:migrate -n
+            php bin/console cache:clear --no-debug
+            php bin/console cache:warmup --no-debug
+            sudo chown -R ubuntu:www-data .
+            sudo find public/build -type d -exec chmod 775 {} \;
+            sudo find public/build -type f -exec chmod 664 {} \;
+            sudo setfacl -R -m u:www-data:rwX -m u:ubuntu:rwX var config/jwt
+            sudo setfacl -dR -m u:www-data:rwX -m u:ubuntu:rwX var
+            sudo systemctl reload apache2
+
+  deploy-prod:
+    needs: test
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: Install PHP dependencies on runner
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build backend Twig assets
+        run: |
+          php bin/console assets:install public --symlink --relative
+          npm ci
+          npm run build
+
+      - name: Build and push image
+        env:
+          IMAGE_URI: ${{ secrets.ECR_BACKEND_URI }}
+        run: |
+          docker build -t "$IMAGE_URI:${{ github.sha }}" -t "$IMAGE_URI:latest" .
+          docker push "$IMAGE_URI:${{ github.sha }}"
+          docker push "$IMAGE_URI:latest"
+
+      - name: Redeploy ECS backend service
+        run: |
+          aws ecs update-service \
+            --cluster "${{ secrets.ECS_CLUSTER }}" \
+            --service "${{ secrets.ECS_BACKEND_SERVICE }}" \
+            --force-new-deployment
+          aws ecs wait services-stable \
+            --cluster "${{ secrets.ECS_CLUSTER }}" \
+            --services "${{ secrets.ECS_BACKEND_SERVICE }}"

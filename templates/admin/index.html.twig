@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Admin</div>
+        <h1 class="ht-display">Centre d’administració</h1>
+        <p class="ht-lead ht-muted">Rutes interns i eines de manteniment.</p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--primary"><span class="pi pi-th-large"></span> Panell</a>
+</div>
+
+<div class="ht-card" style="max-width:560px;">
+    <p style="margin:0 0 var(--space-4);">Aquí vivien plantilles per defecte de Symfony; el flux real és el <strong>panell d’admin</strong>.</p>
+    <div class="ht-actions">
+        <a href="{{ path('app_admin_users') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-users"></span> Usuaris</a>
+        <a href="{{ path('app_admin_chat') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-comment"></span> IA SQL</a>
+    </div>
+</div>
+{% endblock %}

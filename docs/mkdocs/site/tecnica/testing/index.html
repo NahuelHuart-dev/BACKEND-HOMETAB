@@ -1,0 +1,2510 @@
+
+<!doctype html>
+<html lang="ca" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentació tècnica, API, manual d'usuari i material final del projecte HomeTab de GenSync.">
+      
+      
+        <meta name="author" content="GenSync — Grup 6">
+      
+      
+      
+        <link rel="prev" href="../auditoria-seguretat/">
+      
+      
+        <link rel="next" href="../base-dades/">
+      
+      
+        
+          <link rel="alternate" href="/admin/documentacio/index.html" hreflang="ca">
+        
+          <link rel="alternate" href="/admin/documentacio/en/index.html" hreflang="en">
+        
+          <link rel="alternate" href="/admin/documentacio/es/index.html" hreflang="es">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Testing i qualitat - HomeTab - Documentació tècnica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#testing-i-qualitat" class="md-skip">
+          Salta el contingut
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Capçalera">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-header__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HomeTab - Documentació tècnica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Testing i qualitat
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode fosc"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode fosc" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode clar"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode clar" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecciona la llengua">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/index.html" hreflang="ca" class="md-select__link">
+              Català
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/en/index.html" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/es/index.html" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Neteja" aria-label="Neteja" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicialitzant cerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestanyes" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inici
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../manual/usuari/" class="md-tabs__link">
+          
+  
+  
+  Manual d'usuari
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../presentacio/documentacio-presentacio/" class="md-tabs__link">
+          
+  
+  
+  Presentació
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../arquitectura/" class="md-tabs__link">
+          
+  
+  
+  Tècnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../materials/checklist-final/" class="md-tabs__link">
+          
+  
+  
+  Materials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegació" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-nav__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HomeTab - Documentació tècnica
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inici
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manual d'usuari
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Manual d'usuari
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/usuari/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia d'usuari
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentació
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Presentació
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/documentacio-presentacio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentació de presentació
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/evolucio-mvp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolució MVP → Final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tècnica
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tècnica
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitectura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitectura general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mapa-projecte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapa del projecte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Symfony
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Vue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seguretat i permisos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auditoria-seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auditoria de seguretat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing i qualitat
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing i qualitat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectiu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectiu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#es-poden-executar-sense-afectar-el-servidor-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Es poden executar sense afectar el servidor local?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#que-son-phpunit-vitest-i-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Que son PHPUnit, Vitest i Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-importants-de-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples importants de tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracio-feta-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuracio feta des de zero
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#que-comprovem-ara" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Que comprovem ara
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-funciona-le2e-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com funciona l'E2E final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errors-trobats-estabilitzant-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors trobats estabilitzant Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-esta-feta-la-web-que-prova-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com esta feta la web que prova Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-sexecuten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com s'executen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracio-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integracio continua
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencia-per-a-la-presentacio-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencia per a la presentacio final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-2-cobertura-critica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: cobertura critica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-e2e-a-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets E2E a GitHub
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximes-proves-recomanades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proximes proves recomanades
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base-dades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model de dades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fluxos-principals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fluxos principals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cobertura-deute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cobertura i deute tècnic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desplegament-local-produccio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desplegament local i producció
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integracio-continua/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integració contínua (CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables-entorn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables d'entorn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../digitalitzacio-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mòdul Digitalització i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend-admin-ai-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia backend admin i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autenticació i 2FA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/households/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Llars
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/expenses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Despeses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Esdeveniments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/chat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat de llar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notificacions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/profile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perfil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/multimedia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimèdia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assistent IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/checklist-final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/usuaris-prova/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usuaris de prova
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions tècniques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backlog i deute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectiu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectiu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#es-poden-executar-sense-afectar-el-servidor-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Es poden executar sense afectar el servidor local?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#que-son-phpunit-vitest-i-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Que son PHPUnit, Vitest i Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-importants-de-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples importants de tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracio-feta-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuracio feta des de zero
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#que-comprovem-ara" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Que comprovem ara
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-funciona-le2e-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com funciona l'E2E final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errors-trobats-estabilitzant-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors trobats estabilitzant Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-esta-feta-la-web-que-prova-playwright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com esta feta la web que prova Playwright
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#com-sexecuten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Com s'executen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracio-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integracio continua
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencia-per-a-la-presentacio-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidencia per a la presentacio final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-2-cobertura-critica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: cobertura critica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-e2e-a-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets E2E a GitHub
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximes-proves-recomanades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proximes proves recomanades
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="testing-i-qualitat">Testing i qualitat<a class="headerlink" href="#testing-i-qualitat" title="Permanent link">&para;</a></h1>
+<h2 id="objectiu">Objectiu<a class="headerlink" href="#objectiu" title="Permanent link">&para;</a></h2>
+<p>HomeTab ha passat de validar l'MVP manualment a tenir una bateria de proves automatitzades. L'objectiu es detectar regressions abans que arribin a produccio i demostrar, de cara al producte final ABP, que l'aplicacio es robusta, verificable i mantenible.</p>
+<p>Les proves cobreixen quatre capes:</p>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Eines</th>
+<th>Finalitat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend unitari</td>
+<td>PHPUnit</td>
+<td>Validar logica de negoci aillada.</td>
+</tr>
+<tr>
+<td>Backend funcional</td>
+<td>PHPUnit, Symfony WebTestCase, MySQL test</td>
+<td>Validar endpoints reals de l'API.</td>
+</tr>
+<tr>
+<td>Frontend unitari</td>
+<td>Vitest, Vue Test Utils, Testing Library, jsdom</td>
+<td>Validar serveis, composables i vistes Vue.</td>
+</tr>
+<tr>
+<td>E2E</td>
+<td>Playwright</td>
+<td>Validar fluxos critics des del navegador.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="es-poden-executar-sense-afectar-el-servidor-local">Es poden executar sense afectar el servidor local?<a class="headerlink" href="#es-poden-executar-sense-afectar-el-servidor-local" title="Permanent link">&para;</a></h2>
+<p>Si. Les proves unitaries i funcionals no necessiten el servidor local corrent i no toquen la base de dades normal:</p>
+<table>
+<thead>
+<tr>
+<th>Tipus</th>
+<th>Necessita servidor local?</th>
+<th>Afecta dades reals?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend unitari</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Backend funcional</td>
+<td>No</td>
+<td>No, usa <code>db_hometab_test</code></td>
+</tr>
+<tr>
+<td>Frontend unitari</td>
+<td>No</td>
+<td>No, usa <code>jsdom</code></td>
+</tr>
+<tr>
+<td>Coverage frontend</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Build frontend</td>
+<td>No</td>
+<td>No toca base de dades</td>
+</tr>
+<tr>
+<td>E2E Playwright</td>
+<td>Depen</td>
+<td>Si apunta a DEV o local real, crea dades</td>
+</tr>
+</tbody>
+</table>
+<p>La regla segura es: <code>composer test</code>, <code>npm run test:unit</code>, <code>npm run test:coverage</code> i <code>npm run build</code> es poden executar sense afectar el servidor local. <code>npm run test:e2e</code> nomes s'ha d'executar contra un usuari i entorn de proves.</p>
+<h2 id="que-son-phpunit-vitest-i-playwright">Que son PHPUnit, Vitest i Playwright<a class="headerlink" href="#que-son-phpunit-vitest-i-playwright" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>PHPUnit</strong> prova PHP/Symfony. L'usem per serveis i endpoints API.</li>
+<li><strong>Vitest</strong> prova Vue/JavaScript sense navegador real.</li>
+<li><strong>Playwright</strong> obre un navegador real i prova l'aplicacio de principi a fi. Aixo es E2E, "end to end".</li>
+</ul>
+<h2 id="exemples-importants-de-tests">Exemples importants de tests<a class="headerlink" href="#exemples-importants-de-tests" title="Permanent link">&para;</a></h2>
+<p>Backend 2FA: l'usuari amb 2FA no rep token directament, rep un <code>challengeId</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">$user = $this-&gt;createUser(&#39;2fa.challenge@example.test&#39;);</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">$user-&gt;setTwoFactorEnabled(true);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">$this-&gt;flush();</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">$this-&gt;json(&#39;POST&#39;, &#39;/api/login_check&#39;, [</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="x">    &#39;username&#39; =&gt; &#39;2fa.challenge@example.test&#39;,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">    &#39;password&#39; =&gt; &#39;password-de-test&#39;,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="x">]);</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="x">self::assertTrue($this-&gt;responseJson()[&#39;requiresTwoFactor&#39;]);</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="x">self::assertNotEmpty($this-&gt;responseJson()[&#39;challengeId&#39;]);</span>
+</code></pre></div>
+<p>Backend permisos: un usuari no pot llegir el chat d'una llar aliena.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">$user = $this-&gt;createUser(&#39;chat.foreign@example.test&#39;);</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="x">$foreign = $this-&gt;createHousehold(&#39;Casa chat aliena&#39;);</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">$this-&gt;flush();</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="x">$this-&gt;client-&gt;request(&#39;GET&#39;, &quot;/api/households/{$foreign-&gt;getId()}/chat/messages&quot;, [], [], $this-&gt;authHeaders($user));</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="x">self::assertResponseStatusCodeSame(403);</span>
+</code></pre></div>
+<p>Frontend notificacions: es mockeja <code>http.get</code> i es comprova l'estat del composable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;jwt&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">mockResolvedValueOnce</span><span class="p">({</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">totalUnread</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">households</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useNotifications</span><span class="p">()</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">await</span><span class="w"> </span><span class="nx">notifications</span><span class="p">.</span><span class="nx">fetchNotifications</span><span class="p">()</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nx">expect</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">).</span><span class="nx">toHaveBeenCalledWith</span><span class="p">(</span><span class="s1">&#39;/notifications&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nx">expect</span><span class="p">(</span><span class="nx">notifications</span><span class="p">.</span><span class="nx">totalUnread</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Frontend 2FA: la vista canvia al pas de codi si el backend retorna <code>requiresTwoFactor</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">.</span><span class="nx">mockResolvedValueOnce</span><span class="p">({</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">requiresTwoFactor</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">challengeId</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;challenge-1&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Codi enviat&#39;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">})</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kd">const</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mountLogin</span><span class="p">()</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">await</span><span class="w"> </span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">await</span><span class="w"> </span><span class="nx">flushPromises</span><span class="p">()</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">text</span><span class="p">()).</span><span class="nx">toContain</span><span class="p">(</span><span class="s1">&#39;Codi enviat&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nx">expect</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)).</span><span class="nx">toBeNull</span><span class="p">()</span>
+</code></pre></div>
+<p>Playwright: obre navegador real, escriu al login i comprova que entra.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">getByLabel</span><span class="p">(</span><span class="s1">&#39;Email&#39;</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="nx">email</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">getByLabel</span><span class="p">(</span><span class="sr">/contrasena|password/i</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="nx">password</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">getByRole</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="sr">/entrar|sign in/i</span><span class="w"> </span><span class="p">}).</span><span class="nx">click</span><span class="p">()</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">).</span><span class="nx">toHaveURL</span><span class="p">(</span><span class="sr">/\/tabhub|\/households/</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="configuracio-feta-des-de-zero">Configuracio feta des de zero<a class="headerlink" href="#configuracio-feta-des-de-zero" title="Permanent link">&para;</a></h2>
+<p>Al backend Symfony s'ha afegit <code>symfony/test-pack</code>, <code>phpunit/phpunit</code> i <code>dama/doctrine-test-bundle</code>. La configuracio principal viu a <code>phpunit.dist.xml</code>, separa les suites <code>unit</code> i <code>functional</code>, i carrega l'entorn de test amb <code>.env.test</code>.</p>
+<p>La base de dades de test es MySQL i queda separada de desenvolupament:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>db_hometab_test
+</code></pre></div>
+<p>La classe <code>tests/Support/ApiTestCase.php</code> centralitza la creacio d'usuaris, llars, membres, capcaleres JWT i peticions JSON. Aixo evita repetir fixtures manuals a cada test funcional.</p>
+<p>Al frontend Vue s'ha afegit Vitest amb jsdom, Vue Test Utils, Testing Library, coverage i Playwright. El fitxer <code>tests/setup.js</code> prepara mocks globals com <code>localStorage</code>, <code>matchMedia</code> i la neteja del DOM entre proves.</p>
+<h2 id="que-comprovem-ara">Que comprovem ara<a class="headerlink" href="#que-comprovem-ara" title="Permanent link">&para;</a></h2>
+<p>Backend:</p>
+<ul>
+<li>login correcte amb JWT;</li>
+<li>error amb contrasenya incorrecta;</li>
+<li>bloqueig d'usuari inactiu;</li>
+<li>llistat nomes de llars propies;</li>
+<li>creacio de llar i unio per codi;</li>
+<li>denegacio d'acces a llars alienes;</li>
+<li>cicle basic de tasques, despeses i esdeveniments;</li>
+<li>validacions, com crear tasques sense titol;</li>
+<li>rebuig de participants que no pertanyen a la llar.</li>
+</ul>
+<p>Frontend:</p>
+<ul>
+<li>configuracio HTTP, <code>baseURL</code>, JWT i assets;</li>
+<li>estat compartit de llar i chat;</li>
+<li>tema visual i accent;</li>
+<li>login, error de login i redireccio si ja hi ha token;</li>
+<li>carrega de llars, 401 i navegacio a dashboard;</li>
+<li>resum del dashboard, progres, tasques i esdeveniments.</li>
+</ul>
+<p>E2E:</p>
+<ul>
+<li>login;</li>
+<li>obertura de Mis Tabs;</li>
+<li>creacio de llar;</li>
+<li>preparacio de tasca, despesa i esdeveniment per API autenticada;</li>
+<li>comprovacio al navegador que tasca, despesa i esdeveniment apareixen a les pestanyes;</li>
+<li>obertura de notificacions, chat i multimedia;</li>
+<li>enviament de missatge pel chat;</li>
+<li>creacio de playlist multimedia.</li>
+</ul>
+<h2 id="com-funciona-le2e-final">Com funciona l'E2E final<a class="headerlink" href="#com-funciona-le2e-final" title="Permanent link">&para;</a></h2>
+<p>Playwright obre Chromium real i utilitza la web com una persona: entra a <code>/login</code>, escriu email i contrasenya, accepta o omet el pas de 2FA si apareix, entra a Mis Tabs i navega cap a una llar.</p>
+<p>El test final utilitza una estrategia mixta:</p>
+<ul>
+<li>crea la llar des de la interfície, perque es un flux visual critic;</li>
+<li>crea tasca, despesa i esdeveniment per API autenticada, usant el JWT guardat a <code>localStorage</code>;</li>
+<li>torna a la interfície i comprova que aquestes dades es renderitzen a les pestanyes de tasques, despeses i calendari;</li>
+<li>obre widgets reals de notificacions, chat i multimedia.</li>
+</ul>
+<p>Aquesta estrategia evita que l'E2E sigui fragil per formularis llargs o labels ambigus, pero continua validant backend, permisos, token, rutes i renderitzat real.</p>
+<h2 id="errors-trobats-estabilitzant-playwright">Errors trobats estabilitzant Playwright<a class="headerlink" href="#errors-trobats-estabilitzant-playwright" title="Permanent link">&para;</a></h2>
+<p>Durant la posada en marxa van apareixer problemes reals de navegador:</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Causa</th>
+<th>Solucio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chromium no existia</td>
+<td>Playwright estava instal-lat, pero no el navegador.</td>
+<td><code>npx playwright install chromium</code>.</td>
+</tr>
+<tr>
+<td>Selector <code>Sign in</code> ambigu</td>
+<td>Hi havia boto de navbar i boto del formulari.</td>
+<td>Usar <code>.login-card .btn-login</code>.</td>
+</tr>
+<tr>
+<td>Prompt 2FA <code>Not now</code></td>
+<td>El login podia quedar esperant una decisio.</td>
+<td>Esperar URL o prompt i ometre'l si apareix.</td>
+</tr>
+<tr>
+<td>Textos duplicats</td>
+<td><code>My Tabs</code> o playlists apareixien a diversos llocs.</td>
+<td>Usar <code>heading</code>, <code>.first()</code> o zones com <code>.desktop-house-tabs</code>.</td>
+</tr>
+<tr>
+<td>Targetes clicables</td>
+<td><code>Create New Tab</code> no era un <code>&lt;button&gt;</code>.</td>
+<td>Fer clic sobre el text/targeta real.</td>
+</tr>
+<tr>
+<td>Chat amb estats diferents</td>
+<td>A vegades obre sala, a vegades llista de llars.</td>
+<td>Suportar els dos estats abans d'escriure.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="com-esta-feta-la-web-que-prova-playwright">Com esta feta la web que prova Playwright<a class="headerlink" href="#com-esta-feta-la-web-que-prova-playwright" title="Permanent link">&para;</a></h2>
+<p>HomeTab frontend es una SPA Vue amb Vite i Vue Router. Les rutes principals que es proven son:</p>
+<ul>
+<li><code>/login</code>: acces, JWT a <code>localStorage</code> i possible 2FA;</li>
+<li><code>/tabhub</code>: llistat de llars en format post-it;</li>
+<li><code>/households/:id/dashboard</code>: panell d'una llar;</li>
+<li>tabs internes: tasques, despeses, calendari i multimedia;</li>
+<li>widgets globals: notificacions i chat.</li>
+</ul>
+<p>Els tests prioritzen selectors accessibles (<code>role</code>, <code>label</code>, <code>heading</code>, <code>textbox</code>). Quan la UI no te un selector unic, s'utilitzen classes estables de components concrets.</p>
+<h2 id="com-sexecuten">Com s'executen<a class="headerlink" href="#com-sexecuten" title="Permanent link">&para;</a></h2>
+<p>Backend:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>Backend/backend-grup-6-gensync
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>composer<span class="w"> </span>test:setup
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>composer<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>composer<span class="w"> </span>test:unit
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>composer<span class="w"> </span>test:functional
+</code></pre></div>
+<p>Frontend:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">cd</span><span class="w"> </span>Frontend/frontend-grup-6-gensync
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>npm<span class="w"> </span>run<span class="w"> </span>test:unit
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>npm<span class="w"> </span>run<span class="w"> </span>test:coverage
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>npm<span class="w"> </span>run<span class="w"> </span>test:e2e
+</code></pre></div>
+<p><code>composer test:setup</code> crea i migra la base de dades de test. <code>npm run test:e2e</code> necessita credencials E2E si volem executar els fluxos reals contra backend i frontend.</p>
+<p>E2E local amb servidors ja aixecats:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">naoct</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">GENSYNC</span><span class="p">\</span><span class="n">Frontend</span><span class="p">\</span><span class="n">frontend-grup</span><span class="p">-</span><span class="n">6-gensync</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">$env:E2E_EMAIL</span><span class="p">=</span><span class="s2">&quot;usuari-e2e@example.com&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">$env:E2E_PASSWORD</span><span class="p">=</span><span class="s2">&quot;password-de-proves&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nv">$env:E2E_BASE_URL</span><span class="p">=</span><span class="s2">&quot;http://127.0.0.1:5173&quot;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nv">$env:E2E_API_URL</span><span class="p">=</span><span class="s2">&quot;http://127.0.0.1:8000/api&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nv">$env:E2E_SKIP_WEBSERVER</span><span class="p">=</span><span class="s2">&quot;1&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">npm</span> <span class="n">run</span> <span class="n">test</span><span class="p">:</span><span class="n">e2e</span>
+</code></pre></div>
+<h2 id="integracio-continua">Integracio continua<a class="headerlink" href="#integracio-continua" title="Permanent link">&para;</a></h2>
+<p>Els workflows de GitHub Actions funcionen com a porta de qualitat. El backend aixeca un servei MySQL, prepara la base de dades de test i executa PHPUnit. El frontend instal-la dependencies, executa Vitest i comprova que el build de Vite funciona.</p>
+<p>Quan hi hagi secrets E2E disponibles, Playwright tambe pot executar els smoke tests de navegador:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>E2E_EMAIL
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>E2E_PASSWORD
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>E2E_API_URL
+</code></pre></div>
+<h2 id="evidencia-per-a-la-presentacio-final">Evidencia per a la presentacio final<a class="headerlink" href="#evidencia-per-a-la-presentacio-final" title="Permanent link">&para;</a></h2>
+<p>En la presentacio es pot demostrar que HomeTab no nomes funciona en una demo manual. Tambe es pot executar la bateria automatitzada i explicar que cada test protegeix una part critica:</p>
+<ul>
+<li>autenticacio;</li>
+<li>permisos per llar;</li>
+<li>integritat de dades;</li>
+<li>validacions;</li>
+<li>experiencia principal d'usuari;</li>
+<li>regressions abans de desplegar.</li>
+</ul>
+<h2 id="fase-2-cobertura-critica">Fase 2: cobertura critica<a class="headerlink" href="#fase-2-cobertura-critica" title="Permanent link">&para;</a></h2>
+<p>La segona fase amplia les proves sobre els moduls amb mes risc funcional:</p>
+<table>
+<thead>
+<tr>
+<th>Modul</th>
+<th>Backend</th>
+<th>Frontend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2FA</td>
+<td>Challenge de login, codi invalid, codi valid, activar i desactivar.</td>
+<td>Login amb codi, verificacio i activacio/omissio de 2FA.</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Lectura, actualitzacio, email duplicat, contrasenya actual incorrecta i avatar invalid.</td>
+<td>Carrega de perfil, validacio d'avatar, guardat i errors API.</td>
+</tr>
+<tr>
+<td>Chat</td>
+<td>Llistar, crear, rebutjar missatge buit, editar/esborrar nomes propis i bloquejar llar aliena.</td>
+<td>Obrir chat, carregar llars, enviar missatge i evitar enviament buit.</td>
+</tr>
+<tr>
+<td>Notificacions</td>
+<td>Agrupacio per llar, marcar una, marcar totes i bloquejar notificacions alienes.</td>
+<td>Fetch, markRead, markAllRead, polling, contador, empty state i navegacio.</td>
+</tr>
+<tr>
+<td>Multimedia</td>
+<td>Llistar playlists, crear playlist, validar nom, afegir video i bloquejar llar aliena.</td>
+<td>Carrega de playlists, creacio, afegir video i errors API.</td>
+</tr>
+</tbody>
+</table>
+<p>La cobertura continua sent informativa. Encara no bloqueja CI, pero es mesura amb:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>npm<span class="w"> </span>run<span class="w"> </span>test:coverage
+</code></pre></div>
+<h2 id="secrets-e2e-a-github">Secrets E2E a GitHub<a class="headerlink" href="#secrets-e2e-a-github" title="Permanent link">&para;</a></h2>
+<p>Els E2E s'executen contra DEV real quan existeixen:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>E2E_EMAIL
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>E2E_PASSWORD
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>E2E_API_URL
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>E2E_BASE_URL
+</code></pre></div>
+<p><code>E2E_BASE_URL</code> apunta al frontend DEV public. L'usuari E2E ha de ser estable, pertanyer a una llar de proves i tenir rol normal d'usuari.</p>
+<h2 id="proximes-proves-recomanades">Proximes proves recomanades<a class="headerlink" href="#proximes-proves-recomanades" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Chat de llar: typing avancat, imatges i referencies multimedia.</li>
+<li>Perfil: pujada valida d'avatar i neteja de fitxers antics.</li>
+<li>2FA: expiracio de codis i limit d'intents.</li>
+<li>Multimedia: cerca de YouTube amb servei mockejat i rutes per query params.</li>
+<li>Seguretat: token invalid, rutes sense token, CORS i mes casos IDOR.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Torna a l'inici
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.highlight", "search.suggest", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiat al porta-retalls", "clipboard.copy": "C\u00f2pia al porta-retalls", "search.result.more.one": "1 m\u00e9s en aquesta p\u00e0gina", "search.result.more.other": "# m\u00e9s en aquesta p\u00e0gina", "search.result.none": "Cap document coincideix", "search.result.one": "1 document coincident", "search.result.other": "# documents coincidents", "search.result.placeholder": "Escriu per a comen\u00e7ar a cercar", "search.result.term.missing": "Desaparegut", "select.version": "Selecciona la versi\u00f3"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

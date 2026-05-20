@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat auditado · {{ household.name }} · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Acceso auditado #{{ accessLog.id }}</div>
+        <h1 class="ht-display">Chat de {{ household.name }}</h1>
+        <p class="ht-lead">Motivo registrado: {{ accessLog.reason }}</p>
+    </div>
+    <a href="{{ path('app_admin_chats') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> Volver</a>
+</div>
+
+<section class="ht-admin-panel">
+    <div class="ht-section-head">
+        <div><span class="pi pi-lock-open"></span><h1>Contenido del chat</h1></div>
+        <div class="ht-kpi">Mensajes:<strong>{{ messages|length }}</strong></div>
+    </div>
+
+    <div class="ht-chat-room" style="height: 60vh; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column;">
+        <div class="ht-chat-messages" style="flex: 1; overflow-y: auto; padding: var(--space-4);">
+            {% for message in messages %}
+                {% set isOwn = app.user and message.sender and message.sender.id == app.user.id %}
+                <div class="ht-chat-message {{ isOwn ? 'is-own' : 'is-other' }}">
+                    <div class="ht-chat-bubble">
+                        <strong>{{ message.sender.fullName ?? 'Administrador' }}</strong>
+                        <p>{{ message.content }}</p>
+                        <time>{{ message.createdAt|date('H:i') }}</time>
+                    </div>
+                </div>
+            {% else %}
+                <p class="ht-muted" style="text-align: center;">Este chat todavía no tiene mensajes.</p>
+            {% endfor %}
+        </div>
+
+        <form method="post" action="{{ path('app_admin_chat_send', {id: household.id, accessLog: accessLog.id}) }}" class="ht-chat-compose" style="padding: var(--space-3); border-top: 1px solid var(--border); background: var(--bg-surface);">
+            <input type="hidden" name="_token" value="{{ csrf_token('admin_chat_send' ~ household.id) }}">
+            <div class="ht-chat-input-row" style="display: flex; gap: var(--space-2);">
+                <input type="text" name="content" class="ht-input" placeholder="Interactuar como administrador..." required style="flex: 1;">
+                <button type="submit" class="ht-btn ht-btn--primary" aria-label="Enviar"><span class="pi pi-send"></span></button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

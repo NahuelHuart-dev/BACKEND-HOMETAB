@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tasca · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Tasques</div>
+        <h1 class="ht-display">{{ task.title }}</h1>
+        <p class="ht-lead ht-muted">{% if task.completed %}Completada{% else %}Pendent{% endif %} · {% if task.createdAt %}{{ task.createdAt|date('d/m/Y H:i') }}{% endif %}</p>
+    </div>
+    <div class="ht-actions">
+        <a href="{{ path('app_task_index') }}" class="ht-btn ht-btn--secondary"><span class="pi pi-arrow-left"></span> Llistat</a>
+        <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="ht-btn ht-btn--primary"><span class="pi pi-pencil"></span> Editar</a>
+    </div>
+</div>
+
+<div class="ht-grid" style="grid-template-columns: 1fr; gap: var(--space-4); max-width: 720px;">
+    <div class="ht-card">
+        <table class="ht-table">
+            <tbody>
+                <tr><th scope="row">Descripció</th><td>{{ task.description|default('—') }}</td></tr>
+                <tr><th scope="row">Completada</th><td>{% if task.completed %}<span class="ht-badge ht-badge--ok">Sí</span>{% else %}<span class="ht-badge ht-badge--bad">No</span>{% endif %}</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ht-card">
+        <p class="ht-lead ht-muted" style="margin:0 0 var(--space-3);">Eliminar</p>
+        {{ include('task/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

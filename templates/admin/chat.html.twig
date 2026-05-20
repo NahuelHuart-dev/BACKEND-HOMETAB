@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Asistent IA SQL · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Intel·ligència artificial</div>
+        <h1 class="ht-display">Asistent SQL</h1>
+        <p class="ht-lead ht-muted">
+            Escriu en llenguatge natural sobre la base de dades i obtindràs una consulta SQL.
+            Cal tenir definida la variable <strong>OPENROUTER_API_KEY</strong> (<code>.env.local</code> — no es puja en git).
+        </p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="ht-btn ht-btn--ghost"><span class="pi pi-arrow-left"></span> Panell</a>
+</div>
+
+<div class="ht-card" style="max-width:900px;">
+    <div class="ht-chat-log" id="chat-history">
+        <p class="ht-muted" style="text-align:center;margin:var(--space-6) 0;">El historial es mostrarà aquí.</p>
+    </div>
+
+    <form id="chat-form" class="ht-chat-form">
+        <input type="text" id="prompt-input" class="ht-input" autocomplete="off" placeholder="Per exemple: quants usuaris hi ha?" required aria-label="Pregunta per a la IA">
+        <button type="submit" class="ht-btn ht-btn--primary" id="btn-send"><span class="pi pi-send"></span> Preguntar</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('prompt-input');
+    const history = document.getElementById('chat-history');
+    const btnSend = document.getElementById('btn-send');
+    let firstLine = history.querySelector('p.ht-muted');
+
+    function scrollEnd() {
+        history.scrollTop = history.scrollHeight;
+    }
+
+    function clearPlaceholder() {
+        if (firstLine) {
+            firstLine.remove();
+            firstLine = null;
+        }
+    }
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var prompt = input.value.trim();
+        if (!prompt) return;
+
+        clearPlaceholder();
+
+        var userLine = document.createElement('div');
+        userLine.className = 'ht-lead';
+        userLine.innerHTML = '<strong>Tú:</strong> ';
+        userLine.appendChild(document.createTextNode(prompt));
+        history.appendChild(userLine);
+
+        input.value = '';
+        btnSend.disabled = true;
+        btnSend.textContent = 'Pensant…';
+        scrollEnd();
+
+        try {
+            var apiEndpoint = window.location.pathname.indexOf('/test/') !== -1 ? '{{ path("api_test_chat") }}' : '{{ path("api_admin_chat") }}';
+            var response = await fetch(apiEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt })
+            });
+            var data = await response.json();
+
+            var wrap = document.createElement('div');
+            wrap.className = 'ht-lead';
+            wrap.style.marginTop = 'var(--space-3)';
+            var label = document.createElement('strong');
+            label.textContent = 'Assistència: ';
+            wrap.appendChild(label);
+
+            var pre = document.createElement('pre');
+            pre.className = 'ht-pre';
+            pre.style.marginTop = 'var(--space-2)';
+            pre.textContent = data.sql != null ? data.sql : JSON.stringify(data, null, 2);
+            wrap.appendChild(pre);
+            history.appendChild(wrap);
+        } catch (err) {
+            var errEl = document.createElement('div');
+            errEl.className = 'ht-lead ht-muted';
+            errEl.innerHTML = '<strong>Error:</strong> no s\'ha pogut contactar amb el servidor.';
+            history.appendChild(errEl);
+        }
+
+        btnSend.disabled = false;
+        btnSend.innerHTML = '<span class="pi pi-send"></span> Preguntar';
+        scrollEnd();
+        input.focus();
+    });
+});
+</script>
+{% endblock %}

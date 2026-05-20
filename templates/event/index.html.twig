@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Esdeveniments · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-page-head">
+    <div>
+        <div class="ht-mini-tag">Agenda</div>
+        <h1 class="ht-display">Esdeveniments</h1>
+        <p class="ht-lead ht-muted">Calendari de la llar</p>
+    </div>
+    <a href="{{ path('app_event_new') }}" class="ht-btn ht-btn--primary"><span class="pi pi-plus"></span> Nou esdeveniment</a>
+</div>
+
+<div class="ht-card">
+    <div class="ht-table-wrap">
+        <table class="ht-table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Títol</th>
+                    <th>Inici</th>
+                    <th>Fi</th>
+                    <th>Lloc</th>
+                    <th>Tot el dia</th>
+                    <th class="ht-table__actions">Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td><strong>{{ event.title }}</strong></td>
+                    <td>{{ event.startDate ? event.startDate|date('d/m/Y H:i') : '—' }}</td>
+                    <td>{{ event.endDate ? event.endDate|date('d/m/Y H:i') : '—' }}</td>
+                    <td>{{ event.location|default('—') }}</td>
+                    <td>{{ event.isAllDay ? 'Sí' : 'No' }}</td>
+                    <td class="ht-table__actions">
+                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Veure"><span class="pi pi-eye"></span></a>
+                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="ht-btn ht-btn--ghost ht-btn--icon-only" title="Editar"><span class="pi pi-pencil"></span></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="ht-muted" style="text-align:center;padding:var(--space-8);">No hi ha esdeveniments.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

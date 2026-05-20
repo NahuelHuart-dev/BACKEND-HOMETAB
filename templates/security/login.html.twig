@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'auth.login_title'|trans }} · HomeTab{% endblock %}
+
+{% block body %}
+<div class="ht-auth">
+    <div class="ht-card ht-auth__card" style="position:relative;padding-top:var(--space-8);">
+        <div class="ht-tape" aria-hidden="true"></div>
+        <div class="ht-mini-tag">{{ 'auth.welcome_tag'|trans }}</div>
+        <h1 class="ht-display" style="text-align:center;">HomeTab</h1>
+        <p class="ht-lead" style="text-align:center;">{{ 'auth.subtitle'|trans }}</p>
+
+        {% if error %}
+            <div class="ht-flash ht-flash--danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if backendDenied %}
+            <div class="ht-access-modal" role="alert">
+                <span class="pi pi-lock"></span>
+                <strong>{{ 'auth.backend_denied_title'|trans }}</strong>
+                <p>{{ 'auth.backend_denied_text'|trans }}</p>
+            </div>
+        {% endif %}
+
+        <form method="post">
+            <div class="ht-field">
+                <label for="inputEmail" class="form-label">{{ 'auth.email'|trans }}</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="inputEmail" class="ht-input" autocomplete="email" required autofocus placeholder="tu@email.com">
+            </div>
+            <div class="ht-field">
+                <label for="inputPassword" class="form-label">{{ 'auth.password'|trans }}</label>
+                <input type="password" name="_password" id="inputPassword" class="ht-input" autocomplete="current-password" required placeholder="••••••••">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button class="ht-btn ht-btn--primary ht-w-full" type="submit">
+                <span class="pi pi-sign-in"></span> {{ 'auth.submit'|trans }}
+            </button>
+        </form>
+
+        <p class="ht-lead" style="text-align:center;margin-top:var(--space-6);margin-bottom:0;font-size:0.9rem;">
+            {{ 'auth.superadmin_only'|trans }}
+        </p>
+        <div style="display:flex;justify-content:center;gap:var(--space-2);margin-top:var(--space-4);">
+            {% set ht_route_params = app.request.attributes.get('_route_params')|default({}) %}
+            {% for code in ['es', 'ca', 'en'] %}
+                <a class="ht-btn ht-btn--ghost" href="{{ path(app.request.attributes.get('_route'), ht_route_params|merge(app.request.query.all)|merge({_locale: code})) }}" aria-current="{{ app.locale == code ? 'page' : 'false' }}">
+                    {{ ('backend.language_' ~ code)|trans }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

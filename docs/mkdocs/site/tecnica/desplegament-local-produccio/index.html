@@ -1,0 +1,2893 @@
+
+<!doctype html>
+<html lang="ca" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentació tècnica, API, manual d'usuari i material final del projecte HomeTab de GenSync.">
+      
+      
+        <meta name="author" content="GenSync — Grup 6">
+      
+      
+      
+        <link rel="prev" href="../cobertura-deute/">
+      
+      
+        <link rel="next" href="../integracio-continua/">
+      
+      
+        
+          <link rel="alternate" href="/admin/documentacio/index.html" hreflang="ca">
+        
+          <link rel="alternate" href="/admin/documentacio/en/index.html" hreflang="en">
+        
+          <link rel="alternate" href="/admin/documentacio/es/index.html" hreflang="es">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Desplegament local i producció - HomeTab - Documentació tècnica</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#desplegament-local-i-produccio" class="md-skip">
+          Salta el contingut
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Capçalera">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-header__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HomeTab - Documentació tècnica
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Desplegament local i producció
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode fosc"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode fosc" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="green"  aria-label="Canvia a mode clar"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Canvia a mode clar" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecciona la llengua">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/index.html" hreflang="ca" class="md-select__link">
+              Català
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/en/index.html" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/admin/documentacio/es/index.html" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cerca" placeholder="Cerca" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cerca">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Neteja" aria-label="Neteja" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicialitzant cerca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestanyes" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inici
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../manual/usuari/" class="md-tabs__link">
+          
+  
+  
+  Manual d'usuari
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../presentacio/documentacio-presentacio/" class="md-tabs__link">
+          
+  
+  
+  Presentació
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../arquitectura/" class="md-tabs__link">
+          
+  
+  
+  Tècnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../materials/checklist-final/" class="md-tabs__link">
+          
+  
+  
+  Materials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegació" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="HomeTab - Documentació tècnica" class="md-nav__button md-logo" aria-label="HomeTab - Documentació tècnica" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HomeTab - Documentació tècnica
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inici
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manual d'usuari
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Manual d'usuari
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/usuari/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia d'usuari
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentació
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Presentació
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/documentacio-presentacio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentació de presentació
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../presentacio/evolucio-mvp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolució MVP → Final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tècnica
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tècnica
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitectura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitectura general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mapa-projecte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapa del projecte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Symfony
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend Vue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seguretat i permisos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auditoria-seguretat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auditoria de seguretat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing i qualitat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base-dades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model de dades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fluxos-principals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fluxos principals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cobertura-deute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cobertura i deute tècnic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desplegament local i producció
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desplegament local i producció
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-installacio-local-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: instal·lació local des de zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend: instal·lació local des de zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-i-installar-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Clonar i instal·lar dependències
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-variables-dentorn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configurar variables d'entorn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-generar-claus-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Generar claus JWT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-crear-la-base-de-dades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crear la base de dades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-carregar-fixtures-dades-de-prova" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Carregar fixtures (dades de prova)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-compilar-assets-twig-webpack-encore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Compilar assets Twig (Webpack Encore)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-iniciar-el-servidor-de-desenvolupament" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Iniciar el servidor de desenvolupament
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontend-installacio-local-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend: instal·lació local des de zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frontend: instal·lació local des de zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-i-installar-dependencies_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Clonar i instal·lar dependències
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-variables-dentorn-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configurar variables d'entorn (opcional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-iniciar-el-servidor-de-desenvolupament" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Iniciar el servidor de desenvolupament
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-preparar-entorn-de-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: preparar entorn de test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocs-generar-la-documentacio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs: generar la documentació
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors-connexio-frontend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CORS: connexió frontend ↔ backend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desplegament-a-produccio-aws-ecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desplegament a producció (AWS ECS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Desplegament a producció (AWS ECS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#components-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Components AWS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flux-de-deploy-produccio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flux de deploy producció
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-del-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile del backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desplegament-al-servidor-dev-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desplegament al servidor DEV (EC2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#swagger-no-apareix-a-apidoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swagger no apareix a /api/doc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-class-pdo-not-found-o-could-not-find-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: "Class 'PDO' not found" o "could not find driver"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-jwt-keypair-no-existeix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: JWT keypair no existeix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-access-denied-for-user-rootlocalhost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: "Access denied for user 'root'@'localhost'"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-500-al-frontend-api-no-respon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error 500 al frontend (API no respon)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdocs-strict-falla-per-pagines-no-trobades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs --strict falla per pàgines no trobades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-symfony-no-sactualitza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Symfony no s'actualitza
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixtures-falla-per-clau-duplicada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixtures falla per clau duplicada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resum-de-ports-locals-per-defecte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resum de ports locals per defecte
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integracio-continua/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integració contínua (CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables-entorn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables d'entorn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../digitalitzacio-ia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mòdul Digitalització i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend-admin-ai-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia backend admin i IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guia general
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autenticació i 2FA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/households/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Llars
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/expenses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Despeses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Esdeveniments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/chat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat de llar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notificacions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/profile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perfil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/multimedia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimèdia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assistent IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/checklist-final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/usuaris-prova/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usuaris de prova
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions tècniques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../materials/backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backlog i deute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Taula de continguts">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Taula de continguts
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-installacio-local-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: instal·lació local des de zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend: instal·lació local des de zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-i-installar-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Clonar i instal·lar dependències
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-variables-dentorn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configurar variables d'entorn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-generar-claus-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Generar claus JWT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-crear-la-base-de-dades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crear la base de dades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-carregar-fixtures-dades-de-prova" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Carregar fixtures (dades de prova)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-compilar-assets-twig-webpack-encore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Compilar assets Twig (Webpack Encore)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-iniciar-el-servidor-de-desenvolupament" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Iniciar el servidor de desenvolupament
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontend-installacio-local-des-de-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend: instal·lació local des de zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frontend: instal·lació local des de zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clonar-i-installar-dependencies_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Clonar i instal·lar dependències
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-configurar-variables-dentorn-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configurar variables d'entorn (opcional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-iniciar-el-servidor-de-desenvolupament" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Iniciar el servidor de desenvolupament
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-preparar-entorn-de-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend: preparar entorn de test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocs-generar-la-documentacio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs: generar la documentació
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors-connexio-frontend-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CORS: connexió frontend ↔ backend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desplegament-a-produccio-aws-ecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desplegament a producció (AWS ECS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Desplegament a producció (AWS ECS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#components-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Components AWS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flux-de-deploy-produccio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flux de deploy producció
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-del-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile del backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desplegament-al-servidor-dev-ec2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desplegament al servidor DEV (EC2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#swagger-no-apareix-a-apidoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swagger no apareix a /api/doc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-class-pdo-not-found-o-could-not-find-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: "Class 'PDO' not found" o "could not find driver"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-jwt-keypair-no-existeix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: JWT keypair no existeix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-access-denied-for-user-rootlocalhost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: "Access denied for user 'root'@'localhost'"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-500-al-frontend-api-no-respon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error 500 al frontend (API no respon)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdocs-strict-falla-per-pagines-no-trobades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs --strict falla per pàgines no trobades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-symfony-no-sactualitza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Symfony no s'actualitza
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixtures-falla-per-clau-duplicada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixtures falla per clau duplicada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resum-de-ports-locals-per-defecte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resum de ports locals per defecte
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="desplegament-local-i-produccio">Desplegament local i producció<a class="headerlink" href="#desplegament-local-i-produccio" title="Permanent link">&para;</a></h1>
+<h2 id="prerequisits">Prerequisits<a class="headerlink" href="#prerequisits" title="Permanent link">&para;</a></h2>
+<h3 id="backend">Backend<a class="headerlink" href="#backend" title="Permanent link">&para;</a></h3>
+<ul>
+<li>PHP <code>&gt;=8.2</code> amb extensions: <code>ctype</code>, <code>iconv</code>, <code>pdo_mysql</code>.</li>
+<li>Composer <code>&gt;=2</code>.</li>
+<li>MySQL <code>8.0+</code>.</li>
+<li>Node.js <code>&gt;=20</code> i npm (per als assets Twig amb Webpack Encore).</li>
+<li>Python <code>&gt;=3.9</code> i pip (per a MkDocs, opcional).</li>
+</ul>
+<h3 id="frontend">Frontend<a class="headerlink" href="#frontend" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Node.js <code>&gt;=20</code> i npm.</li>
+</ul>
+<hr />
+<h2 id="backend-installacio-local-des-de-zero">Backend: instal·lació local des de zero<a class="headerlink" href="#backend-installacio-local-des-de-zero" title="Permanent link">&para;</a></h2>
+<h3 id="1-clonar-i-installar-dependencies">1. Clonar i instal·lar dependències<a class="headerlink" href="#1-clonar-i-installar-dependencies" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>&lt;url-del-repo-backend&gt;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>backend-grup-6-gensync
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>composer<span class="w"> </span>install
+</code></pre></div>
+<h3 id="2-configurar-variables-dentorn">2. Configurar variables d'entorn<a class="headerlink" href="#2-configurar-variables-dentorn" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cp<span class="w"> </span>.env<span class="w"> </span>.env.local
+</code></pre></div>
+<p>Edita <code>.env.local</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>APP_ENV=dev
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>APP_SECRET=genera-un-secret-aleatori-aqui
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>DATABASE_URL=&quot;mysql://root:@127.0.0.1:3306/db_hometab?serverVersion=8.0.43&amp;charset=utf8mb4&quot;
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>JWT_PASSPHRASE=la-teva-passphrase-local
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>MAILER_DSN=&quot;smtp://localhost:1025&quot;
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>MAILER_FROM=&quot;hometab-local@example.com&quot;
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>OPENROUTER_API_KEY=opcional-en-local
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>YOUTUBE_API_KEY=opcional-en-local
+</code></pre></div>
+<h3 id="3-generar-claus-jwt">3. Generar claus JWT<a class="headerlink" href="#3-generar-claus-jwt" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>lexik:jwt:generate-keypair
+</code></pre></div>
+<p>Genera <code>config/jwt/private.pem</code> i <code>config/jwt/public.pem</code>. <strong>No versionar</strong>.</p>
+<h3 id="4-crear-la-base-de-dades">4. Crear la base de dades<a class="headerlink" href="#4-crear-la-base-de-dades" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>doctrine:database:create
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>php<span class="w"> </span>bin/console<span class="w"> </span>doctrine:migrations:migrate<span class="w"> </span>-n
+</code></pre></div>
+<h3 id="5-carregar-fixtures-dades-de-prova">5. Carregar fixtures (dades de prova)<a class="headerlink" href="#5-carregar-fixtures-dades-de-prova" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>doctrine:fixtures:load<span class="w"> </span>-n
+</code></pre></div>
+<p>O amb la drecera:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>composer<span class="w"> </span>db:reset
+</code></pre></div>
+<h3 id="6-compilar-assets-twig-webpack-encore">6. Compilar assets Twig (Webpack Encore)<a class="headerlink" href="#6-compilar-assets-twig-webpack-encore" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>npm<span class="w"> </span>install
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># En mode observació:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>npm<span class="w"> </span>run<span class="w"> </span>watch
+</code></pre></div>
+<p>Swagger UI depen dels assets publics de <code>NelmioApiDocBundle</code>. Instal-la'ls despres de <code>composer install</code> si <code>/api/doc</code> es veu sense estils o en blanc:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>assets:install<span class="w"> </span>public<span class="w"> </span>--symlink<span class="w"> </span>--relative
+</code></pre></div>
+<h3 id="7-iniciar-el-servidor-de-desenvolupament">7. Iniciar el servidor de desenvolupament<a class="headerlink" href="#7-iniciar-el-servidor-de-desenvolupament" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>symfony<span class="w"> </span>server:start
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># O amb el servidor incorporat de PHP:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>php<span class="w"> </span>-S<span class="w"> </span>localhost:8000<span class="w"> </span>-t<span class="w"> </span>public/
+</code></pre></div>
+<p>L'API estarà disponible a <code>http://localhost:8000/api</code>.
+El backoffice Twig a <code>http://localhost:8000/admin</code>.
+Swagger UI a <code>http://localhost:8000/api/doc</code>.</p>
+<hr />
+<h2 id="frontend-installacio-local-des-de-zero">Frontend: instal·lació local des de zero<a class="headerlink" href="#frontend-installacio-local-des-de-zero" title="Permanent link">&para;</a></h2>
+<h3 id="1-clonar-i-installar-dependencies_1">1. Clonar i instal·lar dependències<a class="headerlink" href="#1-clonar-i-installar-dependencies_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>clone<span class="w"> </span>&lt;url-del-repo-frontend&gt;
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nb">cd</span><span class="w"> </span>frontend-grup-6-gensync
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>npm<span class="w"> </span>install
+</code></pre></div>
+<h3 id="2-configurar-variables-dentorn-opcional">2. Configurar variables d'entorn (opcional)<a class="headerlink" href="#2-configurar-variables-dentorn-opcional" title="Permanent link">&para;</a></h3>
+<p>Si el backend no corre a <code>localhost:8000</code>, crea un <code>.env.local</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>VITE_API_URL=http://localhost:8000/api
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>VITE_ASSET_URL=http://localhost:8000
+</code></pre></div>
+<h3 id="3-iniciar-el-servidor-de-desenvolupament">3. Iniciar el servidor de desenvolupament<a class="headerlink" href="#3-iniciar-el-servidor-de-desenvolupament" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<p>El frontend estarà disponible a <code>http://localhost:5173</code>.</p>
+<hr />
+<h2 id="backend-preparar-entorn-de-test">Backend: preparar entorn de test<a class="headerlink" href="#backend-preparar-entorn-de-test" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Crear BD de test i aplicar migracions</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>composer<span class="w"> </span>test:setup
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Executar tots els tests</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>composer<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<p>La base de dades de test es configura a <code>.env.test</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>DATABASE_URL=&quot;mysql://root:@127.0.0.1:3306/db_hometab_test?serverVersion=8.0.43&amp;charset=utf8mb4&quot;
+</code></pre></div>
+<hr />
+<h2 id="mkdocs-generar-la-documentacio">MkDocs: generar la documentació<a class="headerlink" href="#mkdocs-generar-la-documentacio" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">cd</span><span class="w"> </span>backend-grup-6-gensync
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/mkdocs/requirements.txt
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>python<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs/mkdocs.yml<span class="w"> </span>--strict
+</code></pre></div>
+<p>Accedeix a la documentació generada via el backend (requereix superadmin):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>http://localhost:8000/admin/documentacio
+</code></pre></div>
+<hr />
+<h2 id="cors-connexio-frontend-backend">CORS: connexió frontend ↔ backend<a class="headerlink" href="#cors-connexio-frontend-backend" title="Permanent link">&para;</a></h2>
+<p>Per defecte, el backend permet CORS des de <code>localhost</code> i <code>127.0.0.1</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>CORS_ALLOW_ORIGIN=&#39;^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$&#39;
+</code></pre></div>
+<p>Si el frontend corre en un domini diferent, afegeix-lo a <code>.env.local</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>CORS_ALLOW_ORIGIN=&#39;^https://el-teu-domini\.com$&#39;
+</code></pre></div>
+<hr />
+<h2 id="desplegament-a-produccio-aws-ecs">Desplegament a producció (AWS ECS)<a class="headerlink" href="#desplegament-a-produccio-aws-ecs" title="Permanent link">&para;</a></h2>
+<p>El repositori inclou un workflow preparat per a desplegar a producció via AWS ECS al push a <code>main</code>. Aquest apartat documenta el que el workflow espera trobar; si els secrets AWS no estan configurats, aquest deploy no s'executara correctament.</p>
+<h3 id="components-aws">Components AWS<a class="headerlink" href="#components-aws" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Servei AWS</th>
+<th>Funció</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Imatge Docker backend</td>
+<td>Amazon ECR</td>
+<td>Registre de contenidors</td>
+</tr>
+<tr>
+<td>Servei backend</td>
+<td>Amazon ECS</td>
+<td>Execució del contenidor Symfony</td>
+</tr>
+<tr>
+<td>Base de dades</td>
+<td>Amazon RDS (MySQL 8)</td>
+<td>Persistència de dades</td>
+</tr>
+<tr>
+<td>Assets estàtics</td>
+<td>Amazon S3 + CloudFront</td>
+<td>Servir el frontend Vue compilat</td>
+</tr>
+<tr>
+<td>Balanceador</td>
+<td>Application Load Balancer</td>
+<td>Distribució del trànsit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flux-de-deploy-produccio">Flux de deploy producció<a class="headerlink" href="#flux-de-deploy-produccio" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    Push[Push main] --&gt; CI[GitHub Actions test]
+    CI --&gt; Build[docker build + npm build]
+    Build --&gt; ECR[Push a Amazon ECR]
+    ECR --&gt; ECS[ECS update-service]
+    ECS --&gt; Wait[ecs wait services-stable]</code></pre>
+<h3 id="dockerfile-del-backend">Dockerfile del backend<a class="headerlink" href="#dockerfile-del-backend" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">php:8.3-fpm-alpine</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c"># ... extensions, composer, etc.</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>/var/www/html
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">RUN</span><span class="w"> </span>composer<span class="w"> </span>install<span class="w"> </span>--no-dev<span class="w"> </span>--optimize-autoloader
+</code></pre></div>
+<hr />
+<h2 id="desplegament-al-servidor-dev-ec2">Desplegament al servidor DEV (EC2)<a class="headerlink" href="#desplegament-al-servidor-dev-ec2" title="Permanent link">&para;</a></h2>
+<p>El workflow tambe contempla un deploy DEV per <code>rsync</code> sobre SSH, sense Docker. Depen dels secrets <code>DEV_*</code> del repositori:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>EC2 (Apache + PHP-FPM) ← rsync ← GitHub Actions
+</code></pre></div>
+<p>El workflow configura el <code>.env.local</code> remotament des de secrets i executa:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>composer<span class="w"> </span>install<span class="w"> </span>--no-interaction<span class="w"> </span>--prefer-dist<span class="w"> </span>--optimize-autoloader
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>php<span class="w"> </span>bin/console<span class="w"> </span>doctrine:migrations:migrate<span class="w"> </span>-n
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>php<span class="w"> </span>bin/console<span class="w"> </span>cache:clear<span class="w"> </span>--no-debug
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>php<span class="w"> </span>bin/console<span class="w"> </span>cache:warmup<span class="w"> </span>--no-debug
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>apache2
+</code></pre></div>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="swagger-no-apareix-a-apidoc">Swagger no apareix a <code>/api/doc</code><a class="headerlink" href="#swagger-no-apareix-a-apidoc" title="Permanent link">&para;</a></h3>
+<p>Comprova que el bundle i les rutes estan carregats:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>composer<span class="w"> </span>show<span class="w"> </span>nelmio/api-doc-bundle
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>php<span class="w"> </span>bin/console<span class="w"> </span>debug:router<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>api/doc
+</code></pre></div>
+<p>En Windows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">php</span> <span class="n">bin</span><span class="p">/</span><span class="n">console</span> <span class="n">debug</span><span class="p">:</span><span class="n">router</span> <span class="p">|</span> <span class="n">findstr</span> <span class="n">api</span><span class="p">/</span><span class="n">doc</span>
+</code></pre></div>
+<p>Si la ruta existeix pero la pantalla surt en blanc o sense estils, reinstal-la els assets publics de Symfony:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>assets:install<span class="w"> </span>public<span class="w"> </span>--symlink<span class="w"> </span>--relative
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>php<span class="w"> </span>bin/console<span class="w"> </span>cache:clear
+</code></pre></div>
+<p>Si el servidor Symfony estava encendido antes de cambiar de rama, reinicialo.</p>
+<h3 id="error-class-pdo-not-found-o-could-not-find-driver">Error: "Class 'PDO' not found" o "could not find driver"<a class="headerlink" href="#error-class-pdo-not-found-o-could-not-find-driver" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Verifica extensions PHP instal·lades</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>php<span class="w"> </span>-m<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>pdo
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1"># Instal·la l&#39;extensió si falta</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>php-mysql<span class="w">  </span><span class="c1"># Ubuntu/Debian</span>
+</code></pre></div>
+<h3 id="error-jwt-keypair-no-existeix">Error: JWT keypair no existeix<a class="headerlink" href="#error-jwt-keypair-no-existeix" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>lexik:jwt:generate-keypair
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="c1"># Si peta per permisos:</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>config/jwt
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>config/jwt
+</code></pre></div>
+<h3 id="error-access-denied-for-user-rootlocalhost">Error: "Access denied for user 'root'@'localhost'"<a class="headerlink" href="#error-access-denied-for-user-rootlocalhost" title="Permanent link">&para;</a></h3>
+<p>Comprova les credencials a <code>.env.local</code> i que MySQL estigui corrent:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>root<span class="w"> </span>-p
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c1"># Si no té contrasenya:</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>mysql<span class="w"> </span>-u<span class="w"> </span>root
+</code></pre></div>
+<h3 id="error-500-al-frontend-api-no-respon">Error 500 al frontend (API no respon)<a class="headerlink" href="#error-500-al-frontend-api-no-respon" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Comprova que el backend estigui corrent: <code>curl http://localhost:8000/api/login_check</code>.</li>
+<li>Comprova CORS a la consola del navegador.</li>
+<li>Comprova que <code>VITE_API_URL</code> apunta al backend correcte.</li>
+</ol>
+<h3 id="mkdocs-strict-falla-per-pagines-no-trobades">MkDocs <code>--strict</code> falla per pàgines no trobades<a class="headerlink" href="#mkdocs-strict-falla-per-pagines-no-trobades" title="Permanent link">&para;</a></h3>
+<p>Qualsevol pàgina referenciada al <code>mkdocs.yml</code> ha d'existir físicament. Comprova que tots els fitxers del <code>nav:</code> existeixin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>python<span class="w"> </span>-m<span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs/mkdocs.yml<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+</code></pre></div>
+<h3 id="cache-symfony-no-sactualitza">Cache Symfony no s'actualitza<a class="headerlink" href="#cache-symfony-no-sactualitza" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>cache:clear
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>php<span class="w"> </span>bin/console<span class="w"> </span>cache:warmup
+</code></pre></div>
+<h3 id="fixtures-falla-per-clau-duplicada">Fixtures falla per clau duplicada<a class="headerlink" href="#fixtures-falla-per-clau-duplicada" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>php<span class="w"> </span>bin/console<span class="w"> </span>doctrine:fixtures:load<span class="w"> </span>-n<span class="w"> </span>--purge-with-truncate
+</code></pre></div>
+<hr />
+<h2 id="resum-de-ports-locals-per-defecte">Resum de ports locals per defecte<a class="headerlink" href="#resum-de-ports-locals-per-defecte" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Servei</th>
+<th>Port</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend Symfony</td>
+<td>8000</td>
+<td><code>http://localhost:8000</code></td>
+</tr>
+<tr>
+<td>API REST</td>
+<td>8000</td>
+<td><code>http://localhost:8000/api</code></td>
+</tr>
+<tr>
+<td>Swagger UI</td>
+<td>8000</td>
+<td><code>http://localhost:8000/api/doc</code></td>
+</tr>
+<tr>
+<td>Frontend Vue</td>
+<td>5173</td>
+<td><code>http://localhost:5173</code></td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>3306</td>
+<td><code>mysql://root:@localhost:3306</code></td>
+</tr>
+<tr>
+<td>MailHog (opcional)</td>
+<td>1025/8025</td>
+<td><code>smtp://localhost:1025</code>, UI: <code>http://localhost:8025</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Torna a l'inici
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.highlight", "search.suggest", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiat al porta-retalls", "clipboard.copy": "C\u00f2pia al porta-retalls", "search.result.more.one": "1 m\u00e9s en aquesta p\u00e0gina", "search.result.more.other": "# m\u00e9s en aquesta p\u00e0gina", "search.result.none": "Cap document coincideix", "search.result.one": "1 document coincident", "search.result.other": "# documents coincidents", "search.result.placeholder": "Escriu per a comen\u00e7ar a cercar", "search.result.term.missing": "Desaparegut", "select.version": "Selecciona la versi\u00f3"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

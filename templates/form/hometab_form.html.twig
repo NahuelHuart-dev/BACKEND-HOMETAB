@@ -1,0 +1,36 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget_simple %}
+    {% set type = type|default('text') %}
+    {% if type not in ['hidden', 'checkbox', 'radio', 'file', 'color', 'button', 'submit', 'reset'] %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' ht-input')|trim}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block textarea_widget %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' ht-input ht-textarea')|trim}) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' ht-select')|trim}) %}
+    {{- parent() -}}
+{% endblock %}
+
+{% block checkbox_row %}
+    <div class="ht-checkbox-row">
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_label(form, null, { label_attr: { class: 'ht-checkbox-label' } }) -}}
+    </div>
+{% endblock %}
+
+{% block form_row %}
+    <div class="ht-field">
+        {{- form_label(form) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    </div>
+{% endblock %}
